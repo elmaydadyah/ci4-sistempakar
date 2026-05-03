@@ -1,0 +1,42 @@
+CRITICAL - 2026-04-30 15:05:58 --> ErrorException: Undefined array key "email"
+[Method: GET, Route: users]
+in APPPATH\Views\users\index.php on line 21.
+ 1 APPPATH\Views\users\index.php(21): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "email"', 'C:\\xampp\\htdocs\\ci4-sistempakar\\app\\Views\\users\\index.php', 21)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\ci4-sistempakar\\app\\Views\\users\\index.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('users/index', [], true)
+ 5 APPPATH\Controllers\Users.php(15): view('users/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Users->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-30 15:06:03 --> ErrorException: Undefined array key "email"
+[Method: GET, Route: users]
+in APPPATH\Views\users\index.php on line 21.
+ 1 APPPATH\Views\users\index.php(21): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "email"', 'C:\\xampp\\htdocs\\ci4-sistempakar\\app\\Views\\users\\index.php', 21)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\ci4-sistempakar\\app\\Views\\users\\index.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('users/index', [], true)
+ 5 APPPATH\Controllers\Users.php(15): view('users/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Users->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-30 15:10:37 --> ErrorException: Undefined variable $users
+[Method: GET, Route: users]
+in APPPATH\Views\users\index.php on line 18.
+ 1 APPPATH\Views\users\index.php(18): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $users', 'C:\\xampp\\htdocs\\ci4-sistempakar\\app\\Views\\users\\index.php', 18)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\ci4-sistempakar\\app\\Views\\users\\index.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('users/index', [], true)
+ 5 APPPATH\Controllers\Users.php(15): view('users/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Users->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
