@@ -18,3 +18,161 @@ in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
 11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
 12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
 13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-05-03 06:40:55 --> Error connecting to the database: mysqli_sql_exception: Unknown database 'db_stunting' in C:\laragon\www\ci4-sistempakar\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 C:\laragon\www\ci4-sistempakar\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'db_stunting', 3306, '', 0)
+#1 C:\laragon\www\ci4-sistempakar\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\laragon\www\ci4-sistempakar\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\laragon\www\ci4-sistempakar\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\laragon\www\ci4-sistempakar\system\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\laragon\www\ci4-sistempakar\system\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\laragon\www\ci4-sistempakar\app\Controllers\Users.php(13): CodeIgniter\BaseModel->findAll()
+#7 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(951): App\Controllers\Users->index()
+#8 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+#9 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\laragon\www\ci4-sistempakar\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 C:\laragon\www\ci4-sistempakar\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 C:\laragon\www\ci4-sistempakar\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Unknown database 'db_stunting' in C:\laragon\www\ci4-sistempakar\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 C:\laragon\www\ci4-sistempakar\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\laragon\www\ci4-sistempakar\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\laragon\www\ci4-sistempakar\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\laragon\www\ci4-sistempakar\system\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\laragon\www\ci4-sistempakar\system\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+#5 C:\laragon\www\ci4-sistempakar\app\Controllers\Users.php(13): CodeIgniter\BaseModel->findAll()
+#6 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(951): App\Controllers\Users->index()
+#7 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+#8 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\laragon\www\ci4-sistempakar\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#10 C:\laragon\www\ci4-sistempakar\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#11 C:\laragon\www\ci4-sistempakar\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#12 {main}
+CRITICAL - 2026-05-03 06:40:55 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Unknown database 'db_stunting'
+[Method: GET, Route: users]
+in SYSTEMPATH\Database\BaseConnection.php on line 606.
+ 1 SYSTEMPATH\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_users`', [], false)
+ 3 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Controllers\Users.php(13): CodeIgniter\BaseModel->findAll()
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Users->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-05-03 06:41:40 --> Error connecting to the database: mysqli_sql_exception: Unknown database 'db_stunting' in C:\laragon\www\ci4-sistempakar\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 C:\laragon\www\ci4-sistempakar\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'db_stunting', 3306, '', 0)
+#1 C:\laragon\www\ci4-sistempakar\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\laragon\www\ci4-sistempakar\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\laragon\www\ci4-sistempakar\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\laragon\www\ci4-sistempakar\system\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\laragon\www\ci4-sistempakar\system\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\laragon\www\ci4-sistempakar\app\Controllers\Users.php(13): CodeIgniter\BaseModel->findAll()
+#7 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(951): App\Controllers\Users->index()
+#8 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+#9 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\laragon\www\ci4-sistempakar\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 C:\laragon\www\ci4-sistempakar\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 C:\laragon\www\ci4-sistempakar\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Unknown database 'db_stunting' in C:\laragon\www\ci4-sistempakar\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 C:\laragon\www\ci4-sistempakar\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\laragon\www\ci4-sistempakar\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\laragon\www\ci4-sistempakar\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\laragon\www\ci4-sistempakar\system\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\laragon\www\ci4-sistempakar\system\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+#5 C:\laragon\www\ci4-sistempakar\app\Controllers\Users.php(13): CodeIgniter\BaseModel->findAll()
+#6 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(951): App\Controllers\Users->index()
+#7 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+#8 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\laragon\www\ci4-sistempakar\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#10 C:\laragon\www\ci4-sistempakar\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#11 C:\laragon\www\ci4-sistempakar\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#12 {main}
+CRITICAL - 2026-05-03 06:41:40 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Unknown database 'db_stunting'
+[Method: GET, Route: users]
+in SYSTEMPATH\Database\BaseConnection.php on line 606.
+ 1 SYSTEMPATH\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_users`', [], false)
+ 3 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Controllers\Users.php(13): CodeIgniter\BaseModel->findAll()
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Users->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-05-03 07:36:09 --> Error connecting to the database: mysqli_sql_exception: Unknown database 'db_stunting' in C:\laragon\www\ci4-sistempakar\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 C:\laragon\www\ci4-sistempakar\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'db_stunting', 3306, '', 0)
+#1 C:\laragon\www\ci4-sistempakar\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\laragon\www\ci4-sistempakar\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\laragon\www\ci4-sistempakar\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\laragon\www\ci4-sistempakar\system\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\laragon\www\ci4-sistempakar\system\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\laragon\www\ci4-sistempakar\app\Controllers\Users.php(13): CodeIgniter\BaseModel->findAll()
+#7 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(951): App\Controllers\Users->index()
+#8 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+#9 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\laragon\www\ci4-sistempakar\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 C:\laragon\www\ci4-sistempakar\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 C:\laragon\www\ci4-sistempakar\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Unknown database 'db_stunting' in C:\laragon\www\ci4-sistempakar\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 C:\laragon\www\ci4-sistempakar\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\laragon\www\ci4-sistempakar\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\laragon\www\ci4-sistempakar\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\laragon\www\ci4-sistempakar\system\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\laragon\www\ci4-sistempakar\system\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+#5 C:\laragon\www\ci4-sistempakar\app\Controllers\Users.php(13): CodeIgniter\BaseModel->findAll()
+#6 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(951): App\Controllers\Users->index()
+#7 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+#8 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\laragon\www\ci4-sistempakar\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#10 C:\laragon\www\ci4-sistempakar\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#11 C:\laragon\www\ci4-sistempakar\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#12 {main}
+CRITICAL - 2026-05-03 07:36:09 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Unknown database 'db_stunting'
+[Method: GET, Route: users]
+in SYSTEMPATH\Database\BaseConnection.php on line 606.
+ 1 SYSTEMPATH\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_users`', [], false)
+ 3 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Controllers\Users.php(13): CodeIgniter\BaseModel->findAll()
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Users->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-03 07:50:17 --> ErrorException: Undefined variable $load
+[Method: GET, Route: admindiagnosa]
+in APPPATH\Views\admin\diagnosa\index_diagnosa.php on line 1.
+ 1 APPPATH\Views\admin\diagnosa\index_diagnosa.php(1): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $load', 'C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\diagnosa\\index_diagnosa.php', 1)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\diagnosa\\index_diagnosa.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/diagnosa/index_diagnosa', [], true)
+ 5 APPPATH\Controllers\Admin.php(11): view('admin/diagnosa/index_diagnosa')
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexDiagnosa()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
