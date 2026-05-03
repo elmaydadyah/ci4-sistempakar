@@ -10,4 +10,9 @@ class Admin extends BaseController
     {
         return view('admin/diagnosa/index_diagnosa');
     }
+
+    public function indexPenyakit()
+    {
+        return view('admin/penyakit/index_penyakit');
+    }
 }

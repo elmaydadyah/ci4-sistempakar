@@ -9,10 +9,7 @@
             <div class="col-md-12 grid-margin">
                 <div class="row">
                     <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                        <h3 class="font-weight-bold">Halaman Index Diagnosa</h3>
-                        <h6 class="font-weight-normal mb-0">All systems are running smoothly! You have <span
-                                class="text-primary">3
-                                unread alerts!</span></h6>
+                        <h3 class="font-weight-bold">Halaman Index Penyakit</h3>
                     </div>
                     <div class="col-12 col-xl-4">
                         <div class="justify-content-end d-flex">
@@ -38,7 +35,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
-                            <p class="card-title">Tabel Diagnosa</p>
+                            <p class="card-title">Tabel Penyakit</p>
                         </div>
                         <div id="sales-chart-legend" class="chartjs-legend mt-4 mb-2"></div>
                         <canvas id="sales-chart"></canvas>
