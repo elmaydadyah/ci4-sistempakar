@@ -36,6 +36,40 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <p class="card-title">Tabel Penyakit</p>
+                            <div class="card-body">
+
+            <table class="table table-bordered table-striped table-hover align-middle">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th style="width: 60px;">No</th>
+                        <th>Username</th>
+                        <th>Password</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <?php $no = 1; ?>
+                    <?php if (!empty($tb_users)): ?>
+                        <?php foreach ($tb_users as $u): ?>
+                        <tr>
+                            <td class="text-center"><?= $no++ ?></td>
+                            <td><?= $u['username'] ?></td>
+                            <td><?= $u['password'] ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">Data tidak tersedia</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>
                         </div>
                         <div id="sales-chart-legend" class="chartjs-legend mt-4 mb-2"></div>
                         <canvas id="sales-chart"></canvas>
