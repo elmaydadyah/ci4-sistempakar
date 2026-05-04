@@ -1,0 +1,297 @@
+ERROR - 2026-05-04 01:03:55 --> Error connecting to the database: mysqli_sql_exception: Unknown database 'db_sistempakar' in C:\laragon\www\ci4-sistempakar\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 C:\laragon\www\ci4-sistempakar\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('127.0.0.1', 'root', Object(SensitiveParameterValue), 'db_sistempakar', 3306, '', 0)
+#1 C:\laragon\www\ci4-sistempakar\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\laragon\www\ci4-sistempakar\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\laragon\www\ci4-sistempakar\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\laragon\www\ci4-sistempakar\system\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\laragon\www\ci4-sistempakar\system\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\laragon\www\ci4-sistempakar\app\Controllers\Users.php(13): CodeIgniter\BaseModel->findAll()
+#7 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(951): App\Controllers\Users->index()
+#8 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+#9 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\laragon\www\ci4-sistempakar\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 C:\laragon\www\ci4-sistempakar\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 C:\laragon\www\ci4-sistempakar\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Unknown database 'db_sistempakar' in C:\laragon\www\ci4-sistempakar\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 C:\laragon\www\ci4-sistempakar\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\laragon\www\ci4-sistempakar\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\laragon\www\ci4-sistempakar\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\laragon\www\ci4-sistempakar\system\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\laragon\www\ci4-sistempakar\system\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+#5 C:\laragon\www\ci4-sistempakar\app\Controllers\Users.php(13): CodeIgniter\BaseModel->findAll()
+#6 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(951): App\Controllers\Users->index()
+#7 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+#8 C:\laragon\www\ci4-sistempakar\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\laragon\www\ci4-sistempakar\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#10 C:\laragon\www\ci4-sistempakar\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#11 C:\laragon\www\ci4-sistempakar\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#12 {main}
+CRITICAL - 2026-05-04 01:03:55 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Unknown database 'db_sistempakar'
+[Method: GET, Route: users]
+in SYSTEMPATH\Database\BaseConnection.php on line 606.
+ 1 SYSTEMPATH\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_users`', [], false)
+ 3 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Controllers\Users.php(13): CodeIgniter\BaseModel->findAll()
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Users->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-04 07:19:01 --> ErrorException: Undefined array key "username"
+[Method: GET, Route: users]
+in APPPATH\Views\users\index.php on line 56.
+ 1 APPPATH\Views\users\index.php(56): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "username"', 'C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\users\\index.php', 56)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\users\\index.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('users/index', [], true)
+ 5 APPPATH\Controllers\Users.php(15): view('users/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Users->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-04 07:19:01 --> ErrorException: Undefined array key "username"
+[Method: GET, Route: users]
+in APPPATH\Views\users\index.php on line 56.
+ 1 APPPATH\Views\users\index.php(56): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "username"', 'C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\users\\index.php', 56)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\users\\index.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('users/index', [], true)
+ 5 APPPATH\Controllers\Users.php(15): view('users/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Users->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-04 07:28:24 --> CodeIgniter\Exceptions\BadMethodCallException: Call to undefined method App\Models\AdminModel::getKonsultasi
+[Method: GET, Route: adminkonsultasi]
+in SYSTEMPATH\Model.php on line 761.
+ 1 APPPATH\Controllers\Admin.php(22): CodeIgniter\Model->__call('getKonsultasi', [])
+ 2 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-04 07:29:26 --> ErrorException: Undefined array key "id"
+[Method: GET, Route: adminkonsultasi]
+in APPPATH\Views\admin\Konsultasi\index_konsultasi.php on line 46.
+ 1 APPPATH\Views\admin\Konsultasi\index_konsultasi.php(46): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "id"', 'C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\Konsultasi\\index_konsultasi.php', 46)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\Konsultasi\\index_konsultasi.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/konsultasi/index_konsultasi', [], true)
+ 5 APPPATH\Controllers\Admin.php(24): view('admin/konsultasi/index_konsultasi', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-04 07:37:23 --> ParseError: syntax error, unexpected end of file
+[Method: GET, Route: adminkonsultasi]
+in APPPATH\Views\admin\Konsultasi\index_konsultasi.php on line 94.
+ 1 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/konsultasi/index_konsultasi', [], true)
+ 3 APPPATH\Controllers\Admin.php(24): view('admin/konsultasi/index_konsultasi', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-04 07:49:58 --> ErrorException: Undefined variable $totalTime
+[Method: GET, Route: /]
+in SYSTEMPATH\Debug\Toolbar\Views\toolbar.tpl.php on line 50.
+ 1 SYSTEMPATH\Debug\Toolbar\Views\toolbar.tpl.php(50): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $totalTime', 'C:\\laragon\\www\\ci4-sistempakar\\system\\Debug\\Toolbar\\Views\\toolbar.tpl.php', 50)
+ 2 SYSTEMPATH\Debug\Toolbar.php(533): include('C:\\laragon\\www\\ci4-sistempakar\\system\\Debug\\Toolbar\\Views\\toolbar.tpl.php')
+ 3 SYSTEMPATH\Debug\Toolbar.php(496): CodeIgniter\Debug\Toolbar->format([...], 'html')
+ 4 APPPATH\Config\Events.php(47): CodeIgniter\Debug\Toolbar->respond()
+ 5 SYSTEMPATH\Events\Events.php(152): CodeIgniter\Events\Events::{closure:C:\laragon\www\ci4-sistempakar\app\Config\Events.php:26}()
+ 6 SYSTEMPATH\CodeIgniter.php(325): CodeIgniter\Events\Events::trigger('pre_system')
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-04 07:50:02 --> ErrorException: Undefined array key "nama_gejala"
+[Method: GET, Route: admingejala]
+in APPPATH\Views\admin\gejala\index_gejala.php on line 43.
+ 1 APPPATH\Views\admin\gejala\index_gejala.php(43): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "nama_gejala"', 'C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\gejala\\index_gejala.php', 43)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\gejala\\index_gejala.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/gejala/index_gejala', [], true)
+ 5 APPPATH\Controllers\Admin.php(13): view('admin/gejala/index_gejala', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexGejala()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-04 07:53:56 --> ErrorException: Undefined array key "id_user"
+[Method: GET, Route: adminusers]
+in APPPATH\Views\admin\users\index_users.php on line 43.
+ 1 APPPATH\Views\admin\users\index_users.php(43): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "id_user"', 'C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\users\\index_users.php', 43)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\users\\index_users.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/users/index_users', [], true)
+ 5 APPPATH\Controllers\Admin.php(20): view('admin/users/index_users', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexUsers()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-04 07:54:18 --> ErrorException: Undefined array key "id_users"
+[Method: GET, Route: adminusers]
+in APPPATH\Views\admin\users\index_users.php on line 43.
+ 1 APPPATH\Views\admin\users\index_users.php(43): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "id_users"', 'C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\users\\index_users.php', 43)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\users\\index_users.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/users/index_users', [], true)
+ 5 APPPATH\Controllers\Admin.php(20): view('admin/users/index_users', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexUsers()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-04 07:54:18 --> ErrorException: Undefined array key "id_users"
+[Method: GET, Route: adminusers]
+in APPPATH\Views\admin\users\index_users.php on line 43.
+ 1 APPPATH\Views\admin\users\index_users.php(43): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "id_users"', 'C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\users\\index_users.php', 43)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\users\\index_users.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/users/index_users', [], true)
+ 5 APPPATH\Controllers\Admin.php(20): view('admin/users/index_users', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexUsers()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-04 07:59:17 --> ErrorException: Undefined array key "id_users"
+[Method: GET, Route: adminusers]
+in APPPATH\Views\admin\users\index_users.php on line 43.
+ 1 APPPATH\Views\admin\users\index_users.php(43): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "id_users"', 'C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\users\\index_users.php', 43)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\users\\index_users.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/users/index_users', [], true)
+ 5 APPPATH\Controllers\Admin.php(20): view('admin/users/index_users', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexUsers()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-04 07:59:20 --> ErrorException: Undefined array key "id_users"
+[Method: GET, Route: adminusers]
+in APPPATH\Views\admin\users\index_users.php on line 43.
+ 1 APPPATH\Views\admin\users\index_users.php(43): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "id_users"', 'C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\users\\index_users.php', 43)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\users\\index_users.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/users/index_users', [], true)
+ 5 APPPATH\Controllers\Admin.php(20): view('admin/users/index_users', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexUsers()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-04 08:00:52 --> ErrorException: Undefined array key "id_users"
+[Method: GET, Route: adminusers]
+in APPPATH\Views\admin\users\index_users.php on line 43.
+ 1 APPPATH\Views\admin\users\index_users.php(43): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "id_users"', 'C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\users\\index_users.php', 43)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\users\\index_users.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/users/index_users', [], true)
+ 5 APPPATH\Controllers\Admin.php(20): view('admin/users/index_users', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexUsers()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-04 08:04:11 --> Error: Class "App\Models\TbUsers" not found
+[Method: GET, Route: adminusers]
+in APPPATH\Controllers\Admin.php on line 21.
+ 1 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexUsers()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 3 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-04 08:04:39 --> Error: Class "App\Models\TbKonsultasi" not found
+[Method: GET, Route: adminkonsultasi]
+in APPPATH\Controllers\Admin.php on line 35.
+ 1 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 3 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-04 08:05:21 --> Error: Class "App\Models\TbUsers" not found
+[Method: GET, Route: adminusers]
+in APPPATH\Controllers\Admin.php on line 21.
+ 1 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexUsers()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 3 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-04 08:08:48 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "admin/kasusgejala/index_kasusgejala.php"
+[Method: GET, Route: adminkasusgejala]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('admin/kasusgejala/index_kasusgejala.php')
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/kasusgejala/index_kasusgejala', [], true)
+ 3 APPPATH\Controllers\Admin.php(27): view('admin/kasusgejala/index_kasusgejala', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKasusGejala()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-04 08:15:36 --> ErrorException: Undefined variable $no
+[Method: GET, Route: adminusers]
+in APPPATH\Views\admin\users\index_users.php on line 43.
+ 1 APPPATH\Views\admin\users\index_users.php(43): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $no', 'C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\users\\index_users.php', 43)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\users\\index_users.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/users/index_users', [], true)
+ 5 APPPATH\Controllers\Admin.php(20): view('admin/users/index_users', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexUsers()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-04 09:14:58 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "admin/kasusgejala/index_kasusgejala.php"
+[Method: GET, Route: adminkasusgejala]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('admin/kasusgejala/index_kasusgejala.php')
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/kasusgejala/index_kasusgejala', [], true)
+ 3 APPPATH\Controllers\Admin.php(27): view('admin/kasusgejala/index_kasusgejala', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKasusGejala()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-04 09:32:17 --> Error: Cannot access protected property App\Models\AdminModel::$table
+[Method: GET, Route: admin/deleteUser/2]
+in APPPATH\Controllers\Admin.php on line 40.
+ 1 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->deleteUser('2')
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 3 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-04 09:33:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

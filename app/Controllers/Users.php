@@ -12,6 +12,6 @@ class Users extends BaseController
 
         $data['tb_users'] = $model->findAll();
 
-        return view('users/index', $data);
+        return view('admin/users/index_users', $data);
     }
 }
