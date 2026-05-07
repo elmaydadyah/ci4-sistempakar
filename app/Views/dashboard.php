@@ -1,5 +1,5 @@
-<?= $this->include('layout/header') ?>
-<?= $this->include('layout/navbar') ?>
-<?= $this->include('layout/sidebar') ?>
-<?= $this->include('layout/content') ?>
-<?= $this->include('layout/footer') ?>
+<?= $this->include('layout/dashboard/header') ?>
+<?= $this->include('layout/dashboard/navbar') ?>
+<?= $this->include('layout/dashboard/sidebar') ?>
+<?= $this->include('layout/dashboard/content') ?>
+<?= $this->include('layout/dashboard/footer') ?>

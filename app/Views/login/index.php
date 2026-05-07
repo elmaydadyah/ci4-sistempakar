@@ -1,83 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
-
-    <!-- Bootstrap CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StuntCare</title>
     <link href="<?= base_url('assets/bootstrap/css/bootstrap.min.css') ?>" rel="stylesheet">
-
-    <style>
-        body {
-            background: linear-gradient(135deg, #4e73df, #1cc88a);
-            height: 100vh;
-        }
-        .login-card {
-            border-radius: 15px;
-            overflow: hidden;
-        }
-        .login-left {
-            background: url('https://source.unsplash.com/600x800/?technology') center;
-            background-size: cover;
-        }
-        .form-control {
-            border-radius: 10px;
-        }
-        .btn-primary {
-            border-radius: 10px;
-        }
-    </style>
+    <link href="<?= base_url('assets/css/login.css') ?>" rel="stylesheet">
+    <link rel="shortcut icon" href="<?= base_url('assets/images/logo/logo.png') ?>">
 </head>
+
 <body>
-
-<div class="container h-100">
-    <div class="row justify-content-center align-items-center h-100">
-        
-        <div class="col-md-10 col-lg-8">
-            <div class="card login-card shadow-lg">
-
-                <div class="row g-0">
-                    
-                    <!-- Left Image -->
-                    <div class="col-md-6 d-none d-md-block login-left"></div>
-
-                    <!-- Right Form -->
-                    <div class="col-md-6 p-5">
-                        <h3 class="text-center mb-4">Welcome Back 👋</h3>
-
-                        <form action="" method="post">
-
-                            <div class="mb-3">
-                                <label>Email</label>
-                                <input type="email" class="form-control" placeholder="Masukkan email">
-                            </div>
-
-                            <div class="mb-3">
-                                <label>Password</label>
-                                <input type="password" class="form-control" placeholder="Masukkan password">
-                            </div>
-
-                            <div class="d-grid mb-3">
-                                <button class="btn btn-primary">Login</button>
-                            </div>
-
-                            <div class="text-center">
-                                <small>Belum punya akun? <a href="#">Daftar</a></small>
-                            </div>
-
-                        </form>
-                    </div>
-
+    <main class="login-page">
+        <section class="login-card" aria-label="Login StuntCare">
+            <div class="login-visual">
+                <div class="login-brand">
+                    <img src="<?= base_url('assets/images/logo/logo.png') ?>" alt="Logo StuntCare">
+                    <strong>StuntCare</strong>
+                    <small>Deteksi Dini, Cegah Stunting<br>Wujudkan Generasi Sehat</small>
                 </div>
-
+                <div class="login-visual-copy">
+                    <h1>Deteksi stunting dini, lebih mudah dan terarah.</h1>
+                    <p>Masuk untuk melanjutkan konsultasi dan mengelola data sistem.</p>
+                </div>
             </div>
-        </div>
 
-    </div>
-</div>
+            <div class="login-form-panel">
+                <div class="login-form-wrap">
+                    <p class="login-kicker">Welcome back</p>
+                    <h2>Masuk Akun</h2>
+                    <p class="login-subtitle">Gunakan email dan password yang sudah terdaftar.</p>
 
-<!-- Bootstrap JS -->
-<script src="<?= base_url('assets/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
+                    <form action="<?= base_url('login') ?>" method="post">
+                        <?= csrf_field() ?>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password" required>
+                        </div>
+                        <button type="submit" class="btn-login">Login</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
 
+    <script src="<?= base_url('assets/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
 </body>
+
 </html>

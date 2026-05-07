@@ -1,6 +1,6 @@
-<?= $this->include('layout/header') ?>
-<?= $this->include('layout/navbar') ?>
-<?= $this->include('layout/sidebar') ?>
+<?= $this->include('layout/dashboard/header') ?>
+<?= $this->include('layout/dashboard/navbar') ?>
+<?= $this->include('layout/dashboard/sidebar') ?>
 
 <!-- partial -->
 <div class="main-panel">
@@ -78,4 +78,4 @@
             </div>
         </div>
 
-        <?= $this->include('layout/footer') ?>
+        <?= $this->include('layout/dashboard/footer') ?>

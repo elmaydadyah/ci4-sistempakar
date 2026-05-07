@@ -2,81 +2,59 @@
 <html lang="en">
 
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Skydash Admin</title>
-    <!-- plugins:css -->
-    <link rel="stylesheet" href="<?= base_url('assets/skydash/vendors/feather/feather.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/skydash/vendors/ti-icons/css/themify-icons.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/skydash/vendors/css/vendor.bundle.base.css') ?>">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
-    <link rel="stylesheet" href="<?= base_url('assets/skydash/css/vertical-layout-light/style.css') ?>">
-    <!-- endinject -->
-    <link rel="shortcut icon" href="<?= base_url('assets/skydash/images/favicon.png') ?>" />
+    <title>StuntCare</title>
+    <link rel="stylesheet" href="<?= base_url('assets/bootstrap/css/bootstrap.min.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/login.css') ?>">
+    <link rel="shortcut icon" href="<?= base_url('assets/images/logo/logo.png') ?>">
 </head>
 
 <body>
-    <div class="container-scroller">
-        <div class="container-fluid page-body-wrapper full-page-wrapper">
-            <div class="content-wrapper d-flex align-items-center auth px-0">
-                <div class="row w-100 mx-0">
-                    <div class="col-lg-4 mx-auto">
-                        <div class="auth-form-light text-left py-5 px-4 px-sm-5">
-                            <div class="brand-logo">
-                                <img src="<?= base_url('assets/skydash/images/logo.svg') ?>" alt="logo">
-                            </div>
-                            <h4>Hello! let's get started</h4>
-                            <h6 class="font-weight-light">Sign in to continue.</h6>
-                            <?php if (session()->getFlashdata('error')): ?>
-                                <div class="alert alert-danger">
-                                    <?= session()->getFlashdata('error') ?>
-                                </div>
-                            <?php endif; ?>
-                            <form class="pt-3" action="<?= base_url('login') ?>" method="post">
-                                <?= csrf_field() ?>
-                                <div class="form-group">
-                                    <input type="text" class="form-control form-control-lg" name="email"
-                                        placeholder="Email or Username" required>
-                                </div>
-                                <div class="form-group">
-                                    <input type="password" class="form-control form-control-lg" name="password"
-                                        placeholder="Password" required>
-                                </div>
-                                <div class="mt-3">
-                                    <button type="submit"
-                                        class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">SIGN
-                                        IN</button>
-                                </div>
-                                <div class="text-center mt-4 font-weight-light">
-                                    Don't have an account? <a href="<?= base_url('register') ?>"
-                                        class="text-primary">Create</a>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+    <main class="login-page">
+        <section class="login-card" aria-label="Login StuntCare">
+            <div class="login-visual">
+                <div class="login-brand">
+                    <img src="<?= base_url('assets/images/logo/logo.png') ?>" alt="Logo StuntCare">
+                    <strong>StuntCare</strong>
+                    <small>Deteksi Dini, Cegah Stunting<br>Wujudkan Generasi Sehat</small>
+                </div>
+                <div class="login-visual-copy">
+                    <h1>Deteksi stunting dini, lebih mudah dan terarah.</h1>
+                    <p>Masuk untuk melanjutkan konsultasi dan mengelola data sistem.</p>
                 </div>
             </div>
-            <!-- content-wrapper ends -->
-        </div>
-        <!-- page-body-wrapper ends -->
-    </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <script src="<?= base_url('assets/skydash/vendors/js/vendor.bundle.base.js') ?>"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="<?= base_url('assets/skydash/js/off-canvas.js') ?>"></script>
-    <script src="<?= base_url('assets/skydash/js/hoverable-collapse.js') ?>"></script>
-    <script src="<?= base_url('assets/skydash/js/template.js') ?>"></script>
-    <script src="<?= base_url('assets/skydash/js/settings.js') ?>"></script>
-    <script src="<?= base_url('assets/skydash/js/todolist.js') ?>"></script>
-    <!-- endinject -->
+
+            <div class="login-form-panel">
+                <div class="login-form-wrap">
+                    <p class="login-kicker">Welcome back</p>
+                    <h2>Masuk Akun</h2>
+                    <p class="login-subtitle">Gunakan email dan password yang sudah terdaftar.</p>
+
+                    <?php if (session()->getFlashdata('error')): ?>
+                        <div class="alert alert-danger">
+                            <?= session()->getFlashdata('error') ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <form action="<?= base_url('login') ?>" method="post">
+                        <?= csrf_field() ?>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password" required>
+                        </div>
+                        <button type="submit" class="btn-login">Login</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="<?= base_url('assets/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
 </body>
 
 </html>
