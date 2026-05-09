@@ -18,11 +18,14 @@ if (session()->get('user_id')) {
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
   <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
     <a class="navbar-brand brand-logo mr-5 d-flex align-items-center" href="index.html">
-      <img src="<?= base_url('assets/images/logo/logo_puskesmas.png') ?>" class="mr-2" alt="Logo Puskesmas" />
-      <span class="h6 mb-0 font-weight-bold text-dark">StuntCare System</span>
+      <img src="<?= base_url('assets/images/logo/logo.png') ?>" class="mr-2" alt="Logo StuntCare" />
+      <span class="dashboard-brand-text">
+        <strong>StuntCare</strong>
+        <small>Sistem Deteksi Dini Stunting</small>
+      </span>
     </a>
     <a class="navbar-brand brand-logo-mini" href="index.html"><img
-        src="<?= base_url('assets/images/logo/logo_puskesmas.png') ?>" alt="Logo Puskesmas" /></a>
+        src="<?= base_url('assets/images/logo/logo.png') ?>" alt="Logo StuntCare" /></a>
   </div>
   <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
     <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">

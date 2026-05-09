@@ -161,8 +161,9 @@
   <?php
   $currentPath = trim(uri_string(), '/');
   $isDashboard = $currentPath === 'dashboard';
-  $isKonsultasi = $currentPath === 'adminkonsultasi';
-  $isDataMaster = in_array($currentPath, ['adminusers', 'admingejala', 'adminpenyakit'], true);
+  $isDataMaster = in_array($currentPath, ['adminusers', 'admingejala', 'adminpenyakit', 'adminanak', 'adminsolusi'], true);
+  $isBasisKasus = in_array($currentPath, ['adminkasusgejala', 'admindetailkasus'], true);
+  $isDiagnosa = in_array($currentPath, ['adminkonsultasi', 'adminhasildiagnosa'], true);
   ?>
   <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
@@ -173,19 +174,6 @@
         </a>
       </li>
 
-      <li class="nav-item <?= $isKonsultasi ? 'active' : ''; ?>">
-        <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="<?= $isKonsultasi ? 'true' : 'false'; ?>"
-          aria-controls="form-elements">
-          <i class="icon-columns menu-icon"></i>
-          <span class="menu-title">Konsultasi</span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse <?= $isKonsultasi ? 'show' : ''; ?>" id="form-elements">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item"><a class="nav-link <?= $currentPath === 'adminkonsultasi' ? 'active-submenu' : ''; ?>" href="<?= base_url('adminkonsultasi') ?>">Konsultasi</a></li>
-          </ul>
-        </div>
-      </li>
       <li class="nav-item <?= $isDataMaster ? 'active' : ''; ?>">
         <a class="nav-link" data-toggle="collapse" href="#tables" aria-expanded="<?= $isDataMaster ? 'true' : 'false'; ?>" aria-controls="tables">
           <i class="icon-grid-2 menu-icon"></i>
@@ -194,9 +182,39 @@
         </a>
         <div class="collapse <?= $isDataMaster ? 'show' : ''; ?>" id="tables">
           <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link <?= $currentPath === 'adminanak' ? 'active-submenu' : ''; ?>" href="#">Data Anak</a></li>
             <li class="nav-item"> <a class="nav-link <?= $currentPath === 'adminusers' ? 'active-submenu' : ''; ?>" href="<?= base_url('adminusers') ?>">Data Users</a></li>
             <li class="nav-item"> <a class="nav-link <?= $currentPath === 'admingejala' ? 'active-submenu' : ''; ?>" href="<?= base_url('admingejala') ?>">Data Gejala</a></li>
             <li class="nav-item"> <a class="nav-link <?= $currentPath === 'adminpenyakit' ? 'active-submenu' : ''; ?>" href="<?= base_url('adminpenyakit') ?>">Data Penyakit</a></li>
+            <li class="nav-item"> <a class="nav-link <?= $currentPath === 'adminsolusi' ? 'active-submenu' : ''; ?>" href="#">Data Solusi</a></li>
+          </ul>
+        </div>
+      </li>
+
+      <li class="nav-item <?= $isBasisKasus ? 'active' : ''; ?>">
+        <a class="nav-link" data-toggle="collapse" href="#basis-kasus" aria-expanded="<?= $isBasisKasus ? 'true' : 'false'; ?>" aria-controls="basis-kasus">
+          <i class="icon-briefcase menu-icon"></i>
+          <span class="menu-title">Basis Kasus CBR</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse <?= $isBasisKasus ? 'show' : ''; ?>" id="basis-kasus">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link <?= $currentPath === 'adminkasusgejala' ? 'active-submenu' : ''; ?>" href="<?= base_url('adminkasusgejala') ?>">Data Kasus</a></li>
+            <li class="nav-item"> <a class="nav-link <?= $currentPath === 'admindetailkasus' ? 'active-submenu' : ''; ?>" href="#">Detail Kasus</a></li>
+          </ul>
+        </div>
+      </li>
+
+      <li class="nav-item <?= $isDiagnosa ? 'active' : ''; ?>">
+        <a class="nav-link" data-toggle="collapse" href="#diagnosa" aria-expanded="<?= $isDiagnosa ? 'true' : 'false'; ?>" aria-controls="diagnosa">
+          <i class="icon-columns menu-icon"></i>
+          <span class="menu-title">Diagnosa</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse <?= $isDiagnosa ? 'show' : ''; ?>" id="diagnosa">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"><a class="nav-link <?= $currentPath === 'adminkonsultasi' ? 'active-submenu' : ''; ?>" href="<?= base_url('adminkonsultasi') ?>">Proses Diagnosa</a></li>
+            <li class="nav-item"><a class="nav-link <?= $currentPath === 'adminhasildiagnosa' ? 'active-submenu' : ''; ?>" href="#">Hasil Diagnosa</a></li>
           </ul>
         </div>
       </li>
