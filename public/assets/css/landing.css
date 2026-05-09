@@ -417,6 +417,396 @@ h1 {
     line-height: 1.7;
 }
 
+.consult-shell {
+    position: relative;
+    min-height: 100vh;
+    padding: 22px 0 42px;
+    overflow: hidden;
+    background:
+        linear-gradient(180deg, rgba(245, 247, 255, .9) 0%, rgba(255, 255, 255, .94) 45%, rgba(245, 247, 255, .92) 100%),
+        #F5F7FF;
+}
+
+.consult-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+        linear-gradient(115deg, rgba(75, 73, 172, .13), rgba(36, 138, 253, .08) 42%, rgba(87, 182, 87, .1)),
+        radial-gradient(circle at 82% 18%, rgba(255, 255, 255, .42), transparent 34%);
+    pointer-events: none;
+}
+
+.consult-shell > * {
+    position: relative;
+    z-index: 1;
+}
+
+.consult-bg-image {
+    position: absolute;
+    top: 86px;
+    right: -70px;
+    z-index: 0;
+    width: min(54vw, 720px);
+    max-width: none;
+    height: auto;
+    opacity: .34;
+    filter: saturate(1.08);
+    pointer-events: none;
+}
+
+.consult-nav {
+    width: min(1180px, calc(100% - 32px));
+}
+
+.consult-hero {
+    width: min(1180px, calc(100% - 32px));
+    margin: 34px auto 0;
+}
+
+.consult-heading {
+    max-width: 780px;
+}
+
+.consult-kicker,
+.section-label,
+.result-label {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 0 12px;
+    border-radius: 999px;
+    color: var(--primary);
+    background: rgba(75, 73, 172, .1);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.consult-heading h1 {
+    margin-top: 18px;
+    color: var(--ink);
+    font-size: clamp(34px, 4vw, 56px);
+    line-height: 1.04;
+    font-weight: 700;
+}
+
+.consult-heading p {
+    max-width: 620px;
+    margin: 18px 0 0;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+.consult-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 22px;
+    align-items: start;
+    margin-top: 30px;
+}
+
+.consult-form,
+.result-panel {
+    border: 1px solid rgba(206, 212, 218, .86);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .94);
+    box-shadow: 0 18px 44px rgba(40, 47, 58, .08);
+}
+
+.consult-form {
+    padding: 24px;
+}
+
+.identity-grid {
+    display: grid;
+    grid-template-columns: 1.15fr .85fr;
+    gap: 16px;
+}
+
+.identity-grid label {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+}
+
+.identity-grid span {
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.identity-grid input {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    color: var(--ink);
+    background: #ffffff;
+    font-size: 15px;
+    outline: none;
+}
+
+.identity-grid input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(75, 73, 172, .12);
+}
+
+.input-with-unit {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.input-with-unit input {
+    border: 0;
+    box-shadow: none;
+}
+
+.input-with-unit b {
+    padding: 0 14px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.symptom-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 26px;
+}
+
+.symptom-section h2 {
+    margin: 10px 0 0;
+    color: var(--ink);
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.symptom-section small {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.symptom-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.symptom-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    align-items: start;
+    min-height: 70px;
+    margin: 0;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #ffffff;
+    cursor: pointer;
+    transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.symptom-card:hover {
+    border-color: rgba(75, 73, 172, .46);
+    box-shadow: 0 12px 26px rgba(40, 47, 58, .07);
+    transform: translateY(-1px);
+}
+
+.symptom-card input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.symptom-card span {
+    display: grid;
+    width: 22px;
+    height: 22px;
+    place-items: center;
+    border: 2px solid #c9ced8;
+    border-radius: 6px;
+}
+
+.symptom-card input:checked + span {
+    border-color: var(--primary);
+    background: var(--primary);
+}
+
+.symptom-card input:checked + span::after {
+    content: "";
+    width: 7px;
+    height: 11px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.symptom-card input:checked ~ b {
+    color: var(--primary);
+}
+
+.symptom-card b {
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.btn-submit-consult {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 50px;
+    margin-top: 22px;
+    border: 0;
+    border-radius: 8px;
+    color: #ffffff;
+    background: var(--primary);
+    font-size: 15px;
+    font-weight: 800;
+    box-shadow: 0 14px 30px rgba(75, 73, 172, .26);
+}
+
+.consult-alert {
+    margin-bottom: 18px;
+    padding: 12px 14px;
+    border: 1px solid rgba(255, 193, 7, .42);
+    border-radius: 8px;
+    background: rgba(255, 193, 7, .12);
+}
+
+.consult-alert p {
+    margin: 0;
+    color: #856404;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.consult-alert p + p {
+    margin-top: 6px;
+}
+
+.result-panel {
+    position: sticky;
+    top: 22px;
+    padding: 24px;
+}
+
+.result-panel h2 {
+    margin: 16px 0 0;
+    color: var(--ink);
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.result-panel h3 {
+    margin: 18px 0 10px;
+    color: var(--ink);
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.result-panel p {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.75;
+}
+
+.result-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.result-meta span,
+.consult-steps span {
+    display: inline-flex;
+    min-height: 32px;
+    align-items: center;
+    padding: 0 11px;
+    border-radius: 999px;
+    color: #26315f;
+    background: #F5F7FF;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.score-ring {
+    display: grid;
+    width: 142px;
+    height: 142px;
+    place-items: center;
+    margin-top: 24px;
+    border: 12px solid rgba(87, 182, 87, .22);
+    border-top-color: var(--success);
+    border-radius: 50%;
+}
+
+.score-ring strong {
+    color: var(--ink);
+    font-size: 34px;
+    line-height: .9;
+}
+
+.score-ring small {
+    margin-top: -28px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.muted-ring {
+    border-color: rgba(108, 115, 131, .16);
+    border-top-color: var(--muted);
+}
+
+.solution-box {
+    margin-top: 18px;
+    padding: 16px;
+    border-radius: 8px;
+    background: #F5F7FF;
+}
+
+.solution-box b {
+    color: var(--primary);
+    font-size: 13px;
+}
+
+.solution-box p {
+    margin-top: 8px;
+}
+
+.consult-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 22px;
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    padding: 18px;
+    border: 1px dashed var(--line);
+    border-radius: 8px;
+    color: var(--muted);
+    background: #ffffff;
+    font-weight: 700;
+}
+
 @media (max-width: 991.98px) {
     .nav-links {
         display: none;
@@ -478,6 +868,21 @@ h1 {
 
     .feature-band {
         grid-template-columns: 1fr;
+    }
+
+    .consult-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .result-panel {
+        position: static;
+    }
+
+    .consult-bg-image {
+        top: 120px;
+        right: -180px;
+        width: 860px;
+        opacity: .22;
     }
 }
 
@@ -664,5 +1069,39 @@ h1 {
     .faces span {
         width: 28px;
         height: 28px;
+    }
+
+    .consult-shell {
+        padding-top: 10px;
+    }
+
+    .consult-bg-image {
+        top: 122px;
+        right: -240px;
+        width: 620px;
+        opacity: .18;
+    }
+
+    .consult-hero {
+        width: calc(100% - 20px);
+        margin-top: 26px;
+    }
+
+    .consult-heading h1 {
+        font-size: 34px;
+    }
+
+    .consult-form,
+    .result-panel {
+        padding: 18px;
+    }
+
+    .identity-grid,
+    .symptom-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .symptom-section {
+        display: block;
     }
 }

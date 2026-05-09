@@ -161,7 +161,7 @@
   <?php
   $currentPath = trim(uri_string(), '/');
   $isDashboard = $currentPath === 'dashboard';
-  $isDataMaster = in_array($currentPath, ['adminusers', 'admingejala', 'adminpenyakit', 'adminanak', 'adminsolusi'], true);
+  $isDataMaster = in_array($currentPath, ['adminusers', 'admingejala', 'adminpenyakit', 'adminanak', 'adminsolusi', 'adminstatusgizi'], true);
   $isBasisKasus = in_array($currentPath, ['adminkasusgejala', 'admindetailkasus'], true);
   $isDiagnosa = in_array($currentPath, ['adminkonsultasi', 'adminhasildiagnosa'], true);
   ?>
@@ -186,6 +186,7 @@
             <li class="nav-item"> <a class="nav-link <?= $currentPath === 'adminusers' ? 'active-submenu' : ''; ?>" href="<?= base_url('adminusers') ?>">Data Users</a></li>
             <li class="nav-item"> <a class="nav-link <?= $currentPath === 'admingejala' ? 'active-submenu' : ''; ?>" href="<?= base_url('admingejala') ?>">Data Gejala</a></li>
             <li class="nav-item"> <a class="nav-link <?= $currentPath === 'adminpenyakit' ? 'active-submenu' : ''; ?>" href="<?= base_url('adminpenyakit') ?>">Data Penyakit</a></li>
+            <li class="nav-item"> <a class="nav-link <?= $currentPath === 'adminstatusgizi' ? 'active-submenu' : ''; ?>" href="<?= base_url('adminstatusgizi') ?>">Data Status Gizi</a></li>
             <li class="nav-item"> <a class="nav-link <?= $currentPath === 'adminsolusi' ? 'active-submenu' : ''; ?>" href="#">Data Solusi</a></li>
           </ul>
         </div>

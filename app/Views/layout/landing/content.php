@@ -15,12 +15,12 @@
                         <span>Pada Balita</span>
                     </h1>
                     <p>
-                        Temukan kemungkinan gangguan gigi dan mulut dari gejala yang kamu alami,
+                        Temukan kemungkinan risiko stunting dari gejala dan kondisi balita,
                         lalu dapatkan rekomendasi awal sebelum melanjutkan pemeriksaan.
                     </p>
 
                     <div class="hero-cta">
-                        <a class="btn-consult" href="<?= base_url('/login') ?>">Mulai Konsultasi +</a>
+                        <a class="btn-consult" href="<?= base_url('/konsultasi') ?>">Mulai Konsultasi +</a>
                         <a class="btn-outline-light" href="#fitur">Lihat Fitur +</a>
                     </div>
                 </div>

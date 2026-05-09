@@ -10,7 +10,7 @@
                 <ul class="nav-links">
                     <li><a href="<?= base_url('/') ?>">Home</a></li>
                     <li><a href="#about">About</a></li>
-                    <li><a href="<?= base_url('/login') ?>">Konsultasi</a></li>
+                    <li><a href="<?= base_url('/konsultasi') ?>">Konsultasi</a></li>
                     <li><a href="#faq">FAQ</a></li>
                     <li><a href="#contact">Contact</a></li>
                     <li class="mobile-login-link"><a href="<?= base_url('/login') ?>">Login</a></li>

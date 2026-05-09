@@ -10,4 +10,4 @@
 </head>
 <body>
     <main class="landing-shell">
-        <section class="hero" aria-label="Landing page sistem pakar kesehatan gigi">
+        <section class="hero" aria-label="Landing page sistem pakar stunting">

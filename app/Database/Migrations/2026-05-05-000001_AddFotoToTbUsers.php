@@ -8,6 +8,10 @@ class AddFotoToTbUsers extends Migration
 {
     public function up()
     {
+        if ($this->db->fieldExists('foto', 'tb_users')) {
+            return;
+        }
+
         $this->forge->addColumn('tb_users', [
             'foto' => [
                 'type' => 'VARCHAR',
@@ -20,6 +24,10 @@ class AddFotoToTbUsers extends Migration
 
     public function down()
     {
+        if (!$this->db->fieldExists('foto', 'tb_users')) {
+            return;
+        }
+
         $this->forge->dropColumn('tb_users', 'foto');
     }
 }

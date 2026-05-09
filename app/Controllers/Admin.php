@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\AnakStatusGiziModel;
 use App\Models\AdminModel;
 
 class Admin extends BaseController
@@ -142,6 +143,68 @@ class Admin extends BaseController
         return view('admin/konsultasi/index_konsultasi', $data);
     }
 
+    public function indexStatusGizi()
+    {
+        $model = new AnakStatusGiziModel();
+
+        $data = [
+            'tb_anak_status_gizi' => $model->orderBy('id_status_gizi', 'DESC')->findAll(100),
+            'summary' => $model->getSummary(),
+        ];
+
+        return view('admin/statusgizi/index_statusgizi', $data);
+    }
+
+    public function uploadStatusGizi()
+    {
+        $file = $this->request->getFile('file_excel');
+
+        if (!$file || !$file->isValid()) {
+            session()->setFlashdata('error', 'File Excel wajib dipilih.');
+            return redirect()->to('/adminstatusgizi');
+        }
+
+        $extension = strtolower($file->getClientExtension());
+        if (!in_array($extension, ['xls', 'html', 'htm'], true)) {
+            session()->setFlashdata('error', 'Format file harus .xls hasil export Excel.');
+            return redirect()->to('/adminstatusgizi');
+        }
+
+        $html = file_get_contents($file->getTempName());
+        if ($html === false || trim($html) === '') {
+            session()->setFlashdata('error', 'File tidak bisa dibaca atau kosong.');
+            return redirect()->to('/adminstatusgizi');
+        }
+
+        $rows = $this->parseStatusGiziRows($html, $file->getClientName());
+        if ($rows === []) {
+            session()->setFlashdata('error', 'Tidak ada data anak yang bisa diimport dari file tersebut.');
+            return redirect()->to('/adminstatusgizi');
+        }
+
+        $model = new AnakStatusGiziModel();
+        $inserted = 0;
+
+        foreach (array_chunk($rows, 500) as $chunk) {
+            if ($model->insertBatch($chunk)) {
+                $inserted += count($chunk);
+            }
+        }
+
+        $uploadPath = WRITEPATH . 'uploads/status_gizi';
+        if (!is_dir($uploadPath)) {
+            mkdir($uploadPath, 0777, true);
+        }
+
+        if (!$file->hasMoved()) {
+            $file->move($uploadPath, $file->getRandomName());
+        }
+
+        session()->setFlashdata('success', $inserted . ' data status gizi anak berhasil diimport.');
+
+        return redirect()->to('/adminstatusgizi');
+    }
+
     public function deleteUser($id)
     {
         $model = new AdminModel();
@@ -204,5 +267,116 @@ class Admin extends BaseController
         }
 
         return redirect()->to('/adminusers');
+    }
+
+    private function parseStatusGiziRows(string $html, string $fileName): array
+    {
+        preg_match_all('/<tr[^>]*>(.*?)<\/tr>/is', $html, $matches);
+
+        $rows = [];
+        foreach ($matches[1] as $index => $rowHtml) {
+            preg_match_all('/<t[dh][^>]*>(.*?)<\/t[dh]>/is', $rowHtml, $cellMatches);
+            $cells = array_map(fn ($cell) => $this->cleanExcelCell($cell), $cellMatches[1] ?? []);
+
+            if ($index === 0 || count($cells) < 30 || strtolower((string) ($cells[0] ?? '')) === 'no') {
+                continue;
+            }
+
+            // Beberapa export file ini tidak membawa kolom "Total Pengukuran" pada baris data.
+            if (count($cells) === 36) {
+                array_splice($cells, 17, 0, [null]);
+            }
+
+            $rows[] = [
+                'no_urut' => $this->toInt($cells[0] ?? null),
+                'nik' => $this->nullableString($cells[1] ?? null),
+                'nama' => $this->nullableString($cells[2] ?? null) ?? '-',
+                'jk' => $this->nullableString($cells[3] ?? null),
+                'tgl_lahir' => $this->toDate($cells[4] ?? null),
+                'bb_lahir' => $this->toDecimal($cells[5] ?? null),
+                'tb_lahir' => $this->toDecimal($cells[6] ?? null),
+                'nama_ortu' => $this->nullableString($cells[7] ?? null),
+                'prov' => $this->nullableString($cells[8] ?? null),
+                'kab_kota' => $this->nullableString($cells[9] ?? null),
+                'kec' => $this->nullableString($cells[10] ?? null),
+                'puskesmas' => $this->nullableString($cells[11] ?? null),
+                'desa_kel' => $this->nullableString($cells[12] ?? null),
+                'posyandu' => $this->nullableString($cells[13] ?? null),
+                'rt' => $this->nullableString($cells[14] ?? null),
+                'rw' => $this->nullableString($cells[15] ?? null),
+                'alamat' => $this->nullableString($cells[16] ?? null),
+                'total_pengukuran' => $this->nullableString($cells[17] ?? null),
+                'usia_saat_ukur' => $this->nullableString($cells[18] ?? null),
+                'tanggal_pengukuran' => $this->toDate($cells[19] ?? null),
+                'berat' => $this->toDecimal($cells[20] ?? null),
+                'tinggi' => $this->toDecimal($cells[21] ?? null),
+                'cara_ukur' => $this->nullableString($cells[22] ?? null),
+                'lila' => $this->toDecimal($cells[23] ?? null),
+                'bb_u' => $this->nullableString($cells[24] ?? null),
+                'zs_bb_u' => $this->toDecimal($cells[25] ?? null),
+                'tb_u' => $this->nullableString($cells[26] ?? null),
+                'zs_tb_u' => $this->toDecimal($cells[27] ?? null),
+                'bb_tb' => $this->nullableString($cells[28] ?? null),
+                'zs_bb_tb' => $this->toDecimal($cells[29] ?? null),
+                'naik_berat_badan' => $this->nullableString($cells[30] ?? null),
+                'jml_vit_a' => $this->toInt($cells[31] ?? null),
+                'kpsp' => $this->nullableString($cells[32] ?? null),
+                'kia' => $this->nullableString($cells[33] ?? null),
+                'kelas_ibu_balita' => $this->nullableString($cells[34] ?? null),
+                'mbg' => $this->nullableString($cells[35] ?? null),
+                'detail' => $this->nullableString($cells[36] ?? null),
+                'uploaded_file' => $fileName,
+            ];
+        }
+
+        return $rows;
+    }
+
+    private function cleanExcelCell(string $cell): ?string
+    {
+        $cell = preg_replace('/<br\s*\/?>/i', ' ', $cell);
+        $cell = html_entity_decode(strip_tags((string) $cell), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $cell = str_replace("\xc2\xa0", ' ', $cell);
+        $cell = preg_replace('/\s+/u', ' ', trim($cell));
+
+        return $cell === '' ? null : $cell;
+    }
+
+    private function nullableString(?string $value): ?string
+    {
+        $value = $value === null ? null : trim($value);
+
+        return $value === '' ? null : $value;
+    }
+
+    private function toDate(?string $value): ?string
+    {
+        if (!$value || !preg_match('/^\d{4}-\d{2}-\d{2}$/', trim($value))) {
+            return null;
+        }
+
+        return trim($value);
+    }
+
+    private function toDecimal(?string $value): ?float
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        $value = str_replace(',', '.', trim($value));
+
+        return is_numeric($value) ? (float) $value : null;
+    }
+
+    private function toInt(?string $value): ?int
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        preg_match('/-?\d+/', $value, $matches);
+
+        return isset($matches[0]) ? (int) $matches[0] : null;
     }
 }
