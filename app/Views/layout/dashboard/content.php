@@ -1,410 +1,497 @@
-<!-- partial -->
+<?php
+$profileNama = session()->get('nama') ?? 'Admin';
+$stats = $dashboardStats ?? [];
+$nutritionStatus = $nutritionStatus ?? [];
+$recentNutritionRows = $recentNutritionRows ?? [];
+$diagnosisDailyChart = $diagnosisDailyChart ?? ['labels' => [], 'values' => []];
+$recentDiagnosisRows = $recentDiagnosisRows ?? [];
+
+$totalStatusGizi = (int) ($stats['status_gizi'] ?? 0);
+$riskCount = (int) ($nutritionStatus['gizi_kurang'] ?? 0) + (int) ($nutritionStatus['pendek'] ?? 0);
+$riskPercent = $totalStatusGizi > 0 ? min(100, round(($riskCount / $totalStatusGizi) * 100)) : 0;
+$diagnosisTotal = (int) ($stats['hasil_diagnosa'] ?? 0);
+$gejalaTotal = (int) ($stats['gejala'] ?? 0);
+$kasusTotal = (int) ($stats['kasus'] ?? 0);
+
+$summaryCards = [
+  [
+    'title' => 'Data Anak',
+    'subtitle' => 'Status gizi tersimpan',
+    'value' => $totalStatusGizi,
+    'percent' => $totalStatusGizi > 0 ? 100 : 0,
+    'tone' => 'primary',
+    'href' => base_url('adminstatusgizi'),
+    'icon' => 'ti-user',
+  ],
+  [
+    'title' => 'Hasil Diagnosa',
+    'subtitle' => 'Konsultasi tersimpan',
+    'value' => $diagnosisTotal,
+    'percent' => min(100, $diagnosisTotal * 10),
+    'tone' => 'danger',
+    'href' => base_url('adminkonsultasi'),
+    'icon' => 'ti-pulse',
+  ],
+  [
+    'title' => 'Data Gejala',
+    'subtitle' => 'Basis pengetahuan',
+    'value' => $gejalaTotal,
+    'percent' => min(100, $gejalaTotal * 8),
+    'tone' => 'muted',
+    'href' => base_url('admingejala'),
+    'icon' => 'ti-clipboard',
+  ],
+  [
+    'title' => 'Data Penyakit',
+    'subtitle' => 'Kasus rujukan',
+    'value' => $kasusTotal,
+    'percent' => min(100, $kasusTotal * 16),
+    'tone' => 'success',
+    'href' => base_url('adminpenyakit'),
+    'icon' => 'ti-heart',
+  ],
+];
+?>
+
 <div class="main-panel">
-  <div class="content-wrapper">
-    <div class="row">
-      <div class="col-md-12 grid-margin">
-        <div class="row">
-          <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-            <h3 class="font-weight-bold">Welcome John</h3>
-            <h6 class="font-weight-normal mb-0">All systems are running smoothly! You have <span class="text-primary">3
-                unread alerts!</span></h6>
+  <div class="content-wrapper admin-dashboard">
+    <div class="admin-board">
+      <div class="admin-main-column">
+        <section class="admin-welcome-panel">
+          <div>
+            <span>Dashboard Admin</span>
+            <h3>Halo, <?= esc($profileNama); ?>!</h3>
+            <p>Kelola data StuntCare, pantau hasil diagnosa harian, dan lihat status gizi anak dalam satu ringkasan.</p>
+            <a href="<?= base_url('adminstatusgizi'); ?>">Kelola data</a>
           </div>
-          <div class="col-12 col-xl-4">
-            <div class="justify-content-end d-flex">
-              <div class="dropdown flex-md-grow-1 flex-xl-grow-0">
-                <button class="btn btn-sm btn-light bg-white dropdown-toggle" type="button" id="dropdownMenuDate2"
-                  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  <i class="mdi mdi-calendar"></i> Today (10 Jan 2021) </button>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuDate2">
-                  <a class="dropdown-item" href="#">January - March</a>
-                  <a class="dropdown-item" href="#">March - June</a>
-                  <a class="dropdown-item" href="#">June - August</a>
-                  <a class="dropdown-item" href="#">August - November</a>
-                </div>
-              </div>
-            </div>
+          <div class="admin-live-widget" aria-label="Waktu saat ini">
+            <small id="dashboardDate">-</small>
+            <strong id="dashboardClock">--:--</strong>
+            <span id="dashboardGreeting">Selamat bekerja</span>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6 grid-margin stretch-card">
-        <div class="card tale-bg">
-          <div class="card-people mt-auto">
-            <img src="<?= base_url('assets/skydash/images/dashboard/people.svg') ?>" alt="people">
-            <div class="weather-info">
-              <div class="d-flex">
+        </section>
+
+        <section>
+          <div class="admin-section-heading">
+            <h4>Ringkasan Sistem</h4>
+            <a href="<?= base_url('adminstatusgizi'); ?>">lihat semua</a>
+          </div>
+
+          <div class="admin-summary-grid">
+            <?php foreach ($summaryCards as $card): ?>
+              <a class="admin-summary-card" href="<?= esc($card['href'], 'attr'); ?>">
                 <div>
-                  <h2 class="mb-0 font-weight-normal"><i class="icon-sun me-2"></i>31<sup>C</sup></h2>
+                  <strong><?= number_format((int) $card['value'], 0, ',', '.'); ?></strong>
+                  <span><?= esc($card['title']); ?></span>
+                  <small><?= esc($card['subtitle']); ?></small>
                 </div>
-                <div class="ms-2">
-                  <h4 class="location font-weight-normal">Chicago</h4>
-                  <h6 class="font-weight-normal">Illinois</h6>
+                <div class="admin-card-icon admin-card-icon-<?= esc($card['tone'], 'attr'); ?>">
+                  <i class="<?= esc($card['icon'], 'attr'); ?>"></i>
                 </div>
-              </div>
+              </a>
+            <?php endforeach; ?>
+          </div>
+        </section>
+
+        <section class="admin-panel admin-chart-panel">
+          <div class="admin-section-heading">
+            <div>
+              <h4>Grafik Hasil Diagnosa</h4>
+              <p>Jumlah hasil diagnosa per hari dalam 7 hari terakhir.</p>
+            </div>
+            <div class="admin-chart-actions" aria-label="Kontrol grafik hasil diagnosa">
+              <button type="button" class="is-active" data-chart-type="line">Line</button>
+              <button type="button" data-chart-type="bar">Bar</button>
+              <span><?= number_format($diagnosisTotal, 0, ',', '.'); ?> total</span>
             </div>
           </div>
-        </div>
+          <div class="admin-chart-wrap">
+            <canvas id="diagnosisDailyChart"></canvas>
+          </div>
+        </section>
+
+        <section class="admin-panel">
+          <div class="admin-section-heading">
+            <div>
+              <h4>Pemantauan Status Gizi</h4>
+              <p>Lima data status gizi terbaru yang masuk ke sistem.</p>
+            </div>
+            <div class="admin-heading-actions">
+              <input type="search" id="nutritionSearch" class="admin-search-input" placeholder="Cari anak">
+              <a href="<?= base_url('adminstatusgizi'); ?>">lihat detail</a>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table admin-progress-table">
+              <thead>
+                <tr>
+                  <th>Nama Anak</th>
+                  <th>Lokasi</th>
+                  <th>Status</th>
+                  <th>Tanggal</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php if (!empty($recentNutritionRows)): ?>
+                  <?php foreach ($recentNutritionRows as $row): ?>
+                    <tr class="admin-nutrition-row" data-search="<?= esc(strtolower(trim(($row['nama'] ?? '') . ' ' . ($row['posyandu'] ?? '') . ' ' . ($row['bb_tb'] ?? '') . ' ' . ($row['tanggal_pengukuran'] ?? ''))), 'attr'); ?>">
+                      <td><?= esc($row['nama'] ?? '-'); ?></td>
+                      <td><?= esc($row['posyandu'] ?? '-'); ?></td>
+                      <td>
+                        <span class="admin-status-dot"></span>
+                        <?= esc($row['bb_tb'] ?? '-'); ?>
+                      </td>
+                      <td><?= esc($row['tanggal_pengukuran'] ?? '-'); ?></td>
+                      <td><i class="ti-more-alt"></i></td>
+                    </tr>
+                  <?php endforeach; ?>
+                  <tr id="nutritionNoResult" class="d-none">
+                    <td colspan="5" class="text-center text-muted py-4">Data tidak ditemukan.</td>
+                  </tr>
+                <?php else: ?>
+                  <tr>
+                    <td colspan="5" class="text-center text-muted py-4">Belum ada data status gizi.</td>
+                  </tr>
+                <?php endif; ?>
+              </tbody>
+            </table>
+          </div>
+        </section>
       </div>
-      <div class="col-md-6 grid-margin transparent">
-        <div class="row">
-          <div class="col-md-6 mb-4 stretch-card transparent">
-            <div class="card card-tale">
-              <div class="card-body">
-                <p class="mb-4">Today’s Bookings</p>
-                <p class="fs-30 mb-2">4006</p>
-                <p>10.00% (30 days)</p>
-              </div>
+
+      <aside class="admin-side-column">
+        <section class="admin-panel admin-calendar-panel">
+          <div class="admin-calendar-head">
+            <button type="button" id="calendarPrevMonth" aria-label="Bulan sebelumnya">
+              <i class="ti-angle-left"></i>
+            </button>
+            <strong id="calendarTitle"><?= esc(date('F Y')); ?></strong>
+            <button type="button" id="calendarNextMonth" aria-label="Bulan berikutnya">
+              <i class="ti-angle-right"></i>
+            </button>
+          </div>
+          <div class="admin-calendar-grid admin-calendar-days">
+            <span>MON</span>
+            <span>TUE</span>
+            <span>WED</span>
+            <span>THU</span>
+            <span>FRI</span>
+            <span>SAT</span>
+            <span>SUN</span>
+          </div>
+          <div class="admin-calendar-grid" id="realtimeCalendarDays"></div>
+          <p class="admin-selected-date" id="selectedDateText">Pilih tanggal pada kalender.</p>
+        </section>
+
+        <section class="admin-panel admin-diagnosis-panel">
+          <div class="admin-section-heading">
+            <h4>Diagnosa Terbaru</h4>
+            <div class="admin-heading-actions">
+              <input type="search" id="diagnosisSearch" class="admin-search-input" placeholder="Cari diagnosa">
+              <a href="<?= base_url('adminkonsultasi'); ?>">lihat semua</a>
             </div>
           </div>
-          <div class="col-md-6 mb-4 stretch-card transparent">
-            <div class="card card-dark-blue">
-              <div class="card-body">
-                <p class="mb-4">Total Bookings</p>
-                <p class="fs-30 mb-2">61344</p>
-                <p>22.00% (30 days)</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
-            <div class="card card-light-blue">
-              <div class="card-body">
-                <p class="mb-4">Number of Meetings</p>
-                <p class="fs-30 mb-2">34040</p>
-                <p>2.00% (30 days)</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 stretch-card transparent">
-            <div class="card card-light-danger">
-              <div class="card-body">
-                <p class="mb-4">Number of Clients</p>
-                <p class="fs-30 mb-2">47033</p>
-                <p>0.22% (30 days)</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body">
-            <div class="d-flex justify-content-between">
-              <p class="card-title">Sales Report</p>
-              <a href="#" class="text-info">View all</a>
-            </div>
-            <p class="font-weight-500">The total number of sessions within the date range. It is the period time a user
-              is actively engaged with your website, page or app, etc</p>
-            <div id="sales-chart-legend" class="chartjs-legend mt-4 mb-2"></div>
-            <canvas id="sales-chart"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12 grid-margin stretch-card">
-        <div class="card position-relative">
-          <div class="card-body">
-            <div id="detailedReports" class="carousel slide detailed-report-carousel position-static pt-2"
-              data-bs-ride="carousel">
-              <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <div class="row">
-                    <div class="col-md-12 col-xl-3 d-flex flex-column justify-content-start">
-                      <div class="ml-xl-4 mt-3">
-                        <p class="card-title">Detailed Reports</p>
-                        <h1 class="text-primary">$34040</h1>
-                        <h3 class="font-weight-500 mb-xl-4 text-primary">North America</h3>
-                        <p class="mb-2 mb-xl-0">The total number of sessions within the date range. It is the period
-                          time a user is actively engaged with your website, page or app, etc</p>
-                      </div>
-                    </div>
-                    <div class="col-md-12 col-xl-9">
-                      <div class="row">
-                        <div class="col-md-6 border-right">
-                          <div class="table-responsive mb-3 mb-md-0 mt-3">
-                            <table class="table table-borderless report-table">
-                              <tr>
-                                <td class="text-muted">Illinois</td>
-                                <td class="w-100 px-0">
-                                  <div class="progress progress-md mx-4">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 70%"
-                                      aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                                  </div>
-                                </td>
-                                <td>
-                                  <h5 class="font-weight-bold mb-0">713</h5>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="text-muted">Washington</td>
-                                <td class="w-100 px-0">
-                                  <div class="progress progress-md mx-4">
-                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 30%"
-                                      aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                  </div>
-                                </td>
-                                <td>
-                                  <h5 class="font-weight-bold mb-0">583</h5>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="text-muted">Mississippi</td>
-                                <td class="w-100 px-0">
-                                  <div class="progress progress-md mx-4">
-                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 95%"
-                                      aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
-                                  </div>
-                                </td>
-                                <td>
-                                  <h5 class="font-weight-bold mb-0">924</h5>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="text-muted">California</td>
-                                <td class="w-100 px-0">
-                                  <div class="progress progress-md mx-4">
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: 60%"
-                                      aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                  </div>
-                                </td>
-                                <td>
-                                  <h5 class="font-weight-bold mb-0">664</h5>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="text-muted">Maryland</td>
-                                <td class="w-100 px-0">
-                                  <div class="progress progress-md mx-4">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 40%"
-                                      aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                                  </div>
-                                </td>
-                                <td>
-                                  <h5 class="font-weight-bold mb-0">560</h5>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="text-muted">Alaska</td>
-                                <td class="w-100 px-0">
-                                  <div class="progress progress-md mx-4">
-                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 75%"
-                                      aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                  </div>
-                                </td>
-                                <td>
-                                  <h5 class="font-weight-bold mb-0">793</h5>
-                                </td>
-                              </tr>
-                            </table>
-                          </div>
-                        </div>
-                        <div class="col-md-6 mt-3">
-                          <div class="daoughnutchart-wrapper">
-                            <canvas id="north-america-chart"></canvas>
-                          </div>
-                          <div id="north-america-chart-legend">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+
+          <div class="admin-applicant-list">
+            <?php if (!empty($recentDiagnosisRows)): ?>
+              <?php foreach ($recentDiagnosisRows as $row): ?>
+                <?php $initial = strtoupper(substr((string) ($row['nama'] ?? 'A'), 0, 1)); ?>
+                <div class="admin-applicant-item" data-search="<?= esc(strtolower(trim(($row['nama'] ?? '') . ' ' . ($row['nama_kasus'] ?? ''))), 'attr'); ?>">
+                  <div class="admin-avatar"><?= esc($initial); ?></div>
+                  <div>
+                    <strong><?= esc($row['nama'] ?? '-'); ?></strong>
+                    <span><?= esc($row['nama_kasus'] ?? 'Belum ada kecocokan'); ?></span>
+                  </div>
+                  <div class="admin-action-icons">
+                    <a href="<?= base_url('adminkonsultasi'); ?>" aria-label="Lihat diagnosa"><i class="ti-eye"></i></a>
+                    <a href="<?= base_url('adminkonsultasi'); ?>" aria-label="Analisis diagnosa"><i class="ti-bar-chart"></i></a>
+                    <a href="<?= base_url('adminkonsultasi'); ?>" aria-label="Tandai diagnosa"><i class="ti-check"></i></a>
                   </div>
                 </div>
-                <div class="carousel-item">
-                  <div class="row">
-                    <div class="col-md-12 col-xl-3 d-flex flex-column justify-content-start">
-                      <div class="ml-xl-4 mt-3">
-                        <p class="card-title">Detailed Reports</p>
-                        <h1 class="text-primary">$34040</h1>
-                        <h3 class="font-weight-500 mb-xl-4 text-primary">North America</h3>
-                        <p class="mb-2 mb-xl-0">The total number of sessions within the date range. It is the period
-                          time a user is actively engaged with your website, page or app, etc</p>
-                      </div>
-                    </div>
-                    <div class="col-md-12 col-xl-9">
-                      <div class="row">
-                        <div class="col-md-6 border-right">
-                          <div class="table-responsive mb-3 mb-md-0 mt-3">
-                            <table class="table table-borderless report-table">
-                              <tr>
-                                <td class="text-muted">Illinois</td>
-                                <td class="w-100 px-0">
-                                  <div class="progress progress-md mx-4">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 70%"
-                                      aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                                  </div>
-                                </td>
-                                <td>
-                                  <h5 class="font-weight-bold mb-0">713</h5>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="text-muted">Washington</td>
-                                <td class="w-100 px-0">
-                                  <div class="progress progress-md mx-4">
-                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 30%"
-                                      aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                  </div>
-                                </td>
-                                <td>
-                                  <h5 class="font-weight-bold mb-0">583</h5>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="text-muted">Mississippi</td>
-                                <td class="w-100 px-0">
-                                  <div class="progress progress-md mx-4">
-                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 95%"
-                                      aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
-                                  </div>
-                                </td>
-                                <td>
-                                  <h5 class="font-weight-bold mb-0">924</h5>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="text-muted">California</td>
-                                <td class="w-100 px-0">
-                                  <div class="progress progress-md mx-4">
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: 60%"
-                                      aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                  </div>
-                                </td>
-                                <td>
-                                  <h5 class="font-weight-bold mb-0">664</h5>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="text-muted">Maryland</td>
-                                <td class="w-100 px-0">
-                                  <div class="progress progress-md mx-4">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 40%"
-                                      aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                                  </div>
-                                </td>
-                                <td>
-                                  <h5 class="font-weight-bold mb-0">560</h5>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="text-muted">Alaska</td>
-                                <td class="w-100 px-0">
-                                  <div class="progress progress-md mx-4">
-                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 75%"
-                                      aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                  </div>
-                                </td>
-                                <td>
-                                  <h5 class="font-weight-bold mb-0">793</h5>
-                                </td>
-                              </tr>
-                            </table>
-                          </div>
-                        </div>
-                        <div class="col-md-6 mt-3">
-                          <div class="daoughnutchart-wrapper">
-                            <canvas id="south-america-chart"></canvas>
-                          </div>
-                          <div id="south-america-chart-legend"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <a class="carousel-control-prev" href="#detailedReports" role="button" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              </a>
-              <a class="carousel-control-next" href="#detailedReports" role="button" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              </a>
-            </div>
+              <?php endforeach; ?>
+              <div id="diagnosisNoResult" class="admin-empty-state d-none">Diagnosa tidak ditemukan.</div>
+            <?php else: ?>
+              <div class="admin-empty-state">Belum ada hasil diagnosa tersimpan.</div>
+            <?php endif; ?>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body">
-            <p class="card-title mb-0">Top Products</p>
-            <div class="table-responsive">
-              <table class="table table-striped table-borderless">
-                <thead>
-                  <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Search Engine Marketing</td>
-                    <td class="font-weight-bold">$362</td>
-                    <td>21 Sep 2018</td>
-                    <td class="font-weight-medium">
-                      <div class="badge badge-success">Completed</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Search Engine Optimization</td>
-                    <td class="font-weight-bold">$116</td>
-                    <td>13 Jun 2018</td>
-                    <td class="font-weight-medium">
-                      <div class="badge badge-success">Completed</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Display Advertising</td>
-                    <td class="font-weight-bold">$551</td>
-                    <td>28 Sep 2018</td>
-                    <td class="font-weight-medium">
-                      <div class="badge badge-warning">Pending</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Pay Per Click Advertising</td>
-                    <td class="font-weight-bold">$523</td>
-                    <td>30 Jun 2018</td>
-                    <td class="font-weight-medium">
-                      <div class="badge badge-warning">Pending</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>E-Mail Marketing</td>
-                    <td class="font-weight-bold">$781</td>
-                    <td>01 Nov 2018</td>
-                    <td class="font-weight-medium">
-                      <div class="badge badge-danger">Cancelled</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Referral Marketing</td>
-                    <td class="font-weight-bold">$283</td>
-                    <td>20 Mar 2018</td>
-                    <td class="font-weight-medium">
-                      <div class="badge badge-warning">Pending</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Social media marketing</td>
-                    <td class="font-weight-bold">$897</td>
-                    <td>26 Oct 2018</td>
-                    <td class="font-weight-medium">
-                      <div class="badge badge-success">Completed</div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+        </section>
+
+        <section class="admin-panel admin-risk-panel">
+          <span>Perlu Perhatian</span>
+          <strong><?= esc((string) $riskPercent); ?>%</strong>
+          <p><?= number_format($riskCount, 0, ',', '.'); ?> indikator dari data status gizi perlu dipantau.</p>
+        </section>
+      </aside>
     </div>
   </div>
-  <!-- content-wrapper ends -->
+
+  <script>
+    window.addEventListener('load', function () {
+      var calendarTitle = document.getElementById('calendarTitle');
+      var calendarDays = document.getElementById('realtimeCalendarDays');
+      var calendarPrev = document.getElementById('calendarPrevMonth');
+      var calendarNext = document.getElementById('calendarNextMonth');
+      var selectedDateText = document.getElementById('selectedDateText');
+      var visibleMonth = new Date();
+      var selectedDate = new Date();
+      visibleMonth.setDate(1);
+
+      function renderLiveClock() {
+        var now = new Date();
+        var clockElement = document.getElementById('dashboardClock');
+        var dateElement = document.getElementById('dashboardDate');
+        var greetingElement = document.getElementById('dashboardGreeting');
+        var hour = now.getHours();
+
+        if (clockElement) {
+          clockElement.textContent = now.toLocaleTimeString('id-ID', {
+            hour: '2-digit',
+            minute: '2-digit',
+          });
+        }
+
+        if (dateElement) {
+          dateElement.textContent = now.toLocaleDateString('id-ID', {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          });
+        }
+
+        if (greetingElement) {
+          greetingElement.textContent = hour < 11 ? 'Selamat pagi' : hour < 15 ? 'Selamat siang' : hour < 18 ? 'Selamat sore' : 'Selamat malam';
+        }
+      }
+
+      function formatDate(date) {
+        return date.toLocaleDateString('id-ID', {
+          weekday: 'long',
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+        });
+      }
+
+      function isSameDate(firstDate, secondDate) {
+        return firstDate.getFullYear() === secondDate.getFullYear()
+          && firstDate.getMonth() === secondDate.getMonth()
+          && firstDate.getDate() === secondDate.getDate();
+      }
+
+      function renderRealtimeCalendar() {
+        if (!calendarTitle || !calendarDays) {
+          return;
+        }
+
+        var now = new Date();
+        var year = visibleMonth.getFullYear();
+        var month = visibleMonth.getMonth();
+        var firstDay = new Date(year, month, 1);
+        var daysInMonth = new Date(year, month + 1, 0).getDate();
+        var firstDayOffset = (firstDay.getDay() + 6) % 7;
+
+        calendarTitle.textContent = firstDay.toLocaleDateString('en-US', {
+          month: 'long',
+          year: 'numeric',
+        });
+        calendarDays.innerHTML = '';
+
+        for (var emptyDay = 0; emptyDay < firstDayOffset; emptyDay++) {
+          calendarDays.appendChild(document.createElement('span'));
+        }
+
+        for (var day = 1; day <= daysInMonth; day++) {
+          var dayElement = document.createElement('button');
+          var currentDate = new Date(year, month, day);
+
+          dayElement.type = 'button';
+          dayElement.textContent = day;
+          dayElement.setAttribute('aria-label', formatDate(currentDate));
+          dayElement.addEventListener('click', function () {
+            selectedDate = new Date(
+              parseInt(this.dataset.year, 10),
+              parseInt(this.dataset.month, 10),
+              parseInt(this.dataset.day, 10)
+            );
+            if (selectedDateText) {
+              selectedDateText.textContent = 'Tanggal dipilih: ' + formatDate(selectedDate);
+            }
+            renderRealtimeCalendar();
+          });
+          dayElement.dataset.year = currentDate.getFullYear();
+          dayElement.dataset.month = currentDate.getMonth();
+          dayElement.dataset.day = currentDate.getDate();
+
+          if (isSameDate(currentDate, now)) {
+            dayElement.classList.add('is-today');
+            dayElement.setAttribute('aria-current', 'date');
+          }
+          if (isSameDate(currentDate, selectedDate)) {
+            dayElement.classList.add('is-selected');
+          }
+
+          calendarDays.appendChild(dayElement);
+        }
+      }
+
+      if (calendarPrev) {
+        calendarPrev.addEventListener('click', function () {
+          visibleMonth.setMonth(visibleMonth.getMonth() - 1);
+          renderRealtimeCalendar();
+        });
+      }
+
+      if (calendarNext) {
+        calendarNext.addEventListener('click', function () {
+          visibleMonth.setMonth(visibleMonth.getMonth() + 1);
+          renderRealtimeCalendar();
+        });
+      }
+
+      renderLiveClock();
+      setInterval(renderLiveClock, 30000);
+
+      if (selectedDateText) {
+        selectedDateText.textContent = 'Tanggal dipilih: ' + formatDate(selectedDate);
+      }
+
+      renderRealtimeCalendar();
+      setInterval(function () {
+        var now = new Date();
+        visibleMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+        renderRealtimeCalendar();
+      }, 60000);
+
+      var chartElement = document.getElementById('diagnosisDailyChart');
+      var diagnosisChart = null;
+
+      if (chartElement && typeof Chart !== 'undefined') {
+        diagnosisChart = new Chart(chartElement.getContext('2d'), {
+          type: 'line',
+          data: {
+            labels: <?= json_encode($diagnosisDailyChart['labels'] ?? []); ?>,
+            datasets: [{
+              label: 'Hasil Diagnosa',
+              data: <?= json_encode($diagnosisDailyChart['values'] ?? []); ?>,
+              borderColor: '#4b49ac',
+              backgroundColor: 'rgba(75, 73, 172, 0.12)',
+              pointBackgroundColor: '#4b49ac',
+              pointBorderColor: '#ffffff',
+              pointBorderWidth: 2,
+              pointRadius: 4,
+              borderWidth: 3,
+              lineTension: 0.35,
+              fill: true,
+            }],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+              display: false,
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  precision: 0,
+                },
+                gridLines: {
+                  color: 'rgba(123, 133, 153, 0.12)',
+                  drawBorder: false,
+                },
+              }],
+              xAxes: [{
+                gridLines: {
+                  display: false,
+                },
+              }],
+            },
+            tooltips: {
+              callbacks: {
+                label: function (tooltipItem) {
+                  return tooltipItem.yLabel + ' hasil diagnosa';
+                },
+              },
+            },
+          },
+        });
+
+        document.querySelectorAll('[data-chart-type]').forEach(function (button) {
+          button.addEventListener('click', function () {
+            var chartType = button.getAttribute('data-chart-type');
+            document.querySelectorAll('[data-chart-type]').forEach(function (item) {
+              item.classList.toggle('is-active', item === button);
+            });
+            diagnosisChart.config.type = chartType;
+            diagnosisChart.data.datasets[0].fill = chartType === 'line';
+            diagnosisChart.data.datasets[0].backgroundColor = chartType === 'line'
+              ? 'rgba(75, 73, 172, 0.12)'
+              : 'rgba(75, 73, 172, 0.72)';
+            diagnosisChart.update();
+          });
+        });
+      }
+
+      function bindDashboardSearch(inputId, itemSelector, emptySelector) {
+        var input = document.getElementById(inputId);
+        var items = document.querySelectorAll(itemSelector);
+        var emptyState = document.querySelector(emptySelector);
+
+        if (!input || !items.length) {
+          return;
+        }
+
+        input.addEventListener('input', function () {
+          var keyword = input.value.trim().toLowerCase();
+          var visibleCount = 0;
+
+          items.forEach(function (item) {
+            var isVisible = item.getAttribute('data-search').indexOf(keyword) !== -1;
+            item.classList.toggle('d-none', !isVisible);
+            if (isVisible) {
+              visibleCount += 1;
+            }
+          });
+
+          if (emptyState) {
+            emptyState.classList.toggle('d-none', visibleCount > 0);
+          }
+        });
+      }
+
+      bindDashboardSearch('nutritionSearch', '.admin-nutrition-row', '#nutritionNoResult');
+      bindDashboardSearch('diagnosisSearch', '.admin-applicant-item', '#diagnosisNoResult');
+
+      var resizeDashboard = function () {
+        window.dispatchEvent(new Event('resize'));
+        if (diagnosisChart && typeof diagnosisChart.resize === 'function') {
+          diagnosisChart.resize();
+        }
+      };
+
+      document.querySelectorAll('[data-toggle="minimize"]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          setTimeout(resizeDashboard, 80);
+          setTimeout(resizeDashboard, 320);
+        });
+      });
+
+      if (window.MutationObserver) {
+        var bodyObserver = new MutationObserver(function (mutations) {
+          mutations.forEach(function (mutation) {
+            if (mutation.attributeName === 'class') {
+              setTimeout(resizeDashboard, 80);
+            }
+          });
+        });
+        bodyObserver.observe(document.body, {
+          attributes: true,
+          attributeFilter: ['class'],
+        });
+      }
+    });
+  </script>

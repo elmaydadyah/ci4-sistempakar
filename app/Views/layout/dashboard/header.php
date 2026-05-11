@@ -19,7 +19,7 @@
     <!-- End plugin css for this page -->
     <!-- inject:css -->
     <link rel="stylesheet" href="<?= base_url('assets/skydash/css/vertical-layout-light/style.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/css/dashboard.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/dashboard.css?v=' . filemtime(FCPATH . 'assets/css/dashboard.css')) ?>">
     <!-- endinject -->
     <link rel="shortcut icon" href="<?= base_url('assets/images/logo/logo.png') ?>" />
 </head>

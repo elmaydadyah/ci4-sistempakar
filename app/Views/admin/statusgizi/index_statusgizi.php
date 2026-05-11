@@ -157,7 +157,7 @@ $detailGroups = [
                         </div>
 
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table id="statusGiziTable" class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -194,10 +194,6 @@ $detailGroups = [
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
-                                    <?php else: ?>
-                                        <tr>
-                                            <td colspan="9" class="text-center text-muted py-4">Data status gizi belum tersedia.</td>
-                                        </tr>
                                     <?php endif; ?>
                                 </tbody>
                             </table>
@@ -251,5 +247,36 @@ $detailGroups = [
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
+
+    <script>
+        window.addEventListener('load', function () {
+            if (!window.jQuery || !jQuery.fn.DataTable) {
+                return;
+            }
+
+            jQuery('#statusGiziTable').DataTable({
+                pageLength: 10,
+                lengthChange: false,
+                ordering: true,
+                searching: true,
+                info: true,
+                autoWidth: false,
+                language: {
+                    search: 'Cari:',
+                    info: 'Menampilkan _START_ sampai _END_ dari _TOTAL_ data',
+                    infoEmpty: 'Menampilkan 0 data',
+                    infoFiltered: '(difilter dari _MAX_ total data)',
+                    zeroRecords: 'Data status gizi tidak ditemukan',
+                    emptyTable: 'Data status gizi belum tersedia',
+                    paginate: {
+                        first: 'Pertama',
+                        last: 'Terakhir',
+                        next: 'Berikutnya',
+                        previous: 'Sebelumnya',
+                    },
+                },
+            });
+        });
+    </script>
 
     <?= $this->include('layout/dashboard/footer') ?>

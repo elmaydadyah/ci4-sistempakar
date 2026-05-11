@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\HasilDiagnosaModel;
+
 class Diagnosa extends BaseController
 {
     public function index()
@@ -50,6 +52,7 @@ class Diagnosa extends BaseController
 
             if ($data['errors'] === []) {
                 $data['hasil'] = $this->hitungDiagnosa($nama, (int) $umur, $selectedGejala);
+                $this->simpanHasilDiagnosa($data['hasil']);
             }
         }
 
@@ -110,5 +113,26 @@ class Diagnosa extends BaseController
             'jumlah_gejala' => count($selectedGejala),
             'diagnosa' => $scores[0] ?? null,
         ];
+    }
+
+    private function simpanHasilDiagnosa(array $hasil): void
+    {
+        $db = db_connect();
+        if (!$db->tableExists('tb_hasil_diagnosa')) {
+            return;
+        }
+
+        $diagnosa = $hasil['diagnosa'] ?? [];
+        $kasus = $diagnosa['kasus'] ?? [];
+
+        $model = new HasilDiagnosaModel();
+        $model->insert([
+            'nama' => $hasil['nama'] ?? '-',
+            'umur' => (int) ($hasil['umur'] ?? 0),
+            'id_kasus' => isset($kasus['id_kasus']) ? (int) $kasus['id_kasus'] : null,
+            'nama_kasus' => $kasus['nama_kasus'] ?? null,
+            'persentase' => (int) ($diagnosa['persentase'] ?? 0),
+            'jumlah_gejala' => (int) ($hasil['jumlah_gejala'] ?? 0),
+        ]);
     }
 }
