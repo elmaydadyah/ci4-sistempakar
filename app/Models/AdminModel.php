@@ -9,8 +9,14 @@ class AdminModel extends Model
     // Method untuk tb_kons_detail
     public function getKonsDetail()
     {
-        $this->table = 'tb_kons_detail';
-        return $this->findAll();
+        return $this->db->table('tb_kons_detail kd')
+            ->select('kd.*, k.nama_kasus, g.nama_gejala')
+            ->join('tb_kasus k', 'k.id_kasus = kd.id_kasus', 'left')
+            ->join('tb_gejala g', 'g.id_gejala = kd.id_gejala', 'left')
+            ->orderBy('kd.id_kasus', 'ASC')
+            ->orderBy('kd.id_gejala', 'ASC')
+            ->get()
+            ->getResultArray();
     }
 
     // Method untuk tb_gejala

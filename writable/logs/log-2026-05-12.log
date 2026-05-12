@@ -1,0 +1,1667 @@
+DEBUG - 2026-05-12 05:48:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 05:48:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 05:48:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 05:49:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:11:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:11:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:11:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:11:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:12:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:12:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:23:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-05-12 12:23:55 --> Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC', [], false)
+ 5 APPPATH\Models\AdminModel.php(18): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH\Controllers\Admin.php(135): App\Models\AdminModel->getKonsDetail()
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKasusGejala()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:23:55 --> CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+[Method: GET, Route: adminkasusgejala]
+in SYSTEMPATH\Database\BaseConnection.php on line 865.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC', [], false)
+ 2 APPPATH\Models\AdminModel.php(18): CodeIgniter\Database\BaseBuilder->get()
+ 3 APPPATH\Controllers\Admin.php(135): App\Models\AdminModel->getKonsDetail()
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKasusGejala()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:23:55 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC')
+ 2 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC', [], false)
+ 4 APPPATH\Models\AdminModel.php(18): CodeIgniter\Database\BaseBuilder->get()
+ 5 APPPATH\Controllers\Admin.php(135): App\Models\AdminModel->getKonsDetail()
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKasusGejala()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:23:55 --> [Caused by] mysqli_sql_exception: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC', [], false)
+ 5 APPPATH\Models\AdminModel.php(18): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH\Controllers\Admin.php(135): App\Models\AdminModel->getKonsDetail()
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKasusGejala()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 12:23:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:24:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-05-12 12:24:28 --> Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT *
+FROM `tb_kons_detail`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 5 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 8 APPPATH\Controllers\Admin.php(142): App\Models\AdminModel->getKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:24:28 --> CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+[Method: GET, Route: adminkonsultasi]
+in SYSTEMPATH\Database\BaseConnection.php on line 865.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 2 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 4 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 5 APPPATH\Controllers\Admin.php(142): App\Models\AdminModel->getKonsultasi()
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:24:28 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 2 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 4 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 6 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 7 APPPATH\Controllers\Admin.php(142): App\Models\AdminModel->getKonsultasi()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:24:28 --> [Caused by] mysqli_sql_exception: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT *
+FROM `tb_kons_detail`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 5 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 8 APPPATH\Controllers\Admin.php(142): App\Models\AdminModel->getKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-05-12 12:27:27 --> Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC', [], false)
+ 5 APPPATH\Models\AdminModel.php(18): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH\Controllers\Admin.php(135): App\Models\AdminModel->getKonsDetail()
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKasusGejala()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:27:27 --> CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+[Method: GET, Route: adminkasusgejala]
+in SYSTEMPATH\Database\BaseConnection.php on line 865.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC', [], false)
+ 2 APPPATH\Models\AdminModel.php(18): CodeIgniter\Database\BaseBuilder->get()
+ 3 APPPATH\Controllers\Admin.php(135): App\Models\AdminModel->getKonsDetail()
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKasusGejala()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:27:27 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC')
+ 2 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC', [], false)
+ 4 APPPATH\Models\AdminModel.php(18): CodeIgniter\Database\BaseBuilder->get()
+ 5 APPPATH\Controllers\Admin.php(135): App\Models\AdminModel->getKonsDetail()
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKasusGejala()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:27:27 --> [Caused by] mysqli_sql_exception: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC', [], false)
+ 5 APPPATH\Models\AdminModel.php(18): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH\Controllers\Admin.php(135): App\Models\AdminModel->getKonsDetail()
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKasusGejala()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 12:28:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:29:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:29:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:30:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:31:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:32:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:32:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:32:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-05-12 12:32:15 --> ErrorException: Undefined array key "deskripsi"
+[Method: GET, Route: adminpenyakit]
+in APPPATH\Views\admin\penyakit\index_penyakit.php on line 59.
+ 1 APPPATH\Views\admin\penyakit\index_penyakit.php(59): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "deskripsi"', 'C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\penyakit\\index_penyakit.php', 59)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\penyakit\\index_penyakit.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/penyakit/index_penyakit', [], true)
+ 5 APPPATH\Controllers\Admin.php(70): view('admin/penyakit/index_penyakit', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexPenyakit()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 12:32:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-05-12 12:33:33 --> Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC', [], false)
+ 5 APPPATH\Models\AdminModel.php(18): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH\Controllers\Admin.php(136): App\Models\AdminModel->getKonsDetail()
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKasusGejala()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:33:33 --> CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+[Method: GET, Route: adminkasusgejala]
+in SYSTEMPATH\Database\BaseConnection.php on line 865.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC', [], false)
+ 2 APPPATH\Models\AdminModel.php(18): CodeIgniter\Database\BaseBuilder->get()
+ 3 APPPATH\Controllers\Admin.php(136): App\Models\AdminModel->getKonsDetail()
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKasusGejala()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:33:33 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC')
+ 2 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC', [], false)
+ 4 APPPATH\Models\AdminModel.php(18): CodeIgniter\Database\BaseBuilder->get()
+ 5 APPPATH\Controllers\Admin.php(136): App\Models\AdminModel->getKonsDetail()
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKasusGejala()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:33:33 --> [Caused by] mysqli_sql_exception: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `kd`.*, `k`.`nama_kasus`, `g`.`nama_gejala`
+FROM `tb_kons_detail` `kd`
+LEFT JOIN `tb_kasus` `k` ON `k`.`id_kasus` = `kd`.`id_kasus`
+LEFT JOIN `tb_gejala` `g` ON `g`.`id_gejala` = `kd`.`id_gejala`
+ORDER BY `kd`.`id_kasus` ASC, `kd`.`id_gejala` ASC', [], false)
+ 5 APPPATH\Models\AdminModel.php(18): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH\Controllers\Admin.php(136): App\Models\AdminModel->getKonsDetail()
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKasusGejala()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-05-12 12:33:39 --> Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT *
+FROM `tb_kons_detail`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 5 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 8 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:33:39 --> CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+[Method: GET, Route: adminkonsultasi]
+in SYSTEMPATH\Database\BaseConnection.php on line 865.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 2 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 4 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 5 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:33:39 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 2 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 4 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 6 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 7 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:33:39 --> [Caused by] mysqli_sql_exception: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT *
+FROM `tb_kons_detail`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 5 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 8 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 12:33:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:33:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:33:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:38:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:38:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-05-12 12:39:50 --> Unknown column 'jenis_kelamin' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:39:50\', \'2026-05-12 12:39:50\')', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:39:50\', \'2026-05-12 12:39:50\')')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:39:50\', \'2026-05-12 12:39:50\')')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (:nama_anak:, :jenis_kelamin:, :tanggal_lahir:, :umur_bulan:, :berat_badan:, :tinggi_badan:, :nama_ortu:, :alamat:, :created_at:, :updated_at:)', [...], false)
+ 5 SYSTEMPATH\Model.php(355): CodeIgniter\Database\BaseBuilder->insert()
+ 6 SYSTEMPATH\BaseModel.php(899): CodeIgniter\Model->doInsert([...])
+ 7 SYSTEMPATH\Model.php(668): CodeIgniter\BaseModel->insert([...], true)
+ 8 APPPATH\Controllers\Home.php(61): CodeIgniter\Model->insert([...])
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->storeAnak()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:39:50 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'jenis_kelamin' in 'field list'
+[Method: POST, Route: konseling-anak]
+in SYSTEMPATH\Database\BaseConnection.php on line 865.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (:nama_anak:, :jenis_kelamin:, :tanggal_lahir:, :umur_bulan:, :berat_badan:, :tinggi_badan:, :nama_ortu:, :alamat:, :created_at:, :updated_at:)', [...], false)
+ 2 SYSTEMPATH\Model.php(355): CodeIgniter\Database\BaseBuilder->insert()
+ 3 SYSTEMPATH\BaseModel.php(899): CodeIgniter\Model->doInsert([...])
+ 4 SYSTEMPATH\Model.php(668): CodeIgniter\BaseModel->insert([...], true)
+ 5 APPPATH\Controllers\Home.php(61): CodeIgniter\Model->insert([...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->storeAnak()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:39:50 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'jenis_kelamin' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:39:50\', \'2026-05-12 12:39:50\')')
+ 2 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:39:50\', \'2026-05-12 12:39:50\')')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (:nama_anak:, :jenis_kelamin:, :tanggal_lahir:, :umur_bulan:, :berat_badan:, :tinggi_badan:, :nama_ortu:, :alamat:, :created_at:, :updated_at:)', [...], false)
+ 4 SYSTEMPATH\Model.php(355): CodeIgniter\Database\BaseBuilder->insert()
+ 5 SYSTEMPATH\BaseModel.php(899): CodeIgniter\Model->doInsert([...])
+ 6 SYSTEMPATH\Model.php(668): CodeIgniter\BaseModel->insert([...], true)
+ 7 APPPATH\Controllers\Home.php(61): CodeIgniter\Model->insert([...])
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->storeAnak()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:39:50 --> [Caused by] mysqli_sql_exception: Unknown column 'jenis_kelamin' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:39:50\', \'2026-05-12 12:39:50\')', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:39:50\', \'2026-05-12 12:39:50\')')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:39:50\', \'2026-05-12 12:39:50\')')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (:nama_anak:, :jenis_kelamin:, :tanggal_lahir:, :umur_bulan:, :berat_badan:, :tinggi_badan:, :nama_ortu:, :alamat:, :created_at:, :updated_at:)', [...], false)
+ 5 SYSTEMPATH\Model.php(355): CodeIgniter\Database\BaseBuilder->insert()
+ 6 SYSTEMPATH\BaseModel.php(899): CodeIgniter\Model->doInsert([...])
+ 7 SYSTEMPATH\Model.php(668): CodeIgniter\BaseModel->insert([...], true)
+ 8 APPPATH\Controllers\Home.php(61): CodeIgniter\Model->insert([...])
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->storeAnak()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 12:40:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:40:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:40:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-05-12 12:41:13 --> Table 'db_sistempakar.tb_certainty_factor' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT *
+FROM `tb_certainty_factor`
+WHERE `id_gejala` = 2
+ LIMIT 1', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_certainty_factor`
+WHERE `id_gejala` = 2
+ LIMIT 1')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_certainty_factor`
+WHERE `id_gejala` = 2
+ LIMIT 1')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_certainty_factor`
+WHERE `id_gejala` = :id_gejala:
+ LIMIT 1', [...], false)
+ 5 SYSTEMPATH\Model.php(295): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(714): CodeIgniter\Model->doFirst()
+ 7 APPPATH\Controllers\Admin.php(175): CodeIgniter\BaseModel->first()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->createCertaintyFactor()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:41:14 --> CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_certainty_factor' doesn't exist
+[Method: POST, Route: admin/createCf]
+in SYSTEMPATH\Database\BaseConnection.php on line 865.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_certainty_factor`
+WHERE `id_gejala` = :id_gejala:
+ LIMIT 1', [...], false)
+ 2 SYSTEMPATH\Model.php(295): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\BaseModel.php(714): CodeIgniter\Model->doFirst()
+ 4 APPPATH\Controllers\Admin.php(175): CodeIgniter\BaseModel->first()
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->createCertaintyFactor()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:41:14 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_certainty_factor' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_certainty_factor`
+WHERE `id_gejala` = 2
+ LIMIT 1')
+ 2 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_certainty_factor`
+WHERE `id_gejala` = 2
+ LIMIT 1')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_certainty_factor`
+WHERE `id_gejala` = :id_gejala:
+ LIMIT 1', [...], false)
+ 4 SYSTEMPATH\Model.php(295): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\BaseModel.php(714): CodeIgniter\Model->doFirst()
+ 6 APPPATH\Controllers\Admin.php(175): CodeIgniter\BaseModel->first()
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->createCertaintyFactor()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:41:14 --> [Caused by] mysqli_sql_exception: Table 'db_sistempakar.tb_certainty_factor' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT *
+FROM `tb_certainty_factor`
+WHERE `id_gejala` = 2
+ LIMIT 1', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_certainty_factor`
+WHERE `id_gejala` = 2
+ LIMIT 1')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_certainty_factor`
+WHERE `id_gejala` = 2
+ LIMIT 1')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_certainty_factor`
+WHERE `id_gejala` = :id_gejala:
+ LIMIT 1', [...], false)
+ 5 SYSTEMPATH\Model.php(295): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(714): CodeIgniter\Model->doFirst()
+ 7 APPPATH\Controllers\Admin.php(175): CodeIgniter\BaseModel->first()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->createCertaintyFactor()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-05-12 12:41:54 --> Duplicate key name 'id_gejala'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('CREATE TABLE `tb_certainty_factor` (
+	`id_cf` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id_gejala` INT(11) UNSIGNED NOT NULL,
+	`bobot_cf` DECIMAL(4,2) NOT NULL DEFAULT 0,
+	`keterangan` TEXT NULL,
+	`created_at` DATETIME NULL,
+	`updated_at` DATETIME NULL,
+	CONSTRAINT `pk_tb_certainty_factor` PRIMARY KEY(`id_cf`),
+	KEY `id_gejala` (`id_gejala`),
+	UNIQUE KEY `id_gejala` (`id_gejala`)
+) DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('CREATE TABLE `tb_certainty_factor` (
+	`id_cf` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id_gejala` INT(11) UNSIGNED NOT NULL,
+	`bobot_cf` DECIMAL(4,2) NOT NULL DEFAULT 0,
+	`keterangan` TEXT NULL,
+	`created_at` DATETIME NULL,
+	`updated_at` DATETIME NULL,
+	CONSTRAINT `pk_tb_certainty_factor` PRIMARY KEY(`id_cf`),
+	KEY `id_gejala` (`id_gejala`),
+	UNIQUE KEY `id_gejala` (`id_gejala`)
+) DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('CREATE TABLE `tb_certainty_factor` (
+	`id_cf` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id_gejala` INT(11) UNSIGNED NOT NULL,
+	`bobot_cf` DECIMAL(4,2) NOT NULL DEFAULT 0,
+	`keterangan` TEXT NULL,
+	`created_at` DATETIME NULL,
+	`updated_at` DATETIME NULL,
+	CONSTRAINT `pk_tb_certainty_factor` PRIMARY KEY(`id_cf`),
+	KEY `id_gejala` (`id_gejala`),
+	UNIQUE KEY `id_gejala` (`id_gejala`)
+) DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci')
+ 4 SYSTEMPATH\Database\Forge.php(570): CodeIgniter\Database\BaseConnection->query('CREATE TABLE `tb_certainty_factor` (
+	`id_cf` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id_gejala` INT(11) UNSIGNED NOT NULL,
+	`bobot_cf` DECIMAL(4,2) NOT NULL DEFAULT 0,
+	`keterangan` TEXT NULL,
+	`created_at` DATETIME NULL,
+	`updated_at` DATETIME NULL,
+	CONSTRAINT `pk_tb_certainty_factor` PRIMARY KEY(`id_cf`),
+	KEY `id_gejala` (`id_gejala`),
+	UNIQUE KEY `id_gejala` (`id_gejala`)
+) DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci')
+ 5 APPPATH\Database\Migrations\2026-05-12-000001_CreateTbCertaintyFactor.php(45): CodeIgniter\Database\Forge->createTable('tb_certainty_factor', true)
+ 6 SYSTEMPATH\Database\MigrationRunner.php(1014): App\Database\Migrations\CreateTbCertaintyFactor->up()
+ 7 SYSTEMPATH\Database\MigrationRunner.php(202): CodeIgniter\Database\MigrationRunner->migrate('up', Object(stdClass))
+ 8 SYSTEMPATH\Commands\Database\Migrate.php(89): CodeIgniter\Database\MigrationRunner->latest(null)
+ 9 SYSTEMPATH\CLI\SignalTrait.php(245): CodeIgniter\Commands\Database\Migrate::{closure:CodeIgniter\Commands\Database\Migrate::run():88}()
+10 SYSTEMPATH\Commands\Database\Migrate.php(88): CodeIgniter\Commands\Database\Migrate->withSignalsBlocked(Object(Closure))
+11 SYSTEMPATH\CLI\Commands.php(74): CodeIgniter\Commands\Database\Migrate->run([])
+12 SYSTEMPATH\CLI\Console.php(47): CodeIgniter\CLI\Commands->run('migrate', [])
+13 SYSTEMPATH\Boot.php(442): CodeIgniter\CLI\Console->run()
+14 SYSTEMPATH\Boot.php(166): CodeIgniter\Boot::runCommand(Object(CodeIgniter\CLI\Console))
+15 ROOTPATH\spark(87): CodeIgniter\Boot::bootSpark(Object(Config\Paths))
+DEBUG - 2026-05-12 12:43:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:43:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:44:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:44:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-05-12 12:44:17 --> Unknown column 'jenis_kelamin' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:44:17\', \'2026-05-12 12:44:17\')', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:44:17\', \'2026-05-12 12:44:17\')')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:44:17\', \'2026-05-12 12:44:17\')')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (:nama_anak:, :jenis_kelamin:, :tanggal_lahir:, :umur_bulan:, :berat_badan:, :tinggi_badan:, :nama_ortu:, :alamat:, :created_at:, :updated_at:)', [...], false)
+ 5 SYSTEMPATH\Model.php(355): CodeIgniter\Database\BaseBuilder->insert()
+ 6 SYSTEMPATH\BaseModel.php(899): CodeIgniter\Model->doInsert([...])
+ 7 SYSTEMPATH\Model.php(668): CodeIgniter\BaseModel->insert([...], true)
+ 8 APPPATH\Controllers\Home.php(61): CodeIgniter\Model->insert([...])
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->storeAnak()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:44:17 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'jenis_kelamin' in 'field list'
+[Method: POST, Route: konseling-anak]
+in SYSTEMPATH\Database\BaseConnection.php on line 865.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (:nama_anak:, :jenis_kelamin:, :tanggal_lahir:, :umur_bulan:, :berat_badan:, :tinggi_badan:, :nama_ortu:, :alamat:, :created_at:, :updated_at:)', [...], false)
+ 2 SYSTEMPATH\Model.php(355): CodeIgniter\Database\BaseBuilder->insert()
+ 3 SYSTEMPATH\BaseModel.php(899): CodeIgniter\Model->doInsert([...])
+ 4 SYSTEMPATH\Model.php(668): CodeIgniter\BaseModel->insert([...], true)
+ 5 APPPATH\Controllers\Home.php(61): CodeIgniter\Model->insert([...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->storeAnak()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:44:17 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'jenis_kelamin' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:44:17\', \'2026-05-12 12:44:17\')')
+ 2 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:44:17\', \'2026-05-12 12:44:17\')')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (:nama_anak:, :jenis_kelamin:, :tanggal_lahir:, :umur_bulan:, :berat_badan:, :tinggi_badan:, :nama_ortu:, :alamat:, :created_at:, :updated_at:)', [...], false)
+ 4 SYSTEMPATH\Model.php(355): CodeIgniter\Database\BaseBuilder->insert()
+ 5 SYSTEMPATH\BaseModel.php(899): CodeIgniter\Model->doInsert([...])
+ 6 SYSTEMPATH\Model.php(668): CodeIgniter\BaseModel->insert([...], true)
+ 7 APPPATH\Controllers\Home.php(61): CodeIgniter\Model->insert([...])
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->storeAnak()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:44:17 --> [Caused by] mysqli_sql_exception: Unknown column 'jenis_kelamin' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:44:17\', \'2026-05-12 12:44:17\')', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:44:17\', \'2026-05-12 12:44:17\')')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:44:17\', \'2026-05-12 12:44:17\')')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (:nama_anak:, :jenis_kelamin:, :tanggal_lahir:, :umur_bulan:, :berat_badan:, :tinggi_badan:, :nama_ortu:, :alamat:, :created_at:, :updated_at:)', [...], false)
+ 5 SYSTEMPATH\Model.php(355): CodeIgniter\Database\BaseBuilder->insert()
+ 6 SYSTEMPATH\BaseModel.php(899): CodeIgniter\Model->doInsert([...])
+ 7 SYSTEMPATH\Model.php(668): CodeIgniter\BaseModel->insert([...], true)
+ 8 APPPATH\Controllers\Home.php(61): CodeIgniter\Model->insert([...])
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->storeAnak()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 12:44:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-05-12 12:44:24 --> Unknown column 'jenis_kelamin' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:44:24\', \'2026-05-12 12:44:24\')', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:44:24\', \'2026-05-12 12:44:24\')')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:44:24\', \'2026-05-12 12:44:24\')')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (:nama_anak:, :jenis_kelamin:, :tanggal_lahir:, :umur_bulan:, :berat_badan:, :tinggi_badan:, :nama_ortu:, :alamat:, :created_at:, :updated_at:)', [...], false)
+ 5 SYSTEMPATH\Model.php(355): CodeIgniter\Database\BaseBuilder->insert()
+ 6 SYSTEMPATH\BaseModel.php(899): CodeIgniter\Model->doInsert([...])
+ 7 SYSTEMPATH\Model.php(668): CodeIgniter\BaseModel->insert([...], true)
+ 8 APPPATH\Controllers\Home.php(61): CodeIgniter\Model->insert([...])
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->storeAnak()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:44:24 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'jenis_kelamin' in 'field list'
+[Method: POST, Route: konseling-anak]
+in SYSTEMPATH\Database\BaseConnection.php on line 865.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (:nama_anak:, :jenis_kelamin:, :tanggal_lahir:, :umur_bulan:, :berat_badan:, :tinggi_badan:, :nama_ortu:, :alamat:, :created_at:, :updated_at:)', [...], false)
+ 2 SYSTEMPATH\Model.php(355): CodeIgniter\Database\BaseBuilder->insert()
+ 3 SYSTEMPATH\BaseModel.php(899): CodeIgniter\Model->doInsert([...])
+ 4 SYSTEMPATH\Model.php(668): CodeIgniter\BaseModel->insert([...], true)
+ 5 APPPATH\Controllers\Home.php(61): CodeIgniter\Model->insert([...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->storeAnak()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:44:24 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'jenis_kelamin' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:44:24\', \'2026-05-12 12:44:24\')')
+ 2 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:44:24\', \'2026-05-12 12:44:24\')')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (:nama_anak:, :jenis_kelamin:, :tanggal_lahir:, :umur_bulan:, :berat_badan:, :tinggi_badan:, :nama_ortu:, :alamat:, :created_at:, :updated_at:)', [...], false)
+ 4 SYSTEMPATH\Model.php(355): CodeIgniter\Database\BaseBuilder->insert()
+ 5 SYSTEMPATH\BaseModel.php(899): CodeIgniter\Model->doInsert([...])
+ 6 SYSTEMPATH\Model.php(668): CodeIgniter\BaseModel->insert([...], true)
+ 7 APPPATH\Controllers\Home.php(61): CodeIgniter\Model->insert([...])
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->storeAnak()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:44:24 --> [Caused by] mysqli_sql_exception: Unknown column 'jenis_kelamin' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:44:24\', \'2026-05-12 12:44:24\')', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:44:24\', \'2026-05-12 12:44:24\')')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'dandi\', \'L\', \'2026-01-01\', 24, 15, 100, \'ida\', \'bandung\', \'2026-05-12 12:44:24\', \'2026-05-12 12:44:24\')')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (:nama_anak:, :jenis_kelamin:, :tanggal_lahir:, :umur_bulan:, :berat_badan:, :tinggi_badan:, :nama_ortu:, :alamat:, :created_at:, :updated_at:)', [...], false)
+ 5 SYSTEMPATH\Model.php(355): CodeIgniter\Database\BaseBuilder->insert()
+ 6 SYSTEMPATH\BaseModel.php(899): CodeIgniter\Model->doInsert([...])
+ 7 SYSTEMPATH\Model.php(668): CodeIgniter\BaseModel->insert([...], true)
+ 8 APPPATH\Controllers\Home.php(61): CodeIgniter\Model->insert([...])
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->storeAnak()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 12:45:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:45:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:46:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:47:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:47:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:48:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-05-12 12:48:23 --> Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT *
+FROM `tb_kons_detail`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 5 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 8 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:48:23 --> CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+[Method: GET, Route: adminkonsultasi]
+in SYSTEMPATH\Database\BaseConnection.php on line 865.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 2 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 4 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 5 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:48:23 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 2 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 4 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 6 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 7 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:48:23 --> [Caused by] mysqli_sql_exception: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT *
+FROM `tb_kons_detail`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 5 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 8 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 12:48:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:48:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:48:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:48:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:48:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-05-12 12:48:35 --> ErrorException: Undefined array key "deskripsi"
+[Method: GET, Route: adminpenyakit]
+in APPPATH\Views\admin\penyakit\index_penyakit.php on line 59.
+ 1 APPPATH\Views\admin\penyakit\index_penyakit.php(59): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "deskripsi"', 'C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\penyakit\\index_penyakit.php', 59)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\penyakit\\index_penyakit.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/penyakit/index_penyakit', [], true)
+ 5 APPPATH\Controllers\Admin.php(70): view('admin/penyakit/index_penyakit', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexPenyakit()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 12:51:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 12:51:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-05-12 12:51:47 --> Duplicate entry '0' for key 'tb_anak.PRIMARY'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'test 2\', \'L\', \'2026-01-01\', 4, 15, 100, \'ida\', \'bekasi\', \'2026-05-12 12:51:47\', \'2026-05-12 12:51:47\')', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'test 2\', \'L\', \'2026-01-01\', 4, 15, 100, \'ida\', \'bekasi\', \'2026-05-12 12:51:47\', \'2026-05-12 12:51:47\')')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'test 2\', \'L\', \'2026-01-01\', 4, 15, 100, \'ida\', \'bekasi\', \'2026-05-12 12:51:47\', \'2026-05-12 12:51:47\')')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (:nama_anak:, :jenis_kelamin:, :tanggal_lahir:, :umur_bulan:, :berat_badan:, :tinggi_badan:, :nama_ortu:, :alamat:, :created_at:, :updated_at:)', [...], false)
+ 5 SYSTEMPATH\Model.php(355): CodeIgniter\Database\BaseBuilder->insert()
+ 6 SYSTEMPATH\BaseModel.php(899): CodeIgniter\Model->doInsert([...])
+ 7 SYSTEMPATH\Model.php(668): CodeIgniter\BaseModel->insert([...], true)
+ 8 APPPATH\Controllers\Home.php(61): CodeIgniter\Model->insert([...])
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->storeAnak()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:51:47 --> CodeIgniter\Database\Exceptions\DatabaseException: Duplicate entry '0' for key 'tb_anak.PRIMARY'
+[Method: POST, Route: konseling-anak]
+in SYSTEMPATH\Database\BaseConnection.php on line 865.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (:nama_anak:, :jenis_kelamin:, :tanggal_lahir:, :umur_bulan:, :berat_badan:, :tinggi_badan:, :nama_ortu:, :alamat:, :created_at:, :updated_at:)', [...], false)
+ 2 SYSTEMPATH\Model.php(355): CodeIgniter\Database\BaseBuilder->insert()
+ 3 SYSTEMPATH\BaseModel.php(899): CodeIgniter\Model->doInsert([...])
+ 4 SYSTEMPATH\Model.php(668): CodeIgniter\BaseModel->insert([...], true)
+ 5 APPPATH\Controllers\Home.php(61): CodeIgniter\Model->insert([...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->storeAnak()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:51:47 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Duplicate entry '0' for key 'tb_anak.PRIMARY'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'test 2\', \'L\', \'2026-01-01\', 4, 15, 100, \'ida\', \'bekasi\', \'2026-05-12 12:51:47\', \'2026-05-12 12:51:47\')')
+ 2 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'test 2\', \'L\', \'2026-01-01\', 4, 15, 100, \'ida\', \'bekasi\', \'2026-05-12 12:51:47\', \'2026-05-12 12:51:47\')')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (:nama_anak:, :jenis_kelamin:, :tanggal_lahir:, :umur_bulan:, :berat_badan:, :tinggi_badan:, :nama_ortu:, :alamat:, :created_at:, :updated_at:)', [...], false)
+ 4 SYSTEMPATH\Model.php(355): CodeIgniter\Database\BaseBuilder->insert()
+ 5 SYSTEMPATH\BaseModel.php(899): CodeIgniter\Model->doInsert([...])
+ 6 SYSTEMPATH\Model.php(668): CodeIgniter\BaseModel->insert([...], true)
+ 7 APPPATH\Controllers\Home.php(61): CodeIgniter\Model->insert([...])
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->storeAnak()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 12:51:47 --> [Caused by] mysqli_sql_exception: Duplicate entry '0' for key 'tb_anak.PRIMARY'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'test 2\', \'L\', \'2026-01-01\', 4, 15, 100, \'ida\', \'bekasi\', \'2026-05-12 12:51:47\', \'2026-05-12 12:51:47\')', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'test 2\', \'L\', \'2026-01-01\', 4, 15, 100, \'ida\', \'bekasi\', \'2026-05-12 12:51:47\', \'2026-05-12 12:51:47\')')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (\'test 2\', \'L\', \'2026-01-01\', 4, 15, 100, \'ida\', \'bekasi\', \'2026-05-12 12:51:47\', \'2026-05-12 12:51:47\')')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `tb_anak` (`nama_anak`, `jenis_kelamin`, `tanggal_lahir`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `nama_ortu`, `alamat`, `created_at`, `updated_at`) VALUES (:nama_anak:, :jenis_kelamin:, :tanggal_lahir:, :umur_bulan:, :berat_badan:, :tinggi_badan:, :nama_ortu:, :alamat:, :created_at:, :updated_at:)', [...], false)
+ 5 SYSTEMPATH\Model.php(355): CodeIgniter\Database\BaseBuilder->insert()
+ 6 SYSTEMPATH\BaseModel.php(899): CodeIgniter\Model->doInsert([...])
+ 7 SYSTEMPATH\Model.php(668): CodeIgniter\BaseModel->insert([...], true)
+ 8 APPPATH\Controllers\Home.php(61): CodeIgniter\Model->insert([...])
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->storeAnak()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-05-12 12:56:15 --> Referencing column 'id_anak' and referenced column 'id_anak' in foreign key constraint 'FK_tb_kasus_tb_anak' are incompatible.
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('ALTER TABLE tb_anak MODIFY id_anak INT(11) UNSIGNED NOT NULL AUTO_INCREMENT', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE tb_anak MODIFY id_anak INT(11) UNSIGNED NOT NULL AUTO_INCREMENT')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE tb_anak MODIFY id_anak INT(11) UNSIGNED NOT NULL AUTO_INCREMENT')
+ 4 APPPATH\Database\Migrations\2026-05-12-000003_FixTbAnakPrimaryKey.php(28): CodeIgniter\Database\BaseConnection->query('ALTER TABLE tb_anak MODIFY id_anak INT(11) UNSIGNED NOT NULL AUTO_INCREMENT')
+ 5 SYSTEMPATH\Database\MigrationRunner.php(1014): App\Database\Migrations\FixTbAnakPrimaryKey->up()
+ 6 SYSTEMPATH\Database\MigrationRunner.php(202): CodeIgniter\Database\MigrationRunner->migrate('up', Object(stdClass))
+ 7 SYSTEMPATH\Commands\Database\Migrate.php(89): CodeIgniter\Database\MigrationRunner->latest(null)
+ 8 SYSTEMPATH\CLI\SignalTrait.php(245): CodeIgniter\Commands\Database\Migrate::{closure:CodeIgniter\Commands\Database\Migrate::run():88}()
+ 9 SYSTEMPATH\Commands\Database\Migrate.php(88): CodeIgniter\Commands\Database\Migrate->withSignalsBlocked(Object(Closure))
+10 SYSTEMPATH\CLI\Commands.php(74): CodeIgniter\Commands\Database\Migrate->run([])
+11 SYSTEMPATH\CLI\Console.php(47): CodeIgniter\CLI\Commands->run('migrate', [])
+12 SYSTEMPATH\Boot.php(442): CodeIgniter\CLI\Console->run()
+13 SYSTEMPATH\Boot.php(166): CodeIgniter\Boot::runCommand(Object(CodeIgniter\CLI\Console))
+14 ROOTPATH\spark(87): CodeIgniter\Boot::bootSpark(Object(Config\Paths))
+ERROR - 2026-05-12 12:57:24 --> Referencing column 'id_anak' and referenced column 'id_anak' in foreign key constraint 'FK_tb_hasil_tb_anak' are incompatible.
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('ALTER TABLE tb_anak MODIFY id_anak INT(11) UNSIGNED NOT NULL AUTO_INCREMENT', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE tb_anak MODIFY id_anak INT(11) UNSIGNED NOT NULL AUTO_INCREMENT')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE tb_anak MODIFY id_anak INT(11) UNSIGNED NOT NULL AUTO_INCREMENT')
+ 4 APPPATH\Database\Migrations\2026-05-12-000003_FixTbAnakPrimaryKey.php(30): CodeIgniter\Database\BaseConnection->query('ALTER TABLE tb_anak MODIFY id_anak INT(11) UNSIGNED NOT NULL AUTO_INCREMENT')
+ 5 SYSTEMPATH\Database\MigrationRunner.php(1014): App\Database\Migrations\FixTbAnakPrimaryKey->up()
+ 6 SYSTEMPATH\Database\MigrationRunner.php(202): CodeIgniter\Database\MigrationRunner->migrate('up', Object(stdClass))
+ 7 SYSTEMPATH\Commands\Database\Migrate.php(89): CodeIgniter\Database\MigrationRunner->latest(null)
+ 8 SYSTEMPATH\CLI\SignalTrait.php(245): CodeIgniter\Commands\Database\Migrate::{closure:CodeIgniter\Commands\Database\Migrate::run():88}()
+ 9 SYSTEMPATH\Commands\Database\Migrate.php(88): CodeIgniter\Commands\Database\Migrate->withSignalsBlocked(Object(Closure))
+10 SYSTEMPATH\CLI\Commands.php(74): CodeIgniter\Commands\Database\Migrate->run([])
+11 SYSTEMPATH\CLI\Console.php(47): CodeIgniter\CLI\Commands->run('migrate', [])
+12 SYSTEMPATH\Boot.php(442): CodeIgniter\CLI\Console->run()
+13 SYSTEMPATH\Boot.php(166): CodeIgniter\Boot::runCommand(Object(CodeIgniter\CLI\Console))
+14 ROOTPATH\spark(87): CodeIgniter\Boot::bootSpark(Object(Config\Paths))
+DEBUG - 2026-05-12 13:05:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:06:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-05-12 13:06:27 --> ErrorException: Undefined array key "deskripsi"
+[Method: GET, Route: adminpenyakit]
+in APPPATH\Views\admin\penyakit\index_penyakit.php on line 59.
+ 1 APPPATH\Views\admin\penyakit\index_penyakit.php(59): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "deskripsi"', 'C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\penyakit\\index_penyakit.php', 59)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\penyakit\\index_penyakit.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/penyakit/index_penyakit', [], true)
+ 5 APPPATH\Controllers\Admin.php(70): view('admin/penyakit/index_penyakit', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexPenyakit()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 13:06:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:06:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:06:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-05-12 13:06:50 --> Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT *
+FROM `tb_kons_detail`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 5 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 8 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 13:06:50 --> CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+[Method: GET, Route: adminkonsultasi]
+in SYSTEMPATH\Database\BaseConnection.php on line 865.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 2 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 4 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 5 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 13:06:50 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 2 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 4 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 6 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 7 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 13:06:50 --> [Caused by] mysqli_sql_exception: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT *
+FROM `tb_kons_detail`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 5 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 8 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 13:06:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:06:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:06:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:09:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:09:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:09:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:09:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-05-12 13:09:40 --> ErrorException: Undefined array key "deskripsi"
+[Method: GET, Route: adminpenyakit]
+in APPPATH\Views\admin\penyakit\index_penyakit.php on line 59.
+ 1 APPPATH\Views\admin\penyakit\index_penyakit.php(59): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "deskripsi"', 'C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\penyakit\\index_penyakit.php', 59)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\penyakit\\index_penyakit.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/penyakit/index_penyakit', [], true)
+ 5 APPPATH\Controllers\Admin.php(70): view('admin/penyakit/index_penyakit', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexPenyakit()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 13:09:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-05-12 13:09:53 --> Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT *
+FROM `tb_kons_detail`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 5 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 8 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 13:09:53 --> CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+[Method: GET, Route: adminkonsultasi]
+in SYSTEMPATH\Database\BaseConnection.php on line 865.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 2 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 4 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 5 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 13:09:53 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 2 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 4 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 6 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 7 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 13:09:53 --> [Caused by] mysqli_sql_exception: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT *
+FROM `tb_kons_detail`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 5 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 8 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 13:09:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:09:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:09:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-05-12 13:09:58 --> ErrorException: Undefined array key "deskripsi"
+[Method: GET, Route: adminpenyakit]
+in APPPATH\Views\admin\penyakit\index_penyakit.php on line 59.
+ 1 APPPATH\Views\admin\penyakit\index_penyakit.php(59): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "deskripsi"', 'C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\penyakit\\index_penyakit.php', 59)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\penyakit\\index_penyakit.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/penyakit/index_penyakit', [], true)
+ 5 APPPATH\Controllers\Admin.php(70): view('admin/penyakit/index_penyakit', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexPenyakit()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 13:09:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:10:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:10:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:11:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-05-12 13:11:31 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout/dashboard/footer.php"
+[Method: GET, Route: adminstatusgizi]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout/dashboard/footer.php')
+ 2 SYSTEMPATH\View\View.php(489): CodeIgniter\View\View->render('layout/dashboard/footer', null, true)
+ 3 APPPATH\Views\admin\statusgizi\index_statusgizi.php(282): CodeIgniter\View\View->include('layout/dashboard/footer')
+ 4 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\statusgizi\\index_statusgizi.php')
+ 5 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 6 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/statusgizi/index_statusgizi', [], true)
+ 7 APPPATH\Controllers\Admin.php(228): view('admin/statusgizi/index_statusgizi', [...])
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexStatusGizi()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 13:11:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-05-12 13:11:33 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout/dashboard/footer.php"
+[Method: GET, Route: admincf]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout/dashboard/footer.php')
+ 2 SYSTEMPATH\View\View.php(489): CodeIgniter\View\View->render('layout/dashboard/footer', null, true)
+ 3 APPPATH\Views\admin\certaintyfactor\index_cf.php(175): CodeIgniter\View\View->include('layout/dashboard/footer')
+ 4 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\certaintyfactor\\index_cf.php')
+ 5 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 6 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/certaintyfactor/index_cf', [], true)
+ 7 APPPATH\Controllers\Admin.php(162): view('admin/certaintyfactor/index_cf', [...])
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexCertaintyFactor()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 13:11:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-05-12 13:11:34 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout/dashboard/footer.php"
+[Method: GET, Route: admingejala]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout/dashboard/footer.php')
+ 2 SYSTEMPATH\View\View.php(489): CodeIgniter\View\View->render('layout/dashboard/footer', null, true)
+ 3 APPPATH\Views\admin\gejala\index_gejala.php(148): CodeIgniter\View\View->include('layout/dashboard/footer')
+ 4 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\gejala\\index_gejala.php')
+ 5 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 6 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/gejala/index_gejala', [], true)
+ 7 APPPATH\Controllers\Admin.php(15): view('admin/gejala/index_gejala', [...])
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexGejala()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 13:11:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-05-12 13:11:35 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout/dashboard/footer.php"
+[Method: GET, Route: adminusers]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout/dashboard/footer.php')
+ 2 SYSTEMPATH\View\View.php(489): CodeIgniter\View\View->render('layout/dashboard/footer', null, true)
+ 3 APPPATH\Views\admin\users\index_users.php(159): CodeIgniter\View\View->include('layout/dashboard/footer')
+ 4 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\users\\index_users.php')
+ 5 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 6 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/users/index_users', [], true)
+ 7 APPPATH\Controllers\Admin.php(130): view('admin/users/index_users', [...])
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexUsers()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 13:11:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-05-12 13:11:37 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout/dashboard/footer.php"
+[Method: GET, Route: admincf]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout/dashboard/footer.php')
+ 2 SYSTEMPATH\View\View.php(489): CodeIgniter\View\View->render('layout/dashboard/footer', null, true)
+ 3 APPPATH\Views\admin\certaintyfactor\index_cf.php(175): CodeIgniter\View\View->include('layout/dashboard/footer')
+ 4 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\certaintyfactor\\index_cf.php')
+ 5 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 6 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/certaintyfactor/index_cf', [], true)
+ 7 APPPATH\Controllers\Admin.php(162): view('admin/certaintyfactor/index_cf', [...])
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexCertaintyFactor()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 13:11:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-05-12 13:11:38 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout/dashboard/footer.php"
+[Method: GET, Route: adminstatusgizi]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout/dashboard/footer.php')
+ 2 SYSTEMPATH\View\View.php(489): CodeIgniter\View\View->render('layout/dashboard/footer', null, true)
+ 3 APPPATH\Views\admin\statusgizi\index_statusgizi.php(282): CodeIgniter\View\View->include('layout/dashboard/footer')
+ 4 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\statusgizi\\index_statusgizi.php')
+ 5 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 6 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/statusgizi/index_statusgizi', [], true)
+ 7 APPPATH\Controllers\Admin.php(228): view('admin/statusgizi/index_statusgizi', [...])
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexStatusGizi()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 13:11:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-05-12 13:11:39 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout/dashboard/footer.php"
+[Method: GET, Route: adminusers]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout/dashboard/footer.php')
+ 2 SYSTEMPATH\View\View.php(489): CodeIgniter\View\View->render('layout/dashboard/footer', null, true)
+ 3 APPPATH\Views\admin\users\index_users.php(159): CodeIgniter\View\View->include('layout/dashboard/footer')
+ 4 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\users\\index_users.php')
+ 5 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 6 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/users/index_users', [], true)
+ 7 APPPATH\Controllers\Admin.php(130): view('admin/users/index_users', [...])
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexUsers()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 13:11:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-05-12 13:11:41 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout/dashboard/footer.php"
+[Method: GET, Route: dashboard]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout/dashboard/footer.php')
+ 2 SYSTEMPATH\View\View.php(489): CodeIgniter\View\View->render('layout/dashboard/footer', null, true)
+ 3 APPPATH\Views\dashboard.php(5): CodeIgniter\View\View->include('layout/dashboard/footer')
+ 4 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\dashboard.php')
+ 5 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 6 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('dashboard', [], true)
+ 7 APPPATH\Controllers\Dashboard.php(62): view('dashboard', [...])
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Dashboard->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 13:11:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:11:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:11:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:12:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-05-12 13:12:45 --> Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT *
+FROM `tb_kons_detail`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 5 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 8 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 13:12:45 --> CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+[Method: GET, Route: adminkonsultasi]
+in SYSTEMPATH\Database\BaseConnection.php on line 865.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 2 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 4 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 5 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 13:12:45 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 2 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 4 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 6 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 7 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 13:12:45 --> [Caused by] mysqli_sql_exception: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT *
+FROM `tb_kons_detail`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 5 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 8 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 13:12:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-05-12 13:12:53 --> Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT *
+FROM `tb_kons_detail`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 5 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 8 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 13:12:53 --> CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+[Method: GET, Route: adminkonsultasi]
+in SYSTEMPATH\Database\BaseConnection.php on line 865.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 2 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 4 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 5 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 13:12:53 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 2 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 4 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 6 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 7 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 13:12:53 --> [Caused by] mysqli_sql_exception: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT *
+FROM `tb_kons_detail`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 5 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 8 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 13:12:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-05-12 13:12:59 --> Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT *
+FROM `tb_kons_detail`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 5 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 8 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 13:12:59 --> CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+[Method: GET, Route: adminkonsultasi]
+in SYSTEMPATH\Database\BaseConnection.php on line 865.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 2 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 4 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 5 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 13:12:59 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 2 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 4 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 6 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 7 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-12 13:12:59 --> [Caused by] mysqli_sql_exception: Table 'db_sistempakar.tb_kons_detail' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT *
+FROM `tb_kons_detail`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `tb_kons_detail`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `tb_kons_detail`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tb_kons_detail`', [], false)
+ 5 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Models\AdminModel.php(116): CodeIgniter\BaseModel->findAll()
+ 8 APPPATH\Controllers\Admin.php(143): App\Models\AdminModel->getKonsultasi()
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexKonsultasi()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 13:13:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:13:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:13:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:13:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:14:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:14:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:14:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:14:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:14:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:14:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:14:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-05-12 13:14:45 --> ErrorException: Undefined array key "deskripsi"
+[Method: GET, Route: adminpenyakit]
+in APPPATH\Views\admin\penyakit\index_penyakit.php on line 59.
+ 1 APPPATH\Views\admin\penyakit\index_penyakit.php(59): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "deskripsi"', 'C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\penyakit\\index_penyakit.php', 59)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\laragon\\www\\ci4-sistempakar\\app\\Views\\admin\\penyakit\\index_penyakit.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->{closure:CodeIgniter\View\View::render():237}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/penyakit/index_penyakit', [], true)
+ 5 APPPATH\Controllers\Admin.php(70): view('admin/penyakit/index_penyakit', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin->indexPenyakit()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-05-12 13:14:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:14:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:17:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:17:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:17:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:18:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:18:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:20:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:20:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:20:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:22:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:26:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:26:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:26:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:26:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:28:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:28:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:28:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:28:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:28:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:28:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:28:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:28:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:28:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:28:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:29:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:29:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:29:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:29:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:29:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:29:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:30:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:30:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:30:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:30:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:30:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:30:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:30:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:30:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:30:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:30:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:31:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:31:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:31:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:31:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:31:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:33:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:34:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:34:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 13:34:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

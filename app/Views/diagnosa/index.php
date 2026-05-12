@@ -18,7 +18,7 @@
             <div class="consult-heading">
                 <span class="consult-kicker">Konsultasi Awal</span>
                 <h1>Isi data balita dan pilih gejala yang terlihat.</h1>
-                <p>Hasil ini hanya rekomendasi awal dari sistem pakar. Pemeriksaan langsung tetap diperlukan untuk keputusan medis.</p>
+                <p>Sistem menggunakan Naive Bayes untuk menentukan indikasi dan Certainty Factor untuk menghitung tingkat keyakinan gejala.</p>
             </div>
 
             <div class="consult-layout">
@@ -44,6 +44,24 @@
                                 <input type="number" name="umur" value="<?= esc($old['umur'] ?? '', 'attr') ?>" min="0" max="60" placeholder="24" required>
                                 <b>bulan</b>
                             </div>
+                        </label>
+                        <label>
+                            <span>Berat Badan</span>
+                            <div class="input-with-unit">
+                                <input type="number" name="berat_badan" value="<?= esc($old['berat_badan'] ?? '', 'attr') ?>" min="0" step="0.01" placeholder="12.5">
+                                <b>kg</b>
+                            </div>
+                        </label>
+                        <label>
+                            <span>Tinggi Badan</span>
+                            <div class="input-with-unit">
+                                <input type="number" name="tinggi_badan" value="<?= esc($old['tinggi_badan'] ?? '', 'attr') ?>" min="0" step="0.01" placeholder="86">
+                                <b>cm</b>
+                            </div>
+                        </label>
+                        <label>
+                            <span>Z-score TB/U</span>
+                            <input type="number" name="zs_tb_u" value="<?= esc($old['zs_tb_u'] ?? '', 'attr') ?>" step="0.01" placeholder="-2.15">
                         </label>
                     </div>
 
@@ -86,14 +104,23 @@
                         <div class="result-meta">
                             <span><?= esc((string) $hasil['umur']) ?> bulan</span>
                             <span><?= esc((string) $hasil['jumlah_gejala']) ?> gejala dipilih</span>
+                            <span><?= esc((string) ($hasil['jumlah_data_latih'] ?? 0)) ?> data latih</span>
                         </div>
 
-                        <?php if (!empty($diagnosa) && ($diagnosa['persentase'] ?? 0) > 0): ?>
+                        <?php if (!empty($diagnosa)): ?>
                             <div class="score-ring">
                                 <strong><?= esc((string) $diagnosa['persentase']) ?>%</strong>
-                                <small>Kecocokan</small>
+                                <small>Keyakinan CF</small>
                             </div>
-                            <h3><?= esc($diagnosa['kasus']['nama_kasus'] ?? 'Diagnosa belum tersedia') ?></h3>
+                            <h3><?= esc($diagnosa['label_nb'] ?? ($diagnosa['kasus']['nama_kasus'] ?? 'Diagnosa belum tersedia')) ?></h3>
+                            <p>
+                                Anak terindikasi <?= esc($diagnosa['label_nb'] ?? ($diagnosa['kasus']['nama_kasus'] ?? 'hasil belum tersedia')) ?>
+                                dengan tingkat keyakinan <?= esc((string) $diagnosa['persentase']) ?>%.
+                            </p>
+                            <div class="result-meta">
+                                <span>NB <?= esc((string) ($diagnosa['probabilitas_nb_persen'] ?? 0)) ?>%</span>
+                                <span><?= esc((string) ($diagnosa['jumlah_gejala_cocok'] ?? 0)) ?> gejala mendukung</span>
+                            </div>
                             <p><?= esc($diagnosa['kasus']['deskripsi'] ?? 'Data deskripsi belum tersedia.') ?></p>
                             <div class="solution-box">
                                 <b>Saran awal</b>
@@ -102,10 +129,10 @@
                         <?php else: ?>
                             <div class="score-ring muted-ring">
                                 <strong>0%</strong>
-                                <small>Kecocokan</small>
+                                <small>Keyakinan CF</small>
                             </div>
-                            <h3>Belum ada kecocokan aturan</h3>
-                            <p>Gejala sudah tercatat, tetapi basis aturan belum cukup untuk menentukan kemungkinan kasus.</p>
+                            <h3>Data latih belum tersedia</h3>
+                            <p>Import data status gizi terlebih dahulu agar Naive Bayes bisa membandingkan data anak dengan data kasus historis.</p>
                         <?php endif; ?>
                     <?php else: ?>
                         <span class="result-label">Ringkasan</span>

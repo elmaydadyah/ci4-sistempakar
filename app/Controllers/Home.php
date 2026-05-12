@@ -69,7 +69,6 @@ class Home extends BaseController
             'alamat' => $old['alamat'] !== '' ? $old['alamat'] : null,
         ]);
 
-        return redirect()->to('/konseling')
-            ->with('konseling_success', 'Data anak berhasil disimpan. Silakan lanjut ke halaman diagnosa.');
+        return redirect()->to('/konsultasi?anak=' . $model->getInsertID());
     }
 }

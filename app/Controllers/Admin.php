@@ -4,6 +4,9 @@ namespace App\Controllers;
 
 use App\Models\AnakStatusGiziModel;
 use App\Models\AdminModel;
+use App\Models\CertaintyFactorModel;
+use App\Models\AnakModel;
+use App\Models\HasilDiagnosaModel;
 
 class Admin extends BaseController
 {
@@ -129,18 +132,124 @@ class Admin extends BaseController
         return view('admin/users/index_users', $data);
     }
 
+    public function indexAnak()
+    {
+        $data = [
+            'tb_anak' => (new AnakModel())
+                ->orderBy('id_anak', 'DESC')
+                ->findAll(100),
+        ];
+
+        return view('admin/anak/index_anak', $data);
+    }
+
     public function indexKasusGejala()
     {
         $model = new AdminModel();
-        $data['tb_kons_detail'] = $model->getKonsDetail();
+        $data['tb_kasusgejala'] = $model->getKonsDetail();
         return view('admin/kasusgejala/index_kasusgejala', $data);
     }
 
     public function indexKonsultasi()
     {
-        $model = new AdminModel();
-        $data['tb_kons_detail'] = $model->getKonsultasi(); // Jika tabel konsultasi berbeda, ganti method
+        $db = db_connect();
+        $data = [
+            'total_anak' => $db->tableExists('tb_anak') ? $db->table('tb_anak')->countAllResults() : 0,
+            'total_gejala' => $db->tableExists('tb_gejala') ? $db->table('tb_gejala')->countAllResults() : 0,
+            'total_cf' => $db->tableExists('tb_certainty_factor') ? $db->table('tb_certainty_factor')->countAllResults() : 0,
+            'total_hasil' => $db->tableExists('tb_hasil_diagnosa') ? $db->table('tb_hasil_diagnosa')->countAllResults() : 0,
+            'recent_anak' => $db->tableExists('tb_anak')
+                ? $db->table('tb_anak')->orderBy('id_anak', 'DESC')->get(5)->getResultArray()
+                : [],
+            'recent_hasil' => $db->tableExists('tb_hasil_diagnosa')
+                ? $db->table('tb_hasil_diagnosa')->orderBy('id_hasil_diagnosa', 'DESC')->get(5)->getResultArray()
+                : [],
+        ];
+
         return view('admin/konsultasi/index_konsultasi', $data);
+    }
+
+    public function indexHasilDiagnosa()
+    {
+        $data = [
+            'tb_hasil_diagnosa' => (new HasilDiagnosaModel())
+                ->orderBy('id_hasil_diagnosa', 'DESC')
+                ->findAll(100),
+        ];
+
+        return view('admin/hasildiagnosa/index_hasil_diagnosa', $data);
+    }
+
+    public function indexCertaintyFactor()
+    {
+        $db = db_connect();
+        $data = [
+            'tb_gejala' => (new AdminModel())->getGejala(),
+            'tb_cf' => $db->tableExists('tb_certainty_factor')
+                ? $db->table('tb_certainty_factor cf')
+                ->select('cf.*, g.nama_gejala')
+                ->join('tb_gejala g', 'g.id_gejala = cf.id_gejala', 'left')
+                ->orderBy('cf.id_cf', 'DESC')
+                ->get()
+                ->getResultArray()
+                : [],
+        ];
+
+        return view('admin/certaintyfactor/index_cf', $data);
+    }
+
+    public function createCertaintyFactor()
+    {
+        $data = $this->getCertaintyFactorPostData();
+
+        if ($data['id_gejala'] <= 0 || $data['bobot_cf'] < 0 || $data['bobot_cf'] > 1) {
+            session()->setFlashdata('error', 'Gejala wajib dipilih dan bobot CF harus berada di rentang 0 sampai 1.');
+            return redirect()->to('/admincf');
+        }
+
+        $model = new CertaintyFactorModel();
+        if ($model->where('id_gejala', $data['id_gejala'])->first()) {
+            session()->setFlashdata('error', 'Gejala tersebut sudah memiliki bobot CF.');
+            return redirect()->to('/admincf');
+        }
+
+        $result = $model->insert($data);
+        session()->setFlashdata($result ? 'success' : 'error', $result ? 'Data CF berhasil ditambahkan' : 'Gagal menambahkan data CF');
+
+        return redirect()->to('/admincf');
+    }
+
+    public function updateCertaintyFactor($id)
+    {
+        $data = $this->getCertaintyFactorPostData();
+
+        if ($data['id_gejala'] <= 0 || $data['bobot_cf'] < 0 || $data['bobot_cf'] > 1) {
+            session()->setFlashdata('error', 'Gejala wajib dipilih dan bobot CF harus berada di rentang 0 sampai 1.');
+            return redirect()->to('/admincf');
+        }
+
+        $model = new CertaintyFactorModel();
+        $existing = $model->where('id_gejala', $data['id_gejala'])
+            ->where('id_cf !=', $id)
+            ->first();
+
+        if ($existing) {
+            session()->setFlashdata('error', 'Gejala tersebut sudah memiliki bobot CF.');
+            return redirect()->to('/admincf');
+        }
+
+        $result = $model->update($id, $data);
+        session()->setFlashdata($result ? 'success' : 'error', $result ? 'Data CF berhasil diupdate' : 'Gagal mengupdate data CF');
+
+        return redirect()->to('/admincf');
+    }
+
+    public function deleteCertaintyFactor($id)
+    {
+        $result = (new CertaintyFactorModel())->delete($id);
+        session()->setFlashdata($result ? 'success' : 'error', $result ? 'Data CF berhasil dihapus' : 'Gagal menghapus data CF');
+
+        return redirect()->to('/admincf');
     }
 
     public function indexStatusGizi()
@@ -153,6 +262,15 @@ class Admin extends BaseController
         ];
 
         return view('admin/statusgizi/index_statusgizi', $data);
+    }
+
+    private function getCertaintyFactorPostData(): array
+    {
+        return [
+            'id_gejala' => (int) $this->request->getPost('id_gejala'),
+            'bobot_cf' => (float) $this->request->getPost('bobot_cf'),
+            'keterangan' => trim((string) $this->request->getPost('keterangan')) ?: null,
+        ];
     }
 
     public function uploadStatusGizi()

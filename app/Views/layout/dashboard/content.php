@@ -202,7 +202,7 @@ $summaryCards = [
                   <div class="admin-avatar"><?= esc($initial); ?></div>
                   <div>
                     <strong><?= esc($row['nama'] ?? '-'); ?></strong>
-                    <span><?= esc($row['nama_kasus'] ?? 'Belum ada kecocokan'); ?></span>
+                    <span><?= esc($row['nama_kasus'] ?? 'Belum ada indikasi'); ?></span>
                   </div>
                   <div class="admin-action-icons">
                     <a href="<?= base_url('adminkonsultasi'); ?>" aria-label="Lihat diagnosa"><i class="ti-eye"></i></a>

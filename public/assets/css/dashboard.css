@@ -62,6 +62,99 @@
     color: #ffffff;
 }
 
+.content-wrapper:not(.admin-dashboard) {
+    background: #f4f5fb;
+}
+
+.content-wrapper:not(.admin-dashboard) .grid-margin > .row.align-items-center {
+    padding: .4rem 0 .2rem;
+}
+
+.content-wrapper:not(.admin-dashboard) h3.font-weight-bold {
+    margin-bottom: .25rem;
+    color: #242642;
+    font-size: 24px;
+    font-weight: 900 !important;
+}
+
+.content-wrapper:not(.admin-dashboard) h6.text-muted,
+.content-wrapper:not(.admin-dashboard) .text-muted {
+    color: #858ca3 !important;
+}
+
+.content-wrapper:not(.admin-dashboard) .card {
+    border: 0;
+    border-radius: 8px;
+    box-shadow: 0 12px 32px rgba(35, 45, 95, .06);
+}
+
+.content-wrapper:not(.admin-dashboard) .card .card-body {
+    padding: 1.35rem;
+}
+
+.content-wrapper:not(.admin-dashboard) .card-title {
+    color: #242642;
+    font-size: 16px;
+    font-weight: 900;
+}
+
+.content-wrapper:not(.admin-dashboard) .table {
+    margin-bottom: 0;
+}
+
+.content-wrapper:not(.admin-dashboard) .table thead th {
+    border-top: 0;
+    border-bottom: 1px solid #edf0f7;
+    color: #8f96aa;
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.content-wrapper:not(.admin-dashboard) .table td {
+    color: #4f556d;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.content-wrapper:not(.admin-dashboard) .btn {
+    border-radius: 8px;
+    font-weight: 800;
+}
+
+.content-wrapper:not(.admin-dashboard) .btn-sm {
+    padding: .35rem .7rem;
+}
+
+.content-wrapper:not(.admin-dashboard) .form-control {
+    border-color: #e5e8f2;
+    border-radius: 8px;
+    color: #30334f;
+}
+
+.content-wrapper:not(.admin-dashboard) .form-control:focus {
+    border-color: #4b49ac;
+    box-shadow: 0 0 0 3px rgba(75, 73, 172, .12);
+}
+
+.content-wrapper:not(.admin-dashboard) .modal-content {
+    border: 0;
+    border-radius: 8px;
+    box-shadow: 0 22px 60px rgba(35, 45, 95, .18);
+}
+
+.content-wrapper:not(.admin-dashboard) .modal-header,
+.content-wrapper:not(.admin-dashboard) .modal-footer {
+    border-color: #eef1f7;
+}
+
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+    border: 1px solid #e5e8f2;
+    border-radius: 8px;
+    color: #30334f;
+}
+
 @media (min-width: 992px) {
     .sidebar-hidden .sidebar {
         width: 0 !important;

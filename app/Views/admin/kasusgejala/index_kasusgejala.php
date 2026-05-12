@@ -19,15 +19,16 @@
             <div class="col-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Tabel Kasus Gejala</h4>
+                        <p class="text-muted mb-3">Halaman ini menampilkan relasi gejala lama. Perhitungan terbaru memakai data status gizi untuk Naive Bayes dan menu Certainty Factor untuk bobot keyakinan.</p>
+                        <h4 class="card-title">Relasi Gejala</h4>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
-                                        <th>Id Kasus</th>
-                                        <th>Id Gejala</th>
-                                        <th>Nilai</th>
+                                        <th>Hasil NB</th>
+                                        <th>Gejala</th>
+                                        <th>Bobot CF</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -40,13 +41,13 @@
                                                     <?= $no++; ?>
                                                 </td>
                                                 <td>
-                                                    <?= $kasusgejala['id_kasus']; ?>
+                                                    <?= esc($kasusgejala['nama_kasus'] ?? ('Kasus #' . $kasusgejala['id_kasus'])); ?>
                                                 </td>
                                                 <td>
-                                                    <?= $kasusgejala['id_gejala']; ?>
+                                                    <?= esc($kasusgejala['nama_gejala'] ?? ('Gejala #' . $kasusgejala['id_gejala'])); ?>
                                                 </td>
                                                 <td>
-                                                    <?= $kasusgejala['nilai']; ?>
+                                                    <?= esc((string) $kasusgejala['nilai']); ?>
                                                 </td>
                                                 <td>
                                                     <button class="btn btn-primary btn-sm">Edit</button>
