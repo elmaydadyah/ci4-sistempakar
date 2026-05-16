@@ -12,8 +12,23 @@
                     </p>
 
                     <div class="hero-cta">
-                        <a class="btn-primary-landing" href="<?= base_url('/konseling') ?>">Mulai Konseling</a>
+                        <a class="btn-primary-landing" href="<?= base_url('/konsultasi') ?>">Mulai Konseling</a>
                         <a class="btn-secondary-landing" href="<?= base_url('/#about') ?>">Pelajari Dulu</a>
+                    </div>
+
+                    <div class="hero-highlights" aria-label="Ringkasan manfaat StuntCare">
+                        <article>
+                            <strong>Cepat</strong>
+                            <span>Konsultasi awal dari rumah</span>
+                        </article>
+                        <article>
+                            <strong>Terarah</strong>
+                            <span>Hasil mudah dipahami</span>
+                        </article>
+                        <article>
+                            <strong>Rapi</strong>
+                            <span>Riwayat anak tersimpan</span>
+                        </article>
                     </div>
                 </div>
 

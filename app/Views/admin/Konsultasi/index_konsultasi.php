@@ -9,7 +9,7 @@
                 <div class="row align-items-center">
                     <div class="col-12 col-xl-8 mb-2 mb-xl-0">
                         <h3 class="font-weight-bold">Proses Diagnosa</h3>
-                        <h6 class="font-weight-normal mb-0 text-muted">Pantau kesiapan data dan alur konsultasi dari data anak, gejala, CF, sampai hasil.</h6>
+                        <h6 class="font-weight-normal mb-0 text-muted">Pantau alur konsultasi dari input balita, Z-Score, gejala otomatis, sampai Naive Bayes H1/H2/H3.</h6>
                     </div>
                     <div class="col-12 col-xl-4 text-xl-right">
                         <a class="btn btn-primary" href="<?= base_url('konsultasi') ?>">Buka Form Diagnosa</a>
@@ -22,8 +22,9 @@
             <?php
             $cards = [
                 ['label' => 'Data Anak', 'value' => $total_anak ?? 0, 'href' => base_url('adminanak'), 'icon' => 'ti-user'],
-                ['label' => 'Data Gejala', 'value' => $total_gejala ?? 0, 'href' => base_url('admingejala'), 'icon' => 'ti-clipboard'],
-                ['label' => 'Bobot CF', 'value' => $total_cf ?? 0, 'href' => base_url('admincf'), 'icon' => 'ti-control-shuffle'],
+                ['label' => 'Data Latih', 'value' => $total_data_latih ?? 0, 'href' => base_url('adminstatusgizi'), 'icon' => 'ti-clipboard'],
+                ['label' => 'H1 Normal', 'value' => $total_h1 ?? 0, 'href' => base_url('adminhasildiagnosa'), 'icon' => 'ti-check-box'],
+                ['label' => 'H2/H3 Risiko', 'value' => $total_h2_h3 ?? 0, 'href' => base_url('adminhasildiagnosa'), 'icon' => 'ti-pulse'],
                 ['label' => 'Hasil Diagnosa', 'value' => $total_hasil ?? 0, 'href' => base_url('adminhasildiagnosa'), 'icon' => 'ti-pulse'],
             ];
             ?>
@@ -48,10 +49,10 @@
                     <div class="card-body">
                         <h4 class="card-title">Alur Diagnosa</h4>
                         <div class="admin-empty-state text-left">
-                            <p class="mb-2"><strong>1. Data anak</strong> diisi dari halaman konseling.</p>
-                            <p class="mb-2"><strong>2. Gejala</strong> dipilih pada form konsultasi.</p>
-                            <p class="mb-2"><strong>3. Naive Bayes</strong> membandingkan pengukuran dengan data latih status gizi.</p>
-                            <p class="mb-0"><strong>4. Certainty Factor</strong> menghitung tingkat keyakinan dari gejala terpilih.</p>
+                            <p class="mb-2"><strong>1. User</strong> menginput data balita: identitas, BB, TB, lingkar lengan, lingkar kepala, riwayat, pola makan, dan tempat tinggal.</p>
+                            <p class="mb-2"><strong>2. Sistem</strong> menghitung Z-Score BB/U, TB/U, dan BB/TB lalu membuat kategori status gizi.</p>
+                            <p class="mb-2"><strong>3. Sistem</strong> mengonversi kategori Z-Score menjadi gejala untuk algoritma.</p>
+                            <p class="mb-0"><strong>4. Naive Bayes</strong> menghitung prior, likelihood, posterior, lalu memilih H1, H2, atau H3.</p>
                         </div>
                     </div>
                 </div>
@@ -66,8 +67,8 @@
                                 <thead>
                                     <tr>
                                         <th>Nama</th>
-                                        <th>Hasil NB</th>
-                                        <th>CF</th>
+                                        <th>Kelas NB</th>
+                                        <th>Posterior</th>
                                         <th>Tanggal</th>
                                     </tr>
                                 </thead>
@@ -104,9 +105,11 @@
                                 <thead>
                                     <tr>
                                         <th>Nama Anak</th>
+                                        <th>NIK</th>
                                         <th>Umur</th>
                                         <th>BB</th>
                                         <th>TB</th>
+                                        <th>TB/U</th>
                                         <th>Orang Tua</th>
                                     </tr>
                                 </thead>
@@ -115,15 +118,17 @@
                                         <?php foreach ($recent_anak as $anak): ?>
                                             <tr>
                                                 <td><?= esc($anak['nama_anak'] ?? '-'); ?></td>
+                                                <td><?= esc($anak['nik'] ?? '-'); ?></td>
                                                 <td><?= esc((string) ($anak['umur_bulan'] ?? '-')); ?> bulan</td>
                                                 <td><?= esc((string) ($anak['berat_badan'] ?? '-')); ?> kg</td>
                                                 <td><?= esc((string) ($anak['tinggi_badan'] ?? '-')); ?> cm</td>
+                                                <td><?= esc($anak['kategori_tb_u'] ?? '-'); ?></td>
                                                 <td><?= esc($anak['nama_ortu'] ?? '-'); ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>
                                         <tr>
-                                            <td colspan="5" class="text-center text-muted py-4">Belum ada data anak.</td>
+                                            <td colspan="7" class="text-center text-muted py-4">Belum ada data anak.</td>
                                         </tr>
                                     <?php endif; ?>
                                 </tbody>

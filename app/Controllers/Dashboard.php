@@ -19,6 +19,9 @@ class Dashboard extends BaseController
             'relasi' => $this->countTable($db, 'tb_kons_detail'),
             'status_gizi' => $this->countTable($db, 'tb_anak_status_gizi'),
             'hasil_diagnosa' => $this->countTable($db, 'tb_hasil_diagnosa'),
+            'standar_antropometri' => $this->countTable($db, 'tb_standar_antropometri'),
+            'prior_nb' => $this->countTable($db, 'tb_naive_bayes_prior'),
+            'likelihood_nb' => $this->countTable($db, 'tb_naive_bayes_likelihood'),
         ];
 
         $nutritionStatus = [

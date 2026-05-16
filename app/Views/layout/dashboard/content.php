@@ -10,12 +10,13 @@ $totalStatusGizi = (int) ($stats['status_gizi'] ?? 0);
 $riskCount = (int) ($nutritionStatus['gizi_kurang'] ?? 0) + (int) ($nutritionStatus['pendek'] ?? 0);
 $riskPercent = $totalStatusGizi > 0 ? min(100, round(($riskCount / $totalStatusGizi) * 100)) : 0;
 $diagnosisTotal = (int) ($stats['hasil_diagnosa'] ?? 0);
-$gejalaTotal = (int) ($stats['gejala'] ?? 0);
-$kasusTotal = (int) ($stats['kasus'] ?? 0);
+$standarTotal = (int) ($stats['standar_antropometri'] ?? 0);
+$priorTotal = (int) ($stats['prior_nb'] ?? 0);
+$likelihoodTotal = (int) ($stats['likelihood_nb'] ?? 0);
 
 $summaryCards = [
   [
-    'title' => 'Data Anak',
+    'title' => 'Data Latih',
     'subtitle' => 'Status gizi tersimpan',
     'value' => $totalStatusGizi,
     'percent' => $totalStatusGizi > 0 ? 100 : 0,
@@ -24,7 +25,7 @@ $summaryCards = [
     'icon' => 'ti-user',
   ],
   [
-    'title' => 'Hasil Diagnosa',
+    'title' => 'Hasil Konsultasi',
     'subtitle' => 'Konsultasi tersimpan',
     'value' => $diagnosisTotal,
     'percent' => min(100, $diagnosisTotal * 10),
@@ -33,21 +34,21 @@ $summaryCards = [
     'icon' => 'ti-pulse',
   ],
   [
-    'title' => 'Data Gejala',
-    'subtitle' => 'Basis pengetahuan',
-    'value' => $gejalaTotal,
-    'percent' => min(100, $gejalaTotal * 8),
+    'title' => 'Standar Antropometri',
+    'subtitle' => 'Referensi Z-Score',
+    'value' => $standarTotal,
+    'percent' => min(100, $standarTotal),
     'tone' => 'muted',
-    'href' => base_url('admingejala'),
+    'href' => base_url('adminstandar'),
     'icon' => 'ti-clipboard',
   ],
   [
-    'title' => 'Data Penyakit',
-    'subtitle' => 'Kasus rujukan',
-    'value' => $kasusTotal,
-    'percent' => min(100, $kasusTotal * 16),
+    'title' => 'Probabilitas NB',
+    'subtitle' => 'Prior dan likelihood',
+    'value' => $priorTotal + $likelihoodTotal,
+    'percent' => min(100, ($priorTotal + $likelihoodTotal) * 2),
     'tone' => 'success',
-    'href' => base_url('adminpenyakit'),
+    'href' => base_url('adminlikelihood'),
     'icon' => 'ti-heart',
   ],
 ];
@@ -61,8 +62,8 @@ $summaryCards = [
           <div>
             <span>Dashboard Admin</span>
             <h3>Halo, <?= esc($profileNama); ?>!</h3>
-            <p>Kelola data StuntCare, pantau hasil diagnosa harian, dan lihat status gizi anak dalam satu ringkasan.</p>
-            <a href="<?= base_url('adminstatusgizi'); ?>">Kelola data</a>
+            <p>Kelola data StuntCare, pantau hasil konsultasi harian, dan rawat referensi Z-Score serta Naive Bayes.</p>
+            <a href="<?= base_url('adminstandar'); ?>">Kelola referensi</a>
           </div>
           <div class="admin-live-widget" aria-label="Waktu saat ini">
             <small id="dashboardDate">-</small>
@@ -114,7 +115,7 @@ $summaryCards = [
           <div class="admin-section-heading">
             <div>
               <h4>Pemantauan Status Gizi</h4>
-              <p>Lima data status gizi terbaru yang masuk ke sistem.</p>
+              <p>Lima data latih status gizi terbaru yang masuk ke sistem.</p>
             </div>
             <div class="admin-heading-actions">
               <input type="search" id="nutritionSearch" class="admin-search-input" placeholder="Cari anak">

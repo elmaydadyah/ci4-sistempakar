@@ -9,10 +9,10 @@
                 <div class="row align-items-center">
                     <div class="col-12 col-xl-8 mb-2 mb-xl-0">
                         <h3 class="font-weight-bold">Data Anak</h3>
-                        <h6 class="font-weight-normal mb-0 text-muted">Data anak yang masuk dari form konseling awal.</h6>
+                        <h6 class="font-weight-normal mb-0 text-muted">Data balita dari konsultasi beserta hasil Z-Score yang dikonversi menjadi gejala.</h6>
                     </div>
                     <div class="col-12 col-xl-4 text-xl-right">
-                        <a class="btn btn-primary" href="<?= base_url('konseling') ?>">Tambah dari Konseling</a>
+                        <a class="btn btn-primary" href="<?= base_url('konsultasi') ?>">Tambah dari Konseling</a>
                     </div>
                 </div>
             </div>
@@ -29,11 +29,14 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Nama Anak</th>
+                                        <th>NIK</th>
                                         <th>JK</th>
                                         <th>Umur</th>
                                         <th>BB</th>
                                         <th>TB</th>
+                                        <th>Z-Score</th>
                                         <th>Orang Tua</th>
+                                        <th>Tempat Tinggal</th>
                                         <th>Alamat</th>
                                         <th>Dibuat</th>
                                     </tr>
@@ -48,18 +51,25 @@
                                                     <strong><?= esc($anak['nama_anak'] ?? '-'); ?></strong>
                                                     <div class="text-muted small"><?= esc($anak['tanggal_lahir'] ?? '-'); ?></div>
                                                 </td>
+                                                <td><?= esc($anak['nik'] ?? '-'); ?></td>
                                                 <td><?= esc($anak['jenis_kelamin'] ?? ($anak['jk_anak'] ?? '-')); ?></td>
                                                 <td><?= esc((string) ($anak['umur_bulan'] ?? $anak['umur_anak'] ?? '-')); ?> bulan</td>
                                                 <td><?= esc((string) ($anak['berat_badan'] ?? $anak['berat_anak'] ?? '-')); ?> kg</td>
                                                 <td><?= esc((string) ($anak['tinggi_badan'] ?? $anak['tinggi_anak'] ?? '-')); ?> cm</td>
+                                                <td>
+                                                    <div class="small">BB/U: <?= esc($anak['kategori_bb_u'] ?? '-'); ?> <?= isset($anak['zs_bb_u']) ? '(' . esc((string) $anak['zs_bb_u']) . ')' : ''; ?></div>
+                                                    <div class="small">TB/U: <?= esc($anak['kategori_tb_u'] ?? '-'); ?> <?= isset($anak['zs_tb_u']) ? '(' . esc((string) $anak['zs_tb_u']) . ')' : ''; ?></div>
+                                                    <div class="small">BB/TB: <?= esc($anak['kategori_bb_tb'] ?? '-'); ?> <?= isset($anak['zs_bb_tb']) ? '(' . esc((string) $anak['zs_bb_tb']) . ')' : ''; ?></div>
+                                                </td>
                                                 <td><?= esc($anak['nama_ortu'] ?? '-'); ?></td>
+                                                <td><?= esc($anak['tempat_tinggal'] ?? '-'); ?></td>
                                                 <td><?= esc($anak['alamat'] ?? '-'); ?></td>
                                                 <td><?= esc($anak['created_at'] ?? '-'); ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>
                                         <tr>
-                                            <td colspan="9" class="text-center text-muted py-4">Belum ada data anak dari form konseling.</td>
+                                            <td colspan="12" class="text-center text-muted py-4">Belum ada data anak dari form konseling.</td>
                                         </tr>
                                     <?php endif; ?>
                                 </tbody>

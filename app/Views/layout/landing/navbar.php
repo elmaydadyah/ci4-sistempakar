@@ -11,7 +11,8 @@
                 <ul class="nav-links">
                     <li><a data-nav-target="home" href="<?= base_url('/#home') ?>">Home</a></li>
                     <li><a data-nav-target="about" href="<?= base_url('/#about') ?>">About</a></li>
-                    <li><a data-nav-target="konseling" href="<?= base_url('/konseling') ?>">Konseling</a></li>
+                    <li><a data-nav-target="layanan" href="<?= base_url('/#layanan') ?>">Layanan</a></li>
+                    <li><a data-nav-target="konseling" href="<?= base_url('/konsultasi') ?>">Konseling</a></li>
                     <li><a data-nav-target="contact" href="<?= base_url('/#contact') ?>">Contact</a></li>
                     <li><a data-nav-target="faq" href="<?= base_url('/#faq') ?>">FAQ</a></li>
                     <li class="mobile-login-link"><a href="<?= base_url('/login') ?>">Login</a></li>
@@ -40,7 +41,7 @@
                     function setActiveNav() {
                         var path = window.location.pathname.replace(/\/+$/, '');
                         var hash = window.location.hash.replace('#', '');
-                        var activeTarget = path.indexOf('/konseling') !== -1 ? 'konseling' : (hash || 'home');
+                        var activeTarget = (path.indexOf('/konseling') !== -1 || path.indexOf('/konsultasi') !== -1) ? 'konseling' : (hash || 'home');
 
                         navLinks.forEach(function (link) {
                             link.classList.toggle('is-active', link.getAttribute('data-nav-target') === activeTarget);

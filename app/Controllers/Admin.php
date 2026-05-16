@@ -155,8 +155,9 @@ class Admin extends BaseController
         $db = db_connect();
         $data = [
             'total_anak' => $db->tableExists('tb_anak') ? $db->table('tb_anak')->countAllResults() : 0,
-            'total_gejala' => $db->tableExists('tb_gejala') ? $db->table('tb_gejala')->countAllResults() : 0,
-            'total_cf' => $db->tableExists('tb_certainty_factor') ? $db->table('tb_certainty_factor')->countAllResults() : 0,
+            'total_data_latih' => $db->tableExists('tb_anak_status_gizi') ? $db->table('tb_anak_status_gizi')->countAllResults() : 0,
+            'total_h1' => $db->tableExists('tb_hasil_diagnosa') && $db->fieldExists('kelas_hasil', 'tb_hasil_diagnosa') ? $db->table('tb_hasil_diagnosa')->where('kelas_hasil', 'H1')->countAllResults() : 0,
+            'total_h2_h3' => $db->tableExists('tb_hasil_diagnosa') && $db->fieldExists('kelas_hasil', 'tb_hasil_diagnosa') ? $db->table('tb_hasil_diagnosa')->whereIn('kelas_hasil', ['H2', 'H3'])->countAllResults() : 0,
             'total_hasil' => $db->tableExists('tb_hasil_diagnosa') ? $db->table('tb_hasil_diagnosa')->countAllResults() : 0,
             'recent_anak' => $db->tableExists('tb_anak')
                 ? $db->table('tb_anak')->orderBy('id_anak', 'DESC')->get(5)->getResultArray()
@@ -196,6 +197,126 @@ class Admin extends BaseController
         ];
 
         return view('admin/certaintyfactor/index_cf', $data);
+    }
+
+    public function indexStandarAntropometri()
+    {
+        $db = db_connect();
+        $data = [
+            'tb_standar' => $db->tableExists('tb_standar_antropometri')
+                ? $db->table('tb_standar_antropometri')
+                    ->orderBy('indikator', 'ASC')
+                    ->orderBy('jenis_kelamin', 'ASC')
+                    ->orderBy('umur_bulan', 'ASC')
+                    ->orderBy('tinggi_cm', 'ASC')
+                    ->get(300)
+                    ->getResultArray()
+                : [],
+        ];
+
+        return view('admin/referensi/index_standar', $data);
+    }
+
+    public function updateStandarAntropometri($id)
+    {
+        $db = db_connect();
+        if (!$db->tableExists('tb_standar_antropometri')) {
+            return redirect()->to('/adminstandar')->with('error', 'Tabel standar antropometri belum tersedia.');
+        }
+
+        $median = (float) $this->request->getPost('median');
+        $sd = (float) $this->request->getPost('sd');
+
+        if ($sd <= 0) {
+            return redirect()->to('/adminstandar')->with('error', 'SD harus lebih dari 0.');
+        }
+
+        $db->table('tb_standar_antropometri')
+            ->where('id_standar', (int) $id)
+            ->update([
+                'median' => $median,
+                'sd' => $sd,
+                'sumber' => trim((string) $this->request->getPost('sumber')) ?: null,
+                'catatan' => trim((string) $this->request->getPost('catatan')) ?: null,
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+
+        return redirect()->to('/adminstandar')->with('success', 'Standar antropometri berhasil diupdate.');
+    }
+
+    public function indexNaiveBayesPrior()
+    {
+        $db = db_connect();
+        $data = [
+            'tb_prior' => $db->tableExists('tb_naive_bayes_prior')
+                ? $db->table('tb_naive_bayes_prior')->orderBy('kelas', 'ASC')->get()->getResultArray()
+                : [],
+        ];
+
+        return view('admin/referensi/index_prior', $data);
+    }
+
+    public function updateNaiveBayesPrior($id)
+    {
+        $db = db_connect();
+        if (!$db->tableExists('tb_naive_bayes_prior')) {
+            return redirect()->to('/adminprior')->with('error', 'Tabel prior belum tersedia.');
+        }
+
+        $probabilitas = (float) $this->request->getPost('probabilitas');
+        if ($probabilitas <= 0 || $probabilitas > 1) {
+            return redirect()->to('/adminprior')->with('error', 'Probabilitas harus lebih dari 0 dan maksimal 1.');
+        }
+
+        $db->table('tb_naive_bayes_prior')
+            ->where('id_prior', (int) $id)
+            ->update([
+                'label' => trim((string) $this->request->getPost('label')),
+                'probabilitas' => $probabilitas,
+                'rekomendasi' => trim((string) $this->request->getPost('rekomendasi')) ?: null,
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+
+        return redirect()->to('/adminprior')->with('success', 'Prior Naive Bayes berhasil diupdate.');
+    }
+
+    public function indexNaiveBayesLikelihood()
+    {
+        $db = db_connect();
+        $data = [
+            'tb_likelihood' => $db->tableExists('tb_naive_bayes_likelihood')
+                ? $db->table('tb_naive_bayes_likelihood')
+                    ->orderBy('indikator', 'ASC')
+                    ->orderBy('kategori', 'ASC')
+                    ->orderBy('kelas', 'ASC')
+                    ->get()
+                    ->getResultArray()
+                : [],
+        ];
+
+        return view('admin/referensi/index_likelihood', $data);
+    }
+
+    public function updateNaiveBayesLikelihood($id)
+    {
+        $db = db_connect();
+        if (!$db->tableExists('tb_naive_bayes_likelihood')) {
+            return redirect()->to('/adminlikelihood')->with('error', 'Tabel likelihood belum tersedia.');
+        }
+
+        $probabilitas = (float) $this->request->getPost('probabilitas');
+        if ($probabilitas <= 0 || $probabilitas > 1) {
+            return redirect()->to('/adminlikelihood')->with('error', 'Probabilitas harus lebih dari 0 dan maksimal 1.');
+        }
+
+        $db->table('tb_naive_bayes_likelihood')
+            ->where('id_likelihood', (int) $id)
+            ->update([
+                'probabilitas' => $probabilitas,
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+
+        return redirect()->to('/adminlikelihood')->with('success', 'Likelihood Naive Bayes berhasil diupdate.');
     }
 
     public function createCertaintyFactor()

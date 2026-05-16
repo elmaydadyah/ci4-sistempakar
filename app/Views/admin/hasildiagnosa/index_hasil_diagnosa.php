@@ -9,7 +9,7 @@
                 <div class="row align-items-center">
                     <div class="col-12 col-xl-8 mb-2 mb-xl-0">
                         <h3 class="font-weight-bold">Hasil Diagnosa</h3>
-                        <h6 class="font-weight-normal mb-0 text-muted">Riwayat hasil konsultasi NB + CF yang sudah dihitung sistem.</h6>
+                        <h6 class="font-weight-normal mb-0 text-muted">Riwayat hasil konsultasi Z-Score + Naive Bayes H1/H2/H3.</h6>
                     </div>
                     <div class="col-12 col-xl-4 text-xl-right">
                         <a class="btn btn-primary" href="<?= base_url('konsultasi') ?>">Konsultasi Baru</a>
@@ -29,10 +29,12 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Nama Anak</th>
+                                        <th>NIK</th>
                                         <th>Umur</th>
-                                        <th>Hasil NB</th>
-                                        <th>Keyakinan CF</th>
-                                        <th>Gejala</th>
+                                        <th>Z-Score</th>
+                                        <th>Kelas NB</th>
+                                        <th>Posterior</th>
+                                        <th>Gejala Z-Score</th>
                                         <th>Tanggal</th>
                                     </tr>
                                 </thead>
@@ -43,7 +45,13 @@
                                             <tr>
                                                 <td><?= $no++; ?></td>
                                                 <td><strong><?= esc($hasil['nama'] ?? '-'); ?></strong></td>
+                                                <td><?= esc($hasil['nik'] ?? '-'); ?></td>
                                                 <td><?= esc((string) ($hasil['umur'] ?? '-')); ?> bulan</td>
+                                                <td>
+                                                    <div class="small">BB/U: <?= esc($hasil['kategori_bb_u'] ?? '-'); ?> <?= isset($hasil['zs_bb_u']) ? '(' . esc((string) $hasil['zs_bb_u']) . ')' : ''; ?></div>
+                                                    <div class="small">TB/U: <?= esc($hasil['kategori_tb_u'] ?? '-'); ?> <?= isset($hasil['zs_tb_u']) ? '(' . esc((string) $hasil['zs_tb_u']) . ')' : ''; ?></div>
+                                                    <div class="small">BB/TB: <?= esc($hasil['kategori_bb_tb'] ?? '-'); ?> <?= isset($hasil['zs_bb_tb']) ? '(' . esc((string) $hasil['zs_bb_tb']) . ')' : ''; ?></div>
+                                                </td>
                                                 <td><?= esc($hasil['nama_kasus'] ?? 'Belum ada indikasi'); ?></td>
                                                 <td>
                                                     <span class="badge badge-primary"><?= esc((string) ($hasil['persentase'] ?? 0)); ?>%</span>
@@ -54,7 +62,7 @@
                                         <?php endforeach; ?>
                                     <?php else: ?>
                                         <tr>
-                                            <td colspan="7" class="text-center text-muted py-4">Belum ada hasil diagnosa tersimpan.</td>
+                                            <td colspan="9" class="text-center text-muted py-4">Belum ada hasil diagnosa tersimpan.</td>
                                         </tr>
                                     <?php endif; ?>
                                 </tbody>
