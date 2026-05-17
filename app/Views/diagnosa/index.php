@@ -137,31 +137,42 @@
                     <div class="form-section-title">
                         <div>
                             <span class="section-label">Bagian 3</span>
-                            <h2>Kebiasaan dan lingkungan</h2>
-                            <p>Bagian ini membantu admin melihat faktor pendukung, bukan untuk menghakimi pola asuh.</p>
+                            <h2>Pertanyaan gejala</h2>
+                            <p>Jawab sesuai kondisi yang terlihat pada anak dan riwayat ibu saat hamil.</p>
                         </div>
                     </div>
 
-                    <div class="identity-grid">
-                        <label>
-                            <span>Wilayah tempat tinggal</span>
-                            <input type="text" name="tempat_tinggal" value="<?= esc($old['tempat_tinggal'] ?? '', 'attr') ?>" placeholder="Desa/kelurahan atau wilayah">
-                            <small>Contoh: Desa Limusnunggal.</small>
-                        </label>
-                        <label class="consult-full">
-                            <span>Alamat</span>
-                            <textarea name="alamat" rows="3" placeholder="Tulis alamat singkat atau patokan rumah"><?= esc($old['alamat'] ?? '') ?></textarea>
-                        </label>
-                        <label class="consult-full">
-                            <span>Catatan saat ibu hamil</span>
-                            <textarea name="riwayat_kehamilan" rows="3" placeholder="Contoh: anemia, kurang energi, lahir prematur, atau tulis normal jika tidak ada catatan"><?= esc($old['riwayat_kehamilan'] ?? '') ?></textarea>
-                            <small>Boleh dikosongkan kalau tidak ingat.</small>
-                        </label>
-                        <label class="consult-full">
-                            <span>Kebiasaan makan anak</span>
-                            <textarea name="pola_makan" rows="3" placeholder="Contoh: makan 3 kali sehari, masih ASI, lauk telur/ikan, jarang sayur, atau catatan lain"><?= esc($old['pola_makan'] ?? '') ?></textarea>
-                            <small>Tulis dengan bahasa sehari-hari saja.</small>
-                        </label>
+                    <?php $jawabanGejala = is_array($old['jawaban_gejala'] ?? null) ? $old['jawaban_gejala'] : []; ?>
+                    <div class="symptom-question-list">
+                        <?php if (!empty($tb_gejala)): ?>
+                            <?php foreach ($tb_gejala as $gejala): ?>
+                                <?php
+                                    $idGejala = (int) ($gejala['id_gejala'] ?? 0);
+                                    $jawaban = $jawabanGejala[$idGejala] ?? 'tidak';
+                                ?>
+                                <article class="symptom-question">
+                                    <div>
+                                        <span><?= esc($gejala['kode_gejala'] ?? ('G' . $idGejala)) ?></span>
+                                        <p><?= esc($gejala['pertanyaan_gejala'] ?? $gejala['nama_gejala'] ?? '') ?></p>
+                                    </div>
+                                    <div class="symptom-answer" role="radiogroup" aria-label="<?= esc($gejala['pertanyaan_gejala'] ?? $gejala['nama_gejala'] ?? '', 'attr') ?>">
+                                        <label>
+                                            <input type="radio" name="jawaban_gejala[<?= esc((string) $idGejala, 'attr') ?>]" value="ya" <?= $jawaban === 'ya' ? 'checked' : '' ?>>
+                                            <b>Ya</b>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="jawaban_gejala[<?= esc((string) $idGejala, 'attr') ?>]" value="tidak" <?= $jawaban !== 'ya' ? 'checked' : '' ?>>
+                                            <b>Tidak</b>
+                                        </label>
+                                    </div>
+                                </article>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <div class="friendly-panel mini">
+                                <strong>Data gejala belum tersedia</strong>
+                                <p>Tambahkan data gejala dari menu admin agar pertanyaan bisa tampil di sini.</p>
+                            </div>
+                        <?php endif; ?>
                     </div>
 
                     <div class="consult-flow-note">
@@ -222,7 +233,7 @@
 
                             <h3 class="result-subtitle">Tanda yang dibaca sistem</h3>
                             <div class="consult-steps">
-                                <?php foreach ($hasil['gejala'] as $gejala): ?>
+                                <?php foreach ($hasil['gejala_terbaca'] ?? $hasil['gejala'] as $gejala): ?>
                                     <span><?= esc($gejala['nama']) ?></span>
                                 <?php endforeach; ?>
                             </div>

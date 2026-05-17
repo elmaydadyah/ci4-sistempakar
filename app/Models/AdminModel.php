@@ -38,7 +38,7 @@ class AdminModel extends Model
     {
         $this->table = 'tb_gejala';
         $this->primaryKey = 'id_gejala';
-        $this->allowedFields = ['nama_gejala'];
+        $this->allowedFields = ['kode_gejala', 'nama_gejala'];
         return $this->insert($data);
     }
 
@@ -46,7 +46,7 @@ class AdminModel extends Model
     {
         $this->table = 'tb_gejala';
         $this->primaryKey = 'id_gejala';
-        $this->allowedFields = ['nama_gejala'];
+        $this->allowedFields = ['kode_gejala', 'nama_gejala'];
         return $this->update($id, $data);
     }
 
@@ -55,6 +55,14 @@ class AdminModel extends Model
         $this->table = 'tb_gejala';
         $this->primaryKey = 'id_gejala';
         return $this->delete($id);
+    }
+
+    public function getHipotesis()
+    {
+        return $this->db->table('tb_hipotesis')
+            ->orderBy('kode_hipotesis', 'ASC')
+            ->get()
+            ->getResultArray();
     }
 
     public function getPenyakit()

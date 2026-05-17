@@ -41,7 +41,7 @@
                                 <thead>
                                     <tr>
                                         <th>No.</th>
-                                        <th>ID Gejala</th>
+                                        <th>Kode Gejala</th>
                                         <th>Nama Gejala</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -52,12 +52,13 @@
                                         <?php foreach ($tb_gejala as $gejala): ?>
                                             <tr>
                                                 <td><?= $no++; ?></td>
-                                                <td><?= esc($gejala['id_gejala']); ?></td>
+                                                <td><?= esc($gejala['kode_gejala'] ?? '-'); ?></td>
                                                 <td><?= esc($gejala['nama_gejala']); ?></td>
                                                 <td>
                                                     <button class="btn btn-primary btn-sm" data-toggle="modal"
                                                         data-target="#editGejalaModal"
                                                         data-id="<?= esc($gejala['id_gejala'], 'attr'); ?>"
+                                                        data-kode="<?= esc($gejala['kode_gejala'] ?? '', 'attr'); ?>"
                                                         data-nama="<?= esc($gejala['nama_gejala'], 'attr'); ?>">Edit</button>
                                                     <a href="<?= base_url('/admin/deleteGejala/' . $gejala['id_gejala']); ?>"
                                                         class="btn btn-danger btn-sm"
@@ -93,6 +94,10 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
+                            <label for="create-kode-gejala">Kode Gejala</label>
+                            <input type="text" class="form-control" id="create-kode-gejala" name="kode_gejala" required>
+                        </div>
+                        <div class="form-group">
                             <label for="create-nama-gejala">Nama Gejala</label>
                             <input type="text" class="form-control" id="create-nama-gejala" name="nama_gejala" required>
                         </div>
@@ -120,6 +125,10 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
+                            <label for="edit-kode-gejala">Kode Gejala</label>
+                            <input type="text" class="form-control" id="edit-kode-gejala" name="kode_gejala" required>
+                        </div>
+                        <div class="form-group">
                             <label for="edit-nama-gejala">Nama Gejala</label>
                             <input type="text" class="form-control" id="edit-nama-gejala" name="nama_gejala" required>
                         </div>
@@ -140,6 +149,7 @@
                 var id = button.data('id');
 
                 $('#editGejalaForm').attr('action', '<?= base_url('/admin/updateGejala'); ?>/' + id);
+                $('#edit-kode-gejala').val(button.data('kode'));
                 $('#edit-nama-gejala').val(button.data('nama'));
             });
         });

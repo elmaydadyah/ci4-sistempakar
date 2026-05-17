@@ -27,6 +27,7 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
+                                        <th>No.</th>
                                         <th>Kelas</th>
                                         <th>Label</th>
                                         <th>Probabilitas</th>
@@ -35,10 +36,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php $no = 1; ?>
                                     <?php foreach ($tb_prior ?? [] as $row): ?>
                                         <tr>
                                             <form action="<?= base_url('admin/updatePrior/' . $row['id_prior']); ?>" method="post">
                                                 <?= csrf_field() ?>
+                                                <td><?= esc((string) $no++); ?></td>
                                                 <td><strong><?= esc($row['kelas']); ?></strong></td>
                                                 <td><input class="form-control form-control-sm" type="text" name="label" value="<?= esc($row['label'], 'attr'); ?>" required></td>
                                                 <td><input class="form-control form-control-sm" type="number" step="0.00001" min="0.00001" max="1" name="probabilitas" value="<?= esc((string) $row['probabilitas'], 'attr'); ?>" required></td>
@@ -48,7 +51,7 @@
                                         </tr>
                                     <?php endforeach; ?>
                                     <?php if (empty($tb_prior)): ?>
-                                        <tr><td colspan="5" class="text-center text-muted py-4">Data prior belum tersedia.</td></tr>
+                                        <tr><td colspan="6" class="text-center text-muted py-4">Data prior belum tersedia.</td></tr>
                                     <?php endif; ?>
                                 </tbody>
                             </table>

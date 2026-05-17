@@ -1663,6 +1663,84 @@ h1 {
     line-height: 1.5;
 }
 
+.symptom-question-list {
+    display: grid;
+    gap: 12px;
+}
+
+.symptom-question {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: center;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.symptom-question span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 0 8px;
+    border-radius: 6px;
+    color: var(--primary);
+    background: #F5F7FF;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.symptom-question p {
+    margin: 8px 0 0;
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.55;
+    font-weight: 800;
+}
+
+.symptom-answer {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(76px, 1fr));
+    gap: 8px;
+}
+
+.symptom-answer label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    margin: 0;
+    padding: 0 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #ffffff;
+    cursor: pointer;
+}
+
+.symptom-answer input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.symptom-answer b {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.symptom-answer label:has(input:checked) {
+    border-color: var(--primary);
+    background: #F5F7FF;
+    box-shadow: 0 0 0 3px rgba(75, 73, 172, .08);
+}
+
+.symptom-answer label:has(input:checked) b {
+    color: var(--primary);
+}
+
 .btn-submit-consult {
     display: inline-flex;
     justify-content: center;
@@ -2198,6 +2276,10 @@ h1 {
     .identity-grid,
     .symptom-grid,
     .konseling-form {
+        grid-template-columns: 1fr;
+    }
+
+    .symptom-question {
         grid-template-columns: 1fr;
     }
 

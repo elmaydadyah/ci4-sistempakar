@@ -19,15 +19,17 @@ class Admin extends BaseController
 
     public function createGejala()
     {
+        $kodeGejala = strtoupper(trim((string) $this->request->getPost('kode_gejala')));
         $namaGejala = trim((string) $this->request->getPost('nama_gejala'));
 
-        if ($namaGejala === '') {
-            session()->setFlashdata('error', 'Nama gejala wajib diisi');
+        if ($kodeGejala === '' || $namaGejala === '') {
+            session()->setFlashdata('error', 'Kode dan nama gejala wajib diisi');
             return redirect()->to('/admingejala');
         }
 
         $model = new AdminModel();
         $result = $model->createGejala([
+            'kode_gejala' => $kodeGejala,
             'nama_gejala' => $namaGejala,
         ]);
 
@@ -38,15 +40,17 @@ class Admin extends BaseController
 
     public function updateGejala($id)
     {
+        $kodeGejala = strtoupper(trim((string) $this->request->getPost('kode_gejala')));
         $namaGejala = trim((string) $this->request->getPost('nama_gejala'));
 
-        if ($namaGejala === '') {
-            session()->setFlashdata('error', 'Nama gejala wajib diisi');
+        if ($kodeGejala === '' || $namaGejala === '') {
+            session()->setFlashdata('error', 'Kode dan nama gejala wajib diisi');
             return redirect()->to('/admingejala');
         }
 
         $model = new AdminModel();
         $result = $model->updateGejala($id, [
+            'kode_gejala' => $kodeGejala,
             'nama_gejala' => $namaGejala,
         ]);
 
@@ -63,6 +67,16 @@ class Admin extends BaseController
         session()->setFlashdata($result ? 'success' : 'error', $result ? 'Data gejala berhasil dihapus' : 'Gagal menghapus data gejala');
 
         return redirect()->to('/admingejala');
+    }
+
+    public function indexHipotesis()
+    {
+        $db = db_connect();
+        $data['tb_hipotesis'] = $db->tableExists('tb_hipotesis')
+            ? (new AdminModel())->getHipotesis()
+            : [];
+
+        return view('admin/hipotesis/index_hipotesis', $data);
     }
 
     public function indexPenyakit()
@@ -202,14 +216,42 @@ class Admin extends BaseController
     public function indexStandarAntropometri()
     {
         $db = db_connect();
+        $indikatorOptions = ['TB/U', 'BB/U', 'BB/TB'];
+        $indikatorAktif = (string) $this->request->getGet('indikator');
+        if (!in_array($indikatorAktif, $indikatorOptions, true)) {
+            $indikatorAktif = 'TB/U';
+        }
+        $perPage = 10;
+        $page = max(1, (int) $this->request->getGet('page'));
+        $totalRows = 0;
+        $offset = ($page - 1) * $perPage;
+
+        if ($db->tableExists('tb_standar_antropometri')) {
+            $totalRows = $db->table('tb_standar_antropometri')
+                ->where('indikator', $indikatorAktif)
+                ->countAllResults();
+        }
+
+        $totalPages = max(1, (int) ceil($totalRows / $perPage));
+        if ($page > $totalPages) {
+            $page = $totalPages;
+            $offset = ($page - 1) * $perPage;
+        }
+
         $data = [
+            'indikator_options' => $indikatorOptions,
+            'indikator_aktif' => $indikatorAktif,
+            'page' => $page,
+            'per_page' => $perPage,
+            'total_rows' => $totalRows,
+            'total_pages' => $totalPages,
             'tb_standar' => $db->tableExists('tb_standar_antropometri')
                 ? $db->table('tb_standar_antropometri')
-                    ->orderBy('indikator', 'ASC')
+                    ->where('indikator', $indikatorAktif)
                     ->orderBy('jenis_kelamin', 'ASC')
                     ->orderBy('umur_bulan', 'ASC')
                     ->orderBy('tinggi_cm', 'ASC')
-                    ->get(300)
+                    ->get($perPage, $offset)
                     ->getResultArray()
                 : [],
         ];
@@ -317,6 +359,54 @@ class Admin extends BaseController
             ]);
 
         return redirect()->to('/adminlikelihood')->with('success', 'Likelihood Naive Bayes berhasil diupdate.');
+    }
+
+    public function indexNilaiProbabilitas()
+    {
+        $db = db_connect();
+        $rows = [];
+
+        if ($db->tableExists('tb_nilai_probabilitas') && $db->tableExists('tb_gejala')) {
+            $rows = $db->table('tb_nilai_probabilitas np')
+                ->select('g.kode_gejala, g.nama_gejala, np.kode_hipotesis, np.nilai_probabilitas')
+                ->join('tb_gejala g', 'g.id_gejala = np.id_gejala', 'left')
+                ->orderBy('g.id_gejala', 'ASC')
+                ->orderBy('np.kode_hipotesis', 'ASC')
+                ->get()
+                ->getResultArray();
+        }
+
+        $data['tb_nilai_probabilitas'] = $this->formatNilaiProbabilitasRows($rows);
+
+        return view('admin/referensi/index_nilai_probabilitas', $data);
+    }
+
+    private function formatNilaiProbabilitasRows(array $rows): array
+    {
+        $formatted = [];
+        foreach ($rows as $row) {
+            $kodeGejala = (string) ($row['kode_gejala'] ?? '');
+            if ($kodeGejala === '') {
+                continue;
+            }
+
+            if (!isset($formatted[$kodeGejala])) {
+                $formatted[$kodeGejala] = [
+                    'kode_gejala' => $kodeGejala,
+                    'nama_gejala' => (string) ($row['nama_gejala'] ?? ''),
+                    'H1' => null,
+                    'H2' => null,
+                    'H3' => null,
+                ];
+            }
+
+            $kodeHipotesis = (string) ($row['kode_hipotesis'] ?? '');
+            if (in_array($kodeHipotesis, ['H1', 'H2', 'H3'], true)) {
+                $formatted[$kodeGejala][$kodeHipotesis] = $row['nilai_probabilitas'];
+            }
+        }
+
+        return array_values($formatted);
     }
 
     public function createCertaintyFactor()

@@ -21,6 +21,7 @@ class Diagnosa extends BaseController
             'hasil' => null,
             'old' => $this->emptyOldInput(),
             'errors' => [],
+            'tb_gejala' => $this->getGejalaPertanyaan(),
         ];
 
         if (!$this->request->is('post')) {
@@ -59,6 +60,7 @@ class Diagnosa extends BaseController
             'tempat_tinggal' => '',
             'riwayat_kehamilan' => '',
             'pola_makan' => '',
+            'jawaban_gejala' => [],
         ];
     }
 
@@ -90,11 +92,15 @@ class Diagnosa extends BaseController
             'tempat_tinggal' => (string) ($anak['tempat_tinggal'] ?? ''),
             'riwayat_kehamilan' => (string) ($anak['riwayat_kehamilan'] ?? ''),
             'pola_makan' => (string) ($anak['pola_makan'] ?? ''),
+            'jawaban_gejala' => [],
         ]);
     }
 
     private function getPostInput(): array
     {
+        $jawabanGejala = $this->request->getPost('jawaban_gejala');
+        $jawabanGejala = is_array($jawabanGejala) ? $jawabanGejala : [];
+
         return [
             'nama' => trim((string) $this->request->getPost('nama')),
             'nik' => trim((string) $this->request->getPost('nik')),
@@ -110,6 +116,7 @@ class Diagnosa extends BaseController
             'tempat_tinggal' => trim((string) $this->request->getPost('tempat_tinggal')),
             'riwayat_kehamilan' => trim((string) $this->request->getPost('riwayat_kehamilan')),
             'pola_makan' => trim((string) $this->request->getPost('pola_makan')),
+            'jawaban_gejala' => $jawabanGejala,
         ];
     }
 
@@ -161,7 +168,8 @@ class Diagnosa extends BaseController
         ];
 
         $zscore = $this->hitungZScore($db, $pengukuran);
-        $gejala = $this->konversiZScoreMenjadiGejala($zscore);
+        $gejala = $this->konversiZScoreMenjadiGejala($db, $zscore);
+        $gejalaTambahan = $this->gejalaTambahanDariJawaban($db, $input['jawaban_gejala'] ?? []);
         $bayes = $this->hitungNaiveBayes($db, $gejala);
         $diagnosa = $bayes['hasil'];
         $posterior = $diagnosa['posterior'] ?? 0.0;
@@ -173,7 +181,9 @@ class Diagnosa extends BaseController
             'pengukuran' => $pengukuran,
             'zscore' => $zscore,
             'gejala' => $gejala,
-            'jumlah_gejala' => count($gejala),
+            'gejala_tambahan' => $gejalaTambahan,
+            'gejala_terbaca' => array_merge($gejala, $gejalaTambahan),
+            'jumlah_gejala' => count($gejala) + count($gejalaTambahan),
             'diagnosa' => $diagnosa,
             'alternatif' => $bayes['alternatif'],
             'prior' => $bayes['prior'],
@@ -182,6 +192,87 @@ class Diagnosa extends BaseController
             'persentase' => (int) round($posterior * 100),
             'rekomendasi' => $this->getRekomendasi($diagnosa['kelas'] ?? 'H1'),
         ];
+    }
+
+    private function getGejalaPertanyaan(): array
+    {
+        $db = db_connect();
+        if (!$db->tableExists('tb_gejala')) {
+            return [];
+        }
+
+        $rows = $db->table('tb_gejala')
+            ->select('id_gejala, kode_gejala, nama_gejala')
+            ->whereNotIn('kode_gejala', ['G01', 'G02', 'G11'])
+            ->orderBy('id_gejala', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        return array_map(function ($row) {
+            $row['pertanyaan_gejala'] = $this->pertanyaanGejala(
+                (string) ($row['kode_gejala'] ?? ''),
+                (string) ($row['nama_gejala'] ?? '')
+            );
+
+            return $row;
+        }, $rows);
+    }
+
+    private function pertanyaanGejala(string $kodeGejala, string $namaGejala): string
+    {
+        $pertanyaan = [
+            'G01' => 'Apakah berat badan anak cenderung kurang atau tidak sesuai dengan anak seusianya?',
+            'G02' => 'Apakah tinggi badan anak lebih pendek atau lebih rendah dari standar anak seusianya?',
+            'G03' => 'Apakah anak terlihat kurang aktif dalam aktivitas sehari-hari?',
+            'G04' => 'Apakah anak sering sakit atau daya tahan tubuhnya terlihat rendah?',
+            'G05' => 'Apakah anak mengalami keterlambatan dalam berbicara?',
+            'G06' => 'Apakah perkembangan keterampilan fisik anak lambat, seperti berguling, duduk, berdiri, atau berjalan?',
+            'G07' => 'Apakah anak susah fokus saat diajak bermain, belajar, atau berinteraksi?',
+            'G08' => 'Apakah gigi susu atau gigi permanen anak terlambat tumbuh?',
+            'G09' => 'Apakah ada riwayat keluarga yang mengalami stunting?',
+            'G10' => 'Apakah nafsu makan anak berkurang?',
+            'G11' => 'Apakah anak terlihat mengalami kekurangan gizi?',
+            'G12' => 'Apakah kepala anak terlihat lebih besar dibandingkan badannya?',
+            'G13' => 'Apakah kulit anak terlihat kering dan rambutnya tampak tipis?',
+            'G14' => 'Apakah anak sering mengalami mimisan tanpa sebab yang jelas?',
+            'G15' => 'Apakah ibu mengalami anemia saat hamil?',
+            'G16' => 'Apakah ibu sering merasa lemas, pusing, dan mudah lelah saat hamil?',
+            'G17' => 'Apakah ibu mengalami penurunan atau kenaikan berat badan yang tidak normal saat hamil?',
+            'G18' => 'Apakah ibu mengalami Kekurangan Energi Kronis (KEK) selama masa kehamilan?',
+            'G19' => 'Apakah keluarga menerapkan gaya hidup bersih dan sehat di lingkungan rumah?',
+            'G20' => 'Apakah anak tidak memiliki respon yang baik saat diajak berkomunikasi?',
+        ];
+
+        if (isset($pertanyaan[$kodeGejala])) {
+            return $pertanyaan[$kodeGejala];
+        }
+
+        return 'Apakah anak mengalami ' . strtolower($namaGejala) . '?';
+    }
+
+    private function gejalaTambahanDariJawaban($db, array $jawabanGejala): array
+    {
+        $jawabanYa = array_keys(array_filter($jawabanGejala, static fn ($jawaban) => $jawaban === 'ya'));
+        $ids = array_values(array_filter(array_map('intval', $jawabanYa), static fn ($id) => $id > 0));
+
+        if ($ids === [] || !$db->tableExists('tb_gejala')) {
+            return [];
+        }
+
+        $rows = $db->table('tb_gejala')
+            ->select('id_gejala, kode_gejala, nama_gejala')
+            ->whereIn('id_gejala', $ids)
+            ->orderBy('id_gejala', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        return array_map(static fn ($row) => [
+            'kode' => (string) ($row['kode_gejala'] ?? ('G' . $row['id_gejala'])),
+            'indikator' => 'Pertanyaan gejala',
+            'nama' => (string) ($row['nama_gejala'] ?? ''),
+            'kategori' => 'Ya',
+            'id_gejala' => (int) ($row['id_gejala'] ?? 0),
+        ], $rows);
     }
 
     private function hitungZScore($db, array $pengukuran): array
@@ -215,7 +306,12 @@ class Diagnosa extends BaseController
     private function zScoreFromReference($db, string $field, float $value, array $pengukuran): ?float
     {
         $indicator = $field === 'berat' ? 'BB/U' : 'TB/U';
-        [$mean, $sd] = $this->getEditableStandard($db, $indicator, $pengukuran);
+        $row = $this->getEditableStandardRow($db, $indicator, $pengukuran);
+        if ($row !== null) {
+            return $this->zScoreFromStandardRow($value, $row);
+        }
+
+        [$mean, $sd] = $this->fallbackReference($indicator, $pengukuran);
 
         if ($mean === null || $sd === null || $sd <= 0) {
             return null;
@@ -226,7 +322,12 @@ class Diagnosa extends BaseController
 
     private function zScoreBbTb($db, array $pengukuran): ?float
     {
-        [$mean, $sd] = $this->getEditableStandard($db, 'BB/TB', $pengukuran);
+        $row = $this->getEditableStandardRow($db, 'BB/TB', $pengukuran);
+        if ($row !== null) {
+            return $this->zScoreFromStandardRow((float) $pengukuran['berat_badan'], $row);
+        }
+
+        [$mean, $sd] = $this->fallbackReference('BB/TB', $pengukuran);
 
         if ($mean === null || $sd === null || $sd <= 0) {
             return null;
@@ -235,21 +336,31 @@ class Diagnosa extends BaseController
         return round(($pengukuran['berat_badan'] - $mean) / $sd, 2);
     }
 
-    private function getEditableStandard($db, string $indicator, array $pengukuran): array
+    private function getEditableStandardRow($db, string $indicator, array $pengukuran): ?array
     {
         if (!$db->tableExists('tb_standar_antropometri')) {
-            return $this->fallbackReference($indicator, $pengukuran);
+            return null;
         }
 
         $builder = $db->table('tb_standar_antropometri')
-            ->select('median, sd, umur_bulan, tinggi_cm')
+            ->select('median, sd, sd_neg3, sd_neg2, sd_neg1, sd_pos1, sd_pos2, sd_pos3, umur_bulan, umur_min_bulan, umur_max_bulan, tinggi_cm')
             ->where('indikator', $indicator)
             ->where('jenis_kelamin', $pengukuran['jenis_kelamin']);
 
         if ($indicator === 'BB/TB') {
             $targetHeight = (float) $pengukuran['tinggi_badan'];
+            $targetAge = (int) $pengukuran['umur_bulan'];
             $rows = $builder
                 ->where('tinggi_cm IS NOT NULL', null, false)
+                ->groupStart()
+                    ->where('umur_min_bulan IS NULL', null, false)
+                    ->orWhere('umur_min_bulan <=', $targetAge)
+                ->groupEnd()
+                ->groupStart()
+                    ->where('umur_max_bulan IS NULL', null, false)
+                    ->orWhere('umur_max_bulan >=', $targetAge)
+                ->groupEnd()
+                ->orderBy('CASE WHEN umur_min_bulan IS NULL THEN 1 ELSE 0 END', '', false)
                 ->orderBy("ABS(tinggi_cm - {$targetHeight})", '', false)
                 ->limit(1)
                 ->get()
@@ -266,10 +377,73 @@ class Diagnosa extends BaseController
 
         $row = $rows[0] ?? null;
         if (!$row || !is_numeric($row['median'] ?? null) || !is_numeric($row['sd'] ?? null)) {
-            return $this->fallbackReference($indicator, $pengukuran);
+            return null;
         }
 
-        return [(float) $row['median'], (float) $row['sd']];
+        return $row;
+    }
+
+    private function zScoreFromStandardRow(float $value, array $row): ?float
+    {
+        $points = [
+            -3 => $row['sd_neg3'] ?? null,
+            -2 => $row['sd_neg2'] ?? null,
+            -1 => $row['sd_neg1'] ?? null,
+            0 => $row['median'] ?? null,
+            1 => $row['sd_pos1'] ?? null,
+            2 => $row['sd_pos2'] ?? null,
+            3 => $row['sd_pos3'] ?? null,
+        ];
+
+        $hasCompleteSdTable = true;
+        foreach ($points as $pointValue) {
+            if ($pointValue === null || $pointValue === '' || !is_numeric($pointValue)) {
+                $hasCompleteSdTable = false;
+                break;
+            }
+        }
+
+        if ($hasCompleteSdTable) {
+            $previousScore = null;
+            $previousValue = null;
+
+            foreach ($points as $score => $standardValue) {
+                $standardValue = (float) $standardValue;
+
+                if ($value === $standardValue) {
+                    return (float) $score;
+                }
+
+                if ($previousValue !== null && $value < $standardValue) {
+                    $range = $standardValue - $previousValue;
+                    if ($range <= 0) {
+                        return (float) $score;
+                    }
+
+                    return round($previousScore + (($value - $previousValue) / $range), 2);
+                }
+
+                $previousScore = (float) $score;
+                $previousValue = $standardValue;
+            }
+
+            $lastStep = (float) $points[3] - (float) $points[2];
+            if ($value < (float) $points[-3]) {
+                $firstStep = (float) $points[-2] - (float) $points[-3];
+                return $firstStep > 0 ? round(-3 + (($value - (float) $points[-3]) / $firstStep), 2) : -3.0;
+            }
+
+            return $lastStep > 0 ? round(3 + (($value - (float) $points[3]) / $lastStep), 2) : 3.0;
+        }
+
+        $median = (float) ($row['median'] ?? 0);
+        $sd = (float) ($row['sd'] ?? 0);
+
+        if ($sd <= 0) {
+            return null;
+        }
+
+        return round(($value - $median) / $sd, 2);
     }
 
     private function getReferenceRows($db, string $field, array $pengukuran, bool $byHeight = false): array
@@ -336,25 +510,74 @@ class Diagnosa extends BaseController
         return [null, null];
     }
 
-    private function konversiZScoreMenjadiGejala(array $zscore): array
+    private function konversiZScoreMenjadiGejala($db, array $zscore): array
     {
         $gejala = [];
+        $kodeGejalaByIndikator = [
+            'bb_u' => [
+                'kode' => 'G01',
+                'nama' => 'Berat badan kurang',
+                'kategori_gejala' => ['Berat badan sangat kurang', 'Berat badan kurang'],
+            ],
+            'tb_u' => [
+                'kode' => 'G02',
+                'nama' => 'Tinggi badan kurang',
+                'kategori_gejala' => ['Sangat pendek', 'Pendek'],
+            ],
+            'bb_tb' => [
+                'kode' => 'G11',
+                'nama' => 'Kekurangan gizi',
+                'kategori_gejala' => ['Gizi buruk', 'Gizi kurang'],
+            ],
+        ];
+        $masterGejala = $this->getMasterGejalaByKode($db, array_column($kodeGejalaByIndikator, 'kode'));
 
         foreach ($zscore as $key => $item) {
             if (($item['nilai'] ?? null) === null) {
                 continue;
             }
 
+            $kategori = (string) ($item['kategori'] ?? '');
+            $mapping = $kodeGejalaByIndikator[$key] ?? null;
+            if ($mapping !== null && !in_array($kategori, $mapping['kategori_gejala'], true)) {
+                continue;
+            }
+
+            $kode = $mapping['kode'] ?? $key . ':' . strtolower(str_replace(' ', '_', $kategori));
+            $master = $masterGejala[$kode] ?? [];
+
             $gejala[] = [
-                'kode' => $key . ':' . strtolower(str_replace(' ', '_', $item['kategori'])),
+                'kode' => $kode,
                 'indikator' => $item['label'],
-                'nama' => $item['label'] . ' - ' . $item['kategori'],
-                'kategori' => $item['kategori'],
+                'nama' => ($master['nama_gejala'] ?? $mapping['nama'] ?? $item['label']) . ' (' . $item['label'] . ' - ' . $kategori . ')',
+                'kategori' => $kategori,
                 'zscore' => $item['nilai'],
+                'id_gejala' => (int) ($master['id_gejala'] ?? 0),
             ];
         }
 
         return $gejala;
+    }
+
+    private function getMasterGejalaByKode($db, array $kodeGejala): array
+    {
+        $kodeGejala = array_values(array_unique(array_filter($kodeGejala)));
+        if ($kodeGejala === [] || !$db->tableExists('tb_gejala')) {
+            return [];
+        }
+
+        $rows = $db->table('tb_gejala')
+            ->select('id_gejala, kode_gejala, nama_gejala')
+            ->whereIn('kode_gejala', $kodeGejala)
+            ->get()
+            ->getResultArray();
+
+        $lookup = [];
+        foreach ($rows as $row) {
+            $lookup[(string) ($row['kode_gejala'] ?? '')] = $row;
+        }
+
+        return $lookup;
     }
 
     private function hitungNaiveBayes($db, array $gejala): array
@@ -691,6 +914,10 @@ class Diagnosa extends BaseController
             return 'Gizi lebih';
         }
 
+        if ($score > 1) {
+            return 'Berisiko gizi lebih';
+        }
+
         return 'Gizi baik';
     }
 
@@ -791,7 +1018,7 @@ class Diagnosa extends BaseController
             'kategori_tb_u' => $zscore['tb_u']['kategori'],
             'zs_bb_tb' => $zscore['bb_tb']['nilai'],
             'kategori_bb_tb' => $zscore['bb_tb']['kategori'],
-            'gejala_zscore' => json_encode($hasil['gejala']),
+            'gejala_zscore' => json_encode($hasil['gejala_terbaca'] ?? $hasil['gejala']),
         ];
 
         $payload = $this->filterExistingFields('tb_anak', $payload);
@@ -830,7 +1057,7 @@ class Diagnosa extends BaseController
             'kategori_tb_u' => $zscore['tb_u']['kategori'],
             'zs_bb_tb' => $zscore['bb_tb']['nilai'],
             'kategori_bb_tb' => $zscore['bb_tb']['kategori'],
-            'gejala_zscore' => json_encode($hasil['gejala']),
+            'gejala_zscore' => json_encode($hasil['gejala_terbaca'] ?? $hasil['gejala']),
             'kelas_hasil' => $diagnosa['kelas'] ?? null,
             'probabilitas_prior' => json_encode($hasil['prior']),
             'probabilitas_likelihood' => json_encode($hasil['likelihood']),
