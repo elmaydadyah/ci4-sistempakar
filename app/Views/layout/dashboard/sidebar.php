@@ -3,7 +3,7 @@
   $currentPath = trim(uri_string(), '/');
   $isDashboard = $currentPath === 'dashboard';
   $isDataMaster = in_array($currentPath, ['admingejala', 'adminhipotesis', 'adminusers', 'adminanak', 'adminstatusgizi'], true);
-  $isBasisAturan = in_array($currentPath, ['adminstandar', 'adminprior', 'adminlikelihood', 'adminnilaiprobabilitas'], true);
+  $isBasisAturan = in_array($currentPath, ['adminstandar', 'adminrulebased', 'adminprior', 'adminlikelihood', 'adminnilaiprobabilitas'], true);
   $isDiagnosa = in_array($currentPath, ['adminkonsultasi', 'adminhasildiagnosa'], true);
   ?>
   <nav class="sidebar sidebar-offcanvas" id="sidebar">
@@ -41,6 +41,7 @@
         <div class="collapse <?= $isBasisAturan ? 'show' : ''; ?>" id="basis-aturan" data-parent="#sidebar">
           <ul class="nav flex-column sub-menu">
             <li class="nav-item"><a class="nav-link <?= $currentPath === 'adminstandar' ? 'active-submenu' : ''; ?>" href="<?= base_url('adminstandar') ?>"><i class="ti-ruler-alt-2 submenu-icon"></i>Standar Antropometri</a></li>
+            <li class="nav-item"><a class="nav-link <?= $currentPath === 'adminrulebased' ? 'active-submenu' : ''; ?>" href="<?= base_url('adminrulebased') ?>"><i class="ti-control-shuffle submenu-icon"></i>Rule Based</a></li>
             <li class="nav-item"><a class="nav-link <?= $currentPath === 'adminprior' ? 'active-submenu' : ''; ?>" href="<?= base_url('adminprior') ?>"><i class="ti-pin-alt submenu-icon"></i>Prior</a></li>
             <li class="nav-item"><a class="nav-link <?= $currentPath === 'adminlikelihood' ? 'active-submenu' : ''; ?>" href="<?= base_url('adminlikelihood') ?>"><i class="ti-stats-up submenu-icon"></i>Likelihood</a></li>
             <li class="nav-item"><a class="nav-link <?= $currentPath === 'adminnilaiprobabilitas' ? 'active-submenu' : ''; ?>" href="<?= base_url('adminnilaiprobabilitas') ?>"><i class="ti-bar-chart submenu-icon"></i>Nilai Probabilitas</a></li>

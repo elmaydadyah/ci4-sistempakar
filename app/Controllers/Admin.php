@@ -171,7 +171,8 @@ class Admin extends BaseController
             'total_anak' => $db->tableExists('tb_anak') ? $db->table('tb_anak')->countAllResults() : 0,
             'total_data_latih' => $db->tableExists('tb_anak_status_gizi') ? $db->table('tb_anak_status_gizi')->countAllResults() : 0,
             'total_h1' => $db->tableExists('tb_hasil_diagnosa') && $db->fieldExists('kelas_hasil', 'tb_hasil_diagnosa') ? $db->table('tb_hasil_diagnosa')->where('kelas_hasil', 'H1')->countAllResults() : 0,
-            'total_h2_h3' => $db->tableExists('tb_hasil_diagnosa') && $db->fieldExists('kelas_hasil', 'tb_hasil_diagnosa') ? $db->table('tb_hasil_diagnosa')->whereIn('kelas_hasil', ['H2', 'H3'])->countAllResults() : 0,
+            'total_h2' => $db->tableExists('tb_hasil_diagnosa') && $db->fieldExists('kelas_hasil', 'tb_hasil_diagnosa') ? $db->table('tb_hasil_diagnosa')->where('kelas_hasil', 'H2')->countAllResults() : 0,
+            'total_h3' => $db->tableExists('tb_hasil_diagnosa') && $db->fieldExists('kelas_hasil', 'tb_hasil_diagnosa') ? $db->table('tb_hasil_diagnosa')->where('kelas_hasil', 'H3')->countAllResults() : 0,
             'total_hasil' => $db->tableExists('tb_hasil_diagnosa') ? $db->table('tb_hasil_diagnosa')->countAllResults() : 0,
             'recent_anak' => $db->tableExists('tb_anak')
                 ? $db->table('tb_anak')->orderBy('id_anak', 'DESC')->get(5)->getResultArray()
@@ -272,6 +273,178 @@ class Admin extends BaseController
             ]);
 
         return redirect()->to($this->getSafeAdminRedirect('/adminstandar'))->with('success', 'Standar antropometri berhasil diupdate.');
+    }
+
+    public function indexRuleBased()
+    {
+        $db = db_connect();
+        $rules = [];
+        $nextRuleCode = 'RB001';
+
+        if ($db->tableExists('tb_rule_based')) {
+            $rules = $db->table('tb_rule_based rb')
+                ->select('rb.*, g.nama_gejala, h.risiko_stunting')
+                ->join('tb_gejala g', 'g.kode_gejala COLLATE utf8mb4_general_ci = rb.kode_gejala', 'left', false)
+                ->join('tb_hipotesis h', 'h.kode_hipotesis = rb.kode_hipotesis', 'left')
+                ->orderBy('rb.urutan', 'ASC')
+                ->orderBy('rb.id_rule', 'ASC')
+                ->get()
+                ->getResultArray();
+
+            $lastRule = $db->table('tb_rule_based')
+                ->select('kode_rule')
+                ->like('kode_rule', 'RB', 'after')
+                ->orderBy('id_rule', 'DESC')
+                ->get(1)
+                ->getRowArray();
+
+            if (!empty($lastRule['kode_rule']) && preg_match('/RB(\d+)/', (string) $lastRule['kode_rule'], $matches)) {
+                $nextRuleCode = 'RB' . str_pad((string) ((int) $matches[1] + 1), 3, '0', STR_PAD_LEFT);
+            }
+        }
+
+        return view('admin/referensi/index_rule_based', [
+            'tb_rule_based' => $rules,
+            'tb_gejala' => (new AdminModel())->getGejala(),
+            'tb_hipotesis' => $db->tableExists('tb_hipotesis')
+                ? $db->table('tb_hipotesis')->orderBy('kode_hipotesis', 'ASC')->get()->getResultArray()
+                : [],
+            'next_rule_code' => $nextRuleCode,
+        ]);
+    }
+
+    public function createRuleBased()
+    {
+        $db = db_connect();
+        if (!$db->tableExists('tb_rule_based')) {
+            return redirect()->to('/adminrulebased')->with('error', 'Tabel rule based belum tersedia. Jalankan migration terlebih dahulu.');
+        }
+
+        [$payload, $error] = $this->getRuleBasedPostData();
+        if ($error !== null) {
+            return redirect()->to('/adminrulebased')->with('error', $error);
+        }
+
+        $exists = $db->table('tb_rule_based')
+            ->where('kode_rule', $payload['kode_rule'])
+            ->countAllResults();
+
+        if ($exists > 0) {
+            return redirect()->to('/adminrulebased')->with('error', 'Kode rule sudah digunakan.');
+        }
+
+        $relationExists = $db->table('tb_rule_based')
+            ->where('kode_hipotesis', $payload['kode_hipotesis'])
+            ->where('kode_gejala', $payload['kode_gejala'])
+            ->countAllResults();
+
+        if ($relationExists > 0) {
+            return redirect()->to('/adminrulebased')->with('error', 'Relasi hipotesis dan gejala tersebut sudah ada.');
+        }
+
+        $payload['created_at'] = date('Y-m-d H:i:s');
+        $payload['updated_at'] = date('Y-m-d H:i:s');
+        $db->table('tb_rule_based')->insert($payload);
+
+        return redirect()->to('/adminrulebased')->with('success', 'Rule based berhasil ditambahkan.');
+    }
+
+    public function updateRuleBased($id)
+    {
+        $db = db_connect();
+        if (!$db->tableExists('tb_rule_based')) {
+            return redirect()->to('/adminrulebased')->with('error', 'Tabel rule based belum tersedia.');
+        }
+
+        [$payload, $error] = $this->getRuleBasedPostData();
+        if ($error !== null) {
+            return redirect()->to('/adminrulebased')->with('error', $error);
+        }
+
+        $exists = $db->table('tb_rule_based')
+            ->where('kode_rule', $payload['kode_rule'])
+            ->where('id_rule !=', (int) $id)
+            ->countAllResults();
+
+        if ($exists > 0) {
+            return redirect()->to('/adminrulebased')->with('error', 'Kode rule sudah digunakan oleh rule lain.');
+        }
+
+        $relationExists = $db->table('tb_rule_based')
+            ->where('kode_hipotesis', $payload['kode_hipotesis'])
+            ->where('kode_gejala', $payload['kode_gejala'])
+            ->where('id_rule !=', (int) $id)
+            ->countAllResults();
+
+        if ($relationExists > 0) {
+            return redirect()->to('/adminrulebased')->with('error', 'Relasi hipotesis dan gejala tersebut sudah ada di rule lain.');
+        }
+
+        $payload['updated_at'] = date('Y-m-d H:i:s');
+        $db->table('tb_rule_based')
+            ->where('id_rule', (int) $id)
+            ->update($payload);
+
+        return redirect()->to('/adminrulebased')->with('success', 'Rule based berhasil diupdate.');
+    }
+
+    public function deleteRuleBased($id)
+    {
+        $db = db_connect();
+        if (!$db->tableExists('tb_rule_based')) {
+            return redirect()->to('/adminrulebased')->with('error', 'Tabel rule based belum tersedia.');
+        }
+
+        $db->table('tb_rule_based')->where('id_rule', (int) $id)->delete();
+
+        return redirect()->to('/adminrulebased')->with('success', 'Rule based berhasil dihapus.');
+    }
+
+    private function getRuleBasedPostData(): array
+    {
+        $kodeRule = strtoupper(trim((string) $this->request->getPost('kode_rule')));
+        $namaRule = trim((string) $this->request->getPost('nama_rule'));
+        $kodeHipotesis = strtoupper(trim((string) $this->request->getPost('kode_hipotesis')));
+        $kodeGejala = strtoupper(trim((string) $this->request->getPost('kode_gejala')));
+
+        if ($kodeRule === '' || $kodeHipotesis === '' || $kodeGejala === '') {
+            return [[], 'Kode rule, hipotesis, dan gejala wajib diisi.'];
+        }
+
+        $db = db_connect();
+        if (!$db->tableExists('tb_hipotesis')) {
+            return [[], 'Tabel hipotesis belum tersedia.'];
+        }
+
+        $hipotesisExists = $db->table('tb_hipotesis')
+            ->where('kode_hipotesis', $kodeHipotesis)
+            ->countAllResults();
+
+        if ($hipotesisExists === 0) {
+            return [[], 'Kode hipotesis tidak ditemukan.'];
+        }
+
+        if (!$db->tableExists('tb_gejala')) {
+            return [[], 'Tabel gejala belum tersedia.'];
+        }
+
+        $gejalaExists = $db->table('tb_gejala')
+            ->where('kode_gejala', $kodeGejala)
+            ->countAllResults();
+
+        if ($gejalaExists === 0) {
+            return [[], 'Kode gejala tidak ditemukan di data gejala.'];
+        }
+
+        return [[
+            'kode_rule' => $kodeRule,
+            'nama_rule' => $namaRule !== '' ? $namaRule : $kodeHipotesis . ' -> ' . $kodeGejala,
+            'kode_hipotesis' => $kodeHipotesis,
+            'kode_gejala' => $kodeGejala,
+            'aktif' => $this->request->getPost('aktif') ? 1 : 0,
+            'urutan' => max(0, (int) $this->request->getPost('urutan')),
+            'catatan' => trim((string) $this->request->getPost('catatan')) ?: null,
+        ], null];
     }
 
     public function indexNaiveBayesPrior()

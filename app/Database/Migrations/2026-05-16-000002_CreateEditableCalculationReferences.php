@@ -169,21 +169,21 @@ class CreateEditableCalculationReferences extends Migration
             $this->db->table('tb_naive_bayes_prior')->insertBatch([
                 [
                     'kelas' => 'H1',
-                    'label' => 'Risiko rendah',
-                    'probabilitas' => 0.50,
-                    'rekomendasi' => 'Pertahankan pola makan bergizi seimbang, pemantauan rutin, imunisasi, dan stimulasi tumbuh kembang anak.',
+                    'label' => 'Risiko Stunting Tinggi',
+                    'probabilitas' => 0.20,
+                    'rekomendasi' => 'Apabila anak terdiagnosis memiliki risiko stunting tinggi, maka diperlukan penanganan segera dengan berkonsultasi ke tenaga kesehatan. Orang tua perlu memperbaiki asupan gizi anak dengan memberikan makanan bergizi seimbang serta melakukan pemantauan pertumbuhan secara rutin agar kondisi tidak semakin memburuk.',
                 ],
                 [
                     'kelas' => 'H2',
-                    'label' => 'Risiko sedang',
+                    'label' => 'Risiko Stunting Rendah',
                     'probabilitas' => 0.30,
-                    'rekomendasi' => 'Perbaiki pola makan, pantau berat dan tinggi badan, serta lakukan konsultasi berkala dengan kader posyandu atau petugas kesehatan.',
+                    'rekomendasi' => 'Jika anak berada pada kategori risiko stunting rendah, maka disarankan untuk meningkatkan kualitas pola makan dan menjaga keseimbangan nutrisi. Pemantauan pertumbuhan tetap perlu dilakukan secara berkala untuk mencegah peningkatan risiko.',
                 ],
                 [
                     'kelas' => 'H3',
-                    'label' => 'Risiko tinggi',
-                    'probabilitas' => 0.20,
-                    'rekomendasi' => 'Segera lakukan pemeriksaan lanjutan ke puskesmas atau tenaga kesehatan. Pantau asupan gizi, jadwal makan, dan pengukuran ulang secara rutin.',
+                    'label' => 'Tidak Memiliki Risiko Stunting',
+                    'probabilitas' => 0.50,
+                    'rekomendasi' => 'Apabila anak anda berada dalam kondisi normal (tidak mengalami risiko stunting), maka orang tua perlu mempertahankan pola hidup sehat dengan memberikan asupan gizi seimbang serta melakukan pemantauan pertumbuhan secara rutin ke posyandu agar kondisi tetap optimal.',
                 ],
             ]);
         }
@@ -316,23 +316,23 @@ class CreateEditableCalculationReferences extends Migration
     {
         $map = [
             'BB/U' => [
-                'Berat badan sangat kurang' => ['H1' => 0.03, 'H2' => 0.24, 'H3' => 0.73],
-                'Berat badan kurang' => ['H1' => 0.10, 'H2' => 0.65, 'H3' => 0.25],
-                'Berat badan normal' => ['H1' => 0.84, 'H2' => 0.13, 'H3' => 0.03],
-                'Risiko berat badan lebih' => ['H1' => 0.66, 'H2' => 0.27, 'H3' => 0.07],
+                'Berat badan sangat kurang' => ['H1' => 0.73, 'H2' => 0.24, 'H3' => 0.03],
+                'Berat badan kurang' => ['H1' => 0.25, 'H2' => 0.65, 'H3' => 0.10],
+                'Berat badan normal' => ['H1' => 0.03, 'H2' => 0.13, 'H3' => 0.84],
+                'Risiko berat badan lebih' => ['H1' => 0.07, 'H2' => 0.27, 'H3' => 0.66],
             ],
             'TB/U' => [
-                'Sangat pendek' => ['H1' => 0.02, 'H2' => 0.18, 'H3' => 0.80],
-                'Pendek' => ['H1' => 0.08, 'H2' => 0.68, 'H3' => 0.24],
-                'Normal' => ['H1' => 0.86, 'H2' => 0.11, 'H3' => 0.03],
-                'Tinggi' => ['H1' => 0.82, 'H2' => 0.14, 'H3' => 0.04],
+                'Sangat pendek' => ['H1' => 0.80, 'H2' => 0.18, 'H3' => 0.02],
+                'Pendek' => ['H1' => 0.24, 'H2' => 0.68, 'H3' => 0.08],
+                'Normal' => ['H1' => 0.03, 'H2' => 0.11, 'H3' => 0.86],
+                'Tinggi' => ['H1' => 0.04, 'H2' => 0.14, 'H3' => 0.82],
             ],
             'BB/TB' => [
-                'Gizi buruk' => ['H1' => 0.03, 'H2' => 0.22, 'H3' => 0.75],
-                'Gizi kurang' => ['H1' => 0.09, 'H2' => 0.66, 'H3' => 0.25],
-                'Gizi baik' => ['H1' => 0.86, 'H2' => 0.11, 'H3' => 0.03],
-                'Berisiko gizi lebih' => ['H1' => 0.72, 'H2' => 0.22, 'H3' => 0.06],
-                'Gizi lebih' => ['H1' => 0.65, 'H2' => 0.27, 'H3' => 0.08],
+                'Gizi buruk' => ['H1' => 0.75, 'H2' => 0.22, 'H3' => 0.03],
+                'Gizi kurang' => ['H1' => 0.25, 'H2' => 0.66, 'H3' => 0.09],
+                'Gizi baik' => ['H1' => 0.03, 'H2' => 0.11, 'H3' => 0.86],
+                'Berisiko gizi lebih' => ['H1' => 0.06, 'H2' => 0.22, 'H3' => 0.72],
+                'Gizi lebih' => ['H1' => 0.08, 'H2' => 0.27, 'H3' => 0.65],
             ],
         ];
 

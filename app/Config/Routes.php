@@ -10,6 +10,7 @@ $routes->get('/konseling', 'Home::konseling');
 $routes->post('/konseling-anak', 'Home::storeAnak');
 $routes->get('/konsultasi', 'Diagnosa::index');
 $routes->post('/konsultasi', 'Diagnosa::index');
+$routes->get('/konsultasi/laporan/(:num)', 'Diagnosa::laporan/$1');
 $routes->get('/login', 'Auth::login');
 $routes->post('/login', 'Auth::login');
 
@@ -47,5 +48,9 @@ $routes->post('/admin/updatePrior/(:num)', 'Admin::updateNaiveBayesPrior/$1');
 $routes->get('/adminlikelihood', 'Admin::indexNaiveBayesLikelihood');
 $routes->post('/admin/updateLikelihood/(:num)', 'Admin::updateNaiveBayesLikelihood/$1');
 $routes->get('/adminnilaiprobabilitas', 'Admin::indexNilaiProbabilitas');
+$routes->get('/adminrulebased', 'Admin::indexRuleBased');
+$routes->post('/admin/createRuleBased', 'Admin::createRuleBased');
+$routes->post('/admin/updateRuleBased/(:num)', 'Admin::updateRuleBased/$1');
+$routes->get('/admin/deleteRuleBased/(:num)', 'Admin::deleteRuleBased/$1');
 $routes->get('/admin/deleteUser/(:num)', 'Admin::deleteUser/$1');
 $routes->post('/admin/updateUser/(:num)', 'Admin::updateUser/$1');

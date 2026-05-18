@@ -8,9 +8,9 @@ use App\Models\HasilDiagnosaModel;
 class Diagnosa extends BaseController
 {
     private array $kelas = [
-        'H1' => 'Risiko rendah',
-        'H2' => 'Risiko sedang',
-        'H3' => 'Risiko tinggi',
+        'H1' => 'Risiko Stunting Tinggi',
+        'H2' => 'Risiko Stunting Rendah',
+        'H3' => 'Tidak Memiliki Risiko Stunting',
     ];
 
     public function index()
@@ -26,6 +26,11 @@ class Diagnosa extends BaseController
 
         if (!$this->request->is('post')) {
             $data['old'] = $this->oldInputFromAnak((int) $this->request->getGet('anak'));
+            $data['hasil'] = $this->getHasilDiagnosaFromRequest();
+
+            if ($data['hasil'] !== null) {
+                $data['old'] = array_merge($data['old'], $this->oldInputFromStoredHasil($data['hasil']));
+            }
         }
 
         if ($this->request->is('post')) {
@@ -37,10 +42,153 @@ class Diagnosa extends BaseController
                 $data['hasil'] = $this->hitungDiagnosa($input);
                 $this->simpanAnak($data['hasil']);
                 $this->simpanHasilDiagnosa($data['hasil']);
+
+                if (!empty($data['hasil']['id_hasil_diagnosa'])) {
+                    session()->set('last_hasil_diagnosa_id', (int) $data['hasil']['id_hasil_diagnosa']);
+                    return redirect()->to('/konsultasi?hasil=' . $data['hasil']['id_hasil_diagnosa']);
+                }
             }
         }
 
         return view('diagnosa/index', $data);
+    }
+
+    public function laporan(int $id)
+    {
+        if ($id <= 0 || !db_connect()->tableExists('tb_hasil_diagnosa')) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Laporan tidak ditemukan.');
+        }
+
+        $row = (new HasilDiagnosaModel())->find($id);
+        if (!$row) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Laporan tidak ditemukan.');
+        }
+
+        $hasil = $this->formatStoredHasilDiagnosa($row);
+
+        return view('diagnosa/laporan', [
+            'hasil' => $hasil,
+            'row' => $row,
+            'tanggal_cetak' => date('d/m/Y H:i'),
+        ]);
+    }
+
+    private function getHasilDiagnosaFromRequest(): ?array
+    {
+        $hasilId = (int) ($this->request->getGet('hasil') ?? 0);
+        if ($hasilId <= 0) {
+            $hasilId = (int) (session()->get('last_hasil_diagnosa_id') ?? 0);
+        }
+
+        if ($hasilId <= 0 || !db_connect()->tableExists('tb_hasil_diagnosa')) {
+            return null;
+        }
+
+        $row = (new HasilDiagnosaModel())->find($hasilId);
+        if (!$row) {
+            return null;
+        }
+
+        return $this->formatStoredHasilDiagnosa($row);
+    }
+
+    private function formatStoredHasilDiagnosa(array $row): array
+    {
+        $alternatif = json_decode((string) ($row['probabilitas_posterior'] ?? '[]'), true);
+        $alternatif = is_array($alternatif) ? $alternatif : [];
+        $alternatif = array_map(function ($item) {
+            if (!is_array($item)) {
+                return $item;
+            }
+
+            $class = (string) ($item['kelas'] ?? '');
+            if ($class !== '' && isset($this->kelas[$class])) {
+                $item['label'] = $this->kelas[$class];
+            }
+
+            return $item;
+        }, $alternatif);
+        $diagnosa = $alternatif[0] ?? [
+            'kelas' => $row['kelas_hasil'] ?? 'H1',
+            'label' => $this->kelas[$row['kelas_hasil'] ?? 'H1'] ?? 'Risiko Stunting Tinggi',
+            'posterior_persen' => (int) ($row['persentase'] ?? 0),
+            'posterior' => ((int) ($row['persentase'] ?? 0)) / 100,
+        ];
+        if (!empty($diagnosa['kelas']) && isset($this->kelas[$diagnosa['kelas']])) {
+            $diagnosa['label'] = $this->kelas[$diagnosa['kelas']];
+        }
+
+        $gejala = json_decode((string) ($row['gejala_zscore'] ?? '[]'), true);
+        $gejala = is_array($gejala) ? $gejala : [];
+        $prior = json_decode((string) ($row['probabilitas_prior'] ?? '[]'), true);
+        $likelihood = json_decode((string) ($row['probabilitas_likelihood'] ?? '[]'), true);
+
+        return [
+            'id_hasil_diagnosa' => (int) ($row['id_hasil_diagnosa'] ?? 0),
+            'id_anak' => $row['id_anak'] ?? null,
+            'input' => [],
+            'nama' => (string) ($row['nama'] ?? '-'),
+            'umur' => (int) ($row['umur'] ?? 0),
+            'pengukuran' => [
+                'berat_badan' => $row['berat_badan'] ?? null,
+                'tinggi_badan' => $row['tinggi_badan'] ?? null,
+            ],
+            'zscore' => [
+                'bb_u' => [
+                    'label' => 'BB/U',
+                    'nilai' => $row['zs_bb_u'] ?? null,
+                    'kategori' => (string) ($row['kategori_bb_u'] ?? '-'),
+                    'sumber' => 'Data hasil tersimpan',
+                ],
+                'tb_u' => [
+                    'label' => 'TB/U',
+                    'nilai' => $row['zs_tb_u'] ?? null,
+                    'kategori' => (string) ($row['kategori_tb_u'] ?? '-'),
+                    'sumber' => 'Data hasil tersimpan',
+                ],
+                'bb_tb' => [
+                    'label' => 'BB/TB',
+                    'nilai' => $row['zs_bb_tb'] ?? null,
+                    'kategori' => (string) ($row['kategori_bb_tb'] ?? '-'),
+                    'sumber' => 'Data hasil tersimpan',
+                ],
+            ],
+            'gejala' => $gejala,
+            'gejala_tambahan' => [],
+            'gejala_terbaca' => $gejala,
+            'jumlah_gejala' => (int) ($row['jumlah_gejala'] ?? count($gejala)),
+            'diagnosa' => $diagnosa,
+            'alternatif' => $alternatif,
+            'prior' => is_array($prior) ? $prior : [],
+            'likelihood' => is_array($likelihood) ? $likelihood : [],
+            'jumlah_data_latih' => 0,
+            'persentase' => (int) ($row['persentase'] ?? ($diagnosa['posterior_persen'] ?? 0)),
+            'rekomendasi' => $this->getRekomendasi((string) ($diagnosa['kelas'] ?? 'H1')),
+            'stored_row' => $row,
+        ];
+    }
+
+    private function oldInputFromStoredHasil(array $hasil): array
+    {
+        $row = $hasil['stored_row'] ?? [];
+
+        return [
+            'nama' => (string) ($row['nama'] ?? ''),
+            'nik' => (string) ($row['nik'] ?? ''),
+            'jenis_kelamin' => (string) ($row['jenis_kelamin'] ?? ''),
+            'tanggal_lahir' => (string) ($row['tanggal_lahir'] ?? ''),
+            'umur' => (string) ($row['umur'] ?? ''),
+            'berat_badan' => $row['berat_badan'] !== null ? (string) $row['berat_badan'] : '',
+            'tinggi_badan' => $row['tinggi_badan'] !== null ? (string) $row['tinggi_badan'] : '',
+            'lingkar_lengan' => $row['lingkar_lengan'] !== null ? (string) $row['lingkar_lengan'] : '',
+            'lingkar_kepala' => $row['lingkar_kepala'] !== null ? (string) $row['lingkar_kepala'] : '',
+            'nama_ortu' => '',
+            'alamat' => '',
+            'tempat_tinggal' => (string) ($row['tempat_tinggal'] ?? ''),
+            'riwayat_kehamilan' => (string) ($row['riwayat_kehamilan'] ?? ''),
+            'pola_makan' => (string) ($row['pola_makan'] ?? ''),
+            'jawaban_gejala' => [],
+        ];
     }
 
     private function emptyOldInput(): array
@@ -170,7 +318,8 @@ class Diagnosa extends BaseController
         $zscore = $this->hitungZScore($db, $pengukuran);
         $gejala = $this->konversiZScoreMenjadiGejala($db, $zscore);
         $gejalaTambahan = $this->gejalaTambahanDariJawaban($db, $input['jawaban_gejala'] ?? []);
-        $bayes = $this->hitungNaiveBayes($db, $gejala);
+        $gejalaTerbaca = array_merge($gejala, $gejalaTambahan);
+        $bayes = $this->hitungNaiveBayes($db, $gejalaTerbaca);
         $diagnosa = $bayes['hasil'];
         $posterior = $diagnosa['posterior'] ?? 0.0;
 
@@ -182,8 +331,8 @@ class Diagnosa extends BaseController
             'zscore' => $zscore,
             'gejala' => $gejala,
             'gejala_tambahan' => $gejalaTambahan,
-            'gejala_terbaca' => array_merge($gejala, $gejalaTambahan),
-            'jumlah_gejala' => count($gejala) + count($gejalaTambahan),
+            'gejala_terbaca' => $gejalaTerbaca,
+            'jumlah_gejala' => count($gejalaTerbaca),
             'diagnosa' => $diagnosa,
             'alternatif' => $bayes['alternatif'],
             'prior' => $bayes['prior'],
@@ -512,6 +661,11 @@ class Diagnosa extends BaseController
 
     private function konversiZScoreMenjadiGejala($db, array $zscore): array
     {
+        $ruleBasedGejala = $this->konversiZScoreDenganRuleBased($db, $zscore);
+        if ($ruleBasedGejala !== null) {
+            return $ruleBasedGejala;
+        }
+
         $gejala = [];
         $kodeGejalaByIndikator = [
             'bb_u' => [
@@ -557,6 +711,106 @@ class Diagnosa extends BaseController
         }
 
         return $gejala;
+    }
+
+    private function konversiZScoreDenganRuleBased($db, array $zscore): ?array
+    {
+        if (!$db->tableExists('tb_rule_based') || !$db->fieldExists('indikator', 'tb_rule_based')) {
+            return null;
+        }
+
+        $rules = $db->table('tb_rule_based')
+            ->where('aktif', 1)
+            ->orderBy('urutan', 'ASC')
+            ->orderBy('id_rule', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        if ($rules === []) {
+            return null;
+        }
+
+        $kodeGejala = array_values(array_unique(array_filter(array_map(
+            static fn ($rule) => (string) ($rule['kode_gejala'] ?? ''),
+            $rules
+        ))));
+        $masterGejala = $this->getMasterGejalaByKode($db, $kodeGejala);
+        $gejala = [];
+
+        foreach ($zscore as $item) {
+            $nilai = $item['nilai'] ?? null;
+            if ($nilai === null || !is_numeric($nilai)) {
+                continue;
+            }
+
+            $indicator = (string) ($item['label'] ?? '');
+            $matchedRule = $this->getMatchedRule($rules, $indicator, (float) $nilai);
+            if ($matchedRule === null || empty($matchedRule['kode_gejala'])) {
+                continue;
+            }
+
+            $kode = (string) $matchedRule['kode_gejala'];
+            $master = $masterGejala[$kode] ?? [];
+            $kategori = (string) ($matchedRule['kategori_hasil'] ?? ($item['kategori'] ?? ''));
+            $namaGejala = (string) ($master['nama_gejala'] ?? $matchedRule['nama_rule'] ?? $indicator);
+
+            $gejala[] = [
+                'kode' => $kode,
+                'indikator' => $indicator,
+                'nama' => $namaGejala . ' (' . $indicator . ' - ' . $kategori . ')',
+                'kategori' => $kategori,
+                'zscore' => (float) $nilai,
+                'id_gejala' => (int) ($master['id_gejala'] ?? 0),
+                'kode_rule' => (string) ($matchedRule['kode_rule'] ?? ''),
+            ];
+        }
+
+        return $gejala;
+    }
+
+    private function getMatchedRule(array $rules, string $indicator, float $value): ?array
+    {
+        foreach ($rules as $rule) {
+            if ((string) ($rule['indikator'] ?? '') !== $indicator) {
+                continue;
+            }
+
+            if ($this->ruleMatchesValue($rule, $value)) {
+                return $rule;
+            }
+        }
+
+        return null;
+    }
+
+    private function ruleMatchesValue(array $rule, float $value): bool
+    {
+        $operatorBawah = (string) ($rule['operator_bawah'] ?? '');
+        $operatorAtas = (string) ($rule['operator_atas'] ?? '');
+        $batasBawah = $rule['batas_bawah'] ?? null;
+        $batasAtas = $rule['batas_atas'] ?? null;
+
+        if ($operatorBawah !== '' && $batasBawah !== null && $batasBawah !== '') {
+            $batas = (float) $batasBawah;
+            if ($operatorBawah === '>' && !($value > $batas)) {
+                return false;
+            }
+            if ($operatorBawah === '>=' && !($value >= $batas)) {
+                return false;
+            }
+        }
+
+        if ($operatorAtas !== '' && $batasAtas !== null && $batasAtas !== '') {
+            $batas = (float) $batasAtas;
+            if ($operatorAtas === '<' && !($value < $batas)) {
+                return false;
+            }
+            if ($operatorAtas === '<=' && !($value <= $batas)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private function getMasterGejalaByKode($db, array $kodeGejala): array
@@ -641,6 +895,9 @@ class Diagnosa extends BaseController
             $likelihoodMap[$class][$indicator][$category] = $probability;
         }
 
+        [$gejalaLikelihoodMap, $gejalaLikelihoodCount] = $this->getGejalaLikelihoodMap($db);
+        [$ruleLikelihoodMap, $ruleLikelihoodCount] = $this->getRuleBasedLikelihoodMap($db, array_keys($prior));
+
         $likelihood = [];
         $scores = [];
         foreach ($prior as $class => $priorProbability) {
@@ -649,8 +906,13 @@ class Diagnosa extends BaseController
             foreach ($gejala as $item) {
                 $indicator = (string) ($item['indikator'] ?? '');
                 $category = (string) ($item['kategori'] ?? '');
-                $probability = $likelihoodMap[$class][$indicator][$category] ?? 0.01;
-                $likelihood[$class][$indicator] = $probability;
+                $kodeGejala = (string) ($item['kode'] ?? '');
+                $evidenceKey = $kodeGejala !== '' ? $kodeGejala : trim($indicator . ' ' . $category);
+                $probability = $likelihoodMap[$class][$indicator][$category]
+                    ?? ($kodeGejala !== '' ? ($gejalaLikelihoodMap[$class][$kodeGejala] ?? null) : null)
+                    ?? ($kodeGejala !== '' ? ($ruleLikelihoodMap[$class][$kodeGejala] ?? null) : null)
+                    ?? 0.01;
+                $likelihood[$class][$evidenceKey] = $probability;
                 $logScore += log(max($probability, 0.00001));
             }
 
@@ -660,7 +922,7 @@ class Diagnosa extends BaseController
                 'skor' => $logScore,
                 'prior' => $priorProbability,
                 'posterior' => 0.0,
-                'jumlah_data_latih' => count($likelihoodRows),
+                'jumlah_data_latih' => count($likelihoodRows) + $gejalaLikelihoodCount + $ruleLikelihoodCount,
             ];
         }
 
@@ -671,8 +933,82 @@ class Diagnosa extends BaseController
             'alternatif' => $scores,
             'prior' => $prior,
             'likelihood' => $likelihood,
-            'jumlah_data_latih' => count($likelihoodRows),
+            'jumlah_data_latih' => count($likelihoodRows) + $gejalaLikelihoodCount + $ruleLikelihoodCount,
         ];
+    }
+
+    private function getGejalaLikelihoodMap($db): array
+    {
+        if (!$db->tableExists('tb_nilai_probabilitas') || !$db->tableExists('tb_gejala')) {
+            return [[], 0];
+        }
+
+        $rows = $db->table('tb_nilai_probabilitas np')
+            ->select('g.kode_gejala, np.kode_hipotesis, np.nilai_probabilitas')
+            ->join('tb_gejala g', 'g.id_gejala = np.id_gejala', 'left')
+            ->get()
+            ->getResultArray();
+
+        $map = [];
+        foreach ($rows as $row) {
+            $kodeGejala = (string) ($row['kode_gejala'] ?? '');
+            $class = (string) ($row['kode_hipotesis'] ?? '');
+            $probability = (float) ($row['nilai_probabilitas'] ?? 0);
+
+            if ($kodeGejala === '' || $class === '' || $probability <= 0) {
+                continue;
+            }
+
+            $map[$class][$kodeGejala] = min($probability, 1.0);
+        }
+
+        return [$map, count($rows)];
+    }
+
+    private function getRuleBasedLikelihoodMap($db, array $classes): array
+    {
+        if (
+            !$db->tableExists('tb_rule_based')
+            || !$db->fieldExists('kode_hipotesis', 'tb_rule_based')
+            || !$db->fieldExists('kode_gejala', 'tb_rule_based')
+        ) {
+            return [[], 0];
+        }
+
+        $rows = $db->table('tb_rule_based')
+            ->select('kode_hipotesis, kode_gejala')
+            ->where('aktif', 1)
+            ->get()
+            ->getResultArray();
+
+        if ($rows === []) {
+            return [[], 0];
+        }
+
+        $gejalaCodes = array_values(array_unique(array_filter(array_map(
+            static fn ($row) => (string) ($row['kode_gejala'] ?? ''),
+            $rows
+        ))));
+        $map = [];
+
+        foreach ($classes as $class) {
+            foreach ($gejalaCodes as $kodeGejala) {
+                $map[$class][$kodeGejala] = 0.10;
+            }
+        }
+
+        foreach ($rows as $row) {
+            $class = (string) ($row['kode_hipotesis'] ?? '');
+            $kodeGejala = (string) ($row['kode_gejala'] ?? '');
+
+            if ($class === '' || $kodeGejala === '') {
+                continue;
+            }
+
+            $map[$class][$kodeGejala] = 0.90;
+        }
+
+        return [$map, count($rows)];
     }
 
     private function getTrainingData($db): array
@@ -773,12 +1109,12 @@ class Diagnosa extends BaseController
         foreach ($gejala as $item) {
             $category = strtolower($item['kategori']);
             if (str_contains($category, 'sangat') || str_contains($category, 'buruk')) {
-                $score['H3'] += 3.0;
+                $score['H1'] += 3.0;
             } elseif (str_contains($category, 'pendek') || str_contains($category, 'kurang')) {
                 $score['H2'] += 2.0;
-                $score['H3'] += 1.0;
+                $score['H1'] += 1.0;
             } else {
-                $score['H1'] += 2.0;
+                $score['H3'] += 2.0;
             }
         }
 
@@ -824,14 +1160,14 @@ class Diagnosa extends BaseController
         $joined = strtolower(implode(' ', $features));
 
         if (str_contains($joined, 'sangat pendek') || str_contains($joined, 'gizi buruk')) {
-            return 'H3';
+            return 'H1';
         }
 
         if (str_contains($joined, 'pendek') || str_contains($joined, 'kurang')) {
             return 'H2';
         }
 
-        return 'H1';
+        return 'H3';
     }
 
     private function kategoriFromStatusOrScore($status, $score, string $indicator): ?string
@@ -937,9 +1273,9 @@ class Diagnosa extends BaseController
         }
 
         return match ($class) {
-            'H3' => 'Segera lakukan pemeriksaan lanjutan ke puskesmas atau tenaga kesehatan. Pantau asupan gizi, jadwal makan, dan pengukuran ulang secara rutin.',
-            'H2' => 'Perbaiki pola makan, pantau berat dan tinggi badan, serta lakukan konsultasi berkala dengan kader posyandu atau petugas kesehatan.',
-            default => 'Pertahankan pola makan bergizi seimbang, pemantauan rutin, imunisasi, dan stimulasi tumbuh kembang anak.',
+            'H1' => 'Apabila anak terdiagnosis memiliki risiko stunting tinggi, maka diperlukan penanganan segera dengan berkonsultasi ke tenaga kesehatan. Orang tua perlu memperbaiki asupan gizi anak dengan memberikan makanan bergizi seimbang serta melakukan pemantauan pertumbuhan secara rutin agar kondisi tidak semakin memburuk.',
+            'H2' => 'Jika anak berada pada kategori risiko stunting rendah, maka disarankan untuk meningkatkan kualitas pola makan dan menjaga keseimbangan nutrisi. Pemantauan pertumbuhan tetap perlu dilakukan secara berkala untuk mencegah peningkatan risiko.',
+            default => 'Apabila anak anda berada dalam kondisi normal (tidak mengalami risiko stunting), maka orang tua perlu mempertahankan pola hidup sehat dengan memberikan asupan gizi seimbang serta melakukan pemantauan pertumbuhan secara rutin ke posyandu agar kondisi tetap optimal.',
         };
     }
 
@@ -1027,7 +1363,7 @@ class Diagnosa extends BaseController
         $hasil['id_anak'] = $model->getInsertID();
     }
 
-    private function simpanHasilDiagnosa(array $hasil): void
+    private function simpanHasilDiagnosa(array &$hasil): void
     {
         $db = db_connect();
         if (!$db->tableExists('tb_hasil_diagnosa')) {
@@ -1064,13 +1400,15 @@ class Diagnosa extends BaseController
             'probabilitas_posterior' => json_encode($hasil['alternatif']),
             'rekomendasi' => $hasil['rekomendasi'],
             'id_kasus' => null,
-            'nama_kasus' => ($diagnosa['kelas'] ?? 'H1') . ' - ' . ($diagnosa['label'] ?? 'Risiko rendah'),
+            'nama_kasus' => ($diagnosa['kelas'] ?? 'H1') . ' - ' . ($diagnosa['label'] ?? 'Risiko Stunting Tinggi'),
             'persentase' => $hasil['persentase'],
             'jumlah_gejala' => (int) $hasil['jumlah_gejala'],
         ];
 
         $payload = $this->filterExistingFields('tb_hasil_diagnosa', $payload);
-        (new HasilDiagnosaModel())->insert($payload);
+        $model = new HasilDiagnosaModel();
+        $model->insert($payload);
+        $hasil['id_hasil_diagnosa'] = $model->getInsertID();
     }
 
     private function filterExistingFields(string $table, array $payload): array

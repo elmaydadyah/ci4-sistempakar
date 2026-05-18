@@ -23,8 +23,9 @@
             $cards = [
                 ['label' => 'Data Anak', 'value' => $total_anak ?? 0, 'href' => base_url('adminanak'), 'icon' => 'ti-user'],
                 ['label' => 'Data Latih', 'value' => $total_data_latih ?? 0, 'href' => base_url('adminstatusgizi'), 'icon' => 'ti-clipboard'],
-                ['label' => 'H1 Normal', 'value' => $total_h1 ?? 0, 'href' => base_url('adminhasildiagnosa'), 'icon' => 'ti-check-box'],
-                ['label' => 'H2/H3 Risiko', 'value' => $total_h2_h3 ?? 0, 'href' => base_url('adminhasildiagnosa'), 'icon' => 'ti-pulse'],
+                ['label' => 'H1 Risiko Tinggi', 'value' => $total_h1 ?? 0, 'href' => base_url('adminhasildiagnosa'), 'icon' => 'ti-alert'],
+                ['label' => 'H2 Risiko Rendah', 'value' => $total_h2 ?? 0, 'href' => base_url('adminhasildiagnosa'), 'icon' => 'ti-pulse'],
+                ['label' => 'H3 Tidak Risiko', 'value' => $total_h3 ?? 0, 'href' => base_url('adminhasildiagnosa'), 'icon' => 'ti-check-box'],
                 ['label' => 'Hasil Diagnosa', 'value' => $total_hasil ?? 0, 'href' => base_url('adminhasildiagnosa'), 'icon' => 'ti-pulse'],
             ];
             ?>
