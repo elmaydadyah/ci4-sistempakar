@@ -221,10 +221,7 @@ class Admin extends BaseController
         if (!in_array($indikatorAktif, $indikatorOptions, true)) {
             $indikatorAktif = 'TB/U';
         }
-        $perPage = 10;
-        $page = max(1, (int) $this->request->getGet('page'));
         $totalRows = 0;
-        $offset = ($page - 1) * $perPage;
 
         if ($db->tableExists('tb_standar_antropometri')) {
             $totalRows = $db->table('tb_standar_antropometri')
@@ -232,26 +229,17 @@ class Admin extends BaseController
                 ->countAllResults();
         }
 
-        $totalPages = max(1, (int) ceil($totalRows / $perPage));
-        if ($page > $totalPages) {
-            $page = $totalPages;
-            $offset = ($page - 1) * $perPage;
-        }
-
         $data = [
             'indikator_options' => $indikatorOptions,
             'indikator_aktif' => $indikatorAktif,
-            'page' => $page,
-            'per_page' => $perPage,
             'total_rows' => $totalRows,
-            'total_pages' => $totalPages,
             'tb_standar' => $db->tableExists('tb_standar_antropometri')
                 ? $db->table('tb_standar_antropometri')
                     ->where('indikator', $indikatorAktif)
                     ->orderBy('jenis_kelamin', 'ASC')
                     ->orderBy('umur_bulan', 'ASC')
                     ->orderBy('tinggi_cm', 'ASC')
-                    ->get($perPage, $offset)
+                    ->get()
                     ->getResultArray()
                 : [],
         ];
@@ -263,14 +251,14 @@ class Admin extends BaseController
     {
         $db = db_connect();
         if (!$db->tableExists('tb_standar_antropometri')) {
-            return redirect()->to('/adminstandar')->with('error', 'Tabel standar antropometri belum tersedia.');
+            return redirect()->to($this->getSafeAdminRedirect('/adminstandar'))->with('error', 'Tabel standar antropometri belum tersedia.');
         }
 
         $median = (float) $this->request->getPost('median');
         $sd = (float) $this->request->getPost('sd');
 
         if ($sd <= 0) {
-            return redirect()->to('/adminstandar')->with('error', 'SD harus lebih dari 0.');
+            return redirect()->to($this->getSafeAdminRedirect('/adminstandar'))->with('error', 'SD harus lebih dari 0.');
         }
 
         $db->table('tb_standar_antropometri')
@@ -283,7 +271,7 @@ class Admin extends BaseController
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
-        return redirect()->to('/adminstandar')->with('success', 'Standar antropometri berhasil diupdate.');
+        return redirect()->to($this->getSafeAdminRedirect('/adminstandar'))->with('success', 'Standar antropometri berhasil diupdate.');
     }
 
     public function indexNaiveBayesPrior()
@@ -302,12 +290,12 @@ class Admin extends BaseController
     {
         $db = db_connect();
         if (!$db->tableExists('tb_naive_bayes_prior')) {
-            return redirect()->to('/adminprior')->with('error', 'Tabel prior belum tersedia.');
+            return redirect()->to($this->getSafeAdminRedirect('/adminprior'))->with('error', 'Tabel prior belum tersedia.');
         }
 
         $probabilitas = (float) $this->request->getPost('probabilitas');
         if ($probabilitas <= 0 || $probabilitas > 1) {
-            return redirect()->to('/adminprior')->with('error', 'Probabilitas harus lebih dari 0 dan maksimal 1.');
+            return redirect()->to($this->getSafeAdminRedirect('/adminprior'))->with('error', 'Probabilitas harus lebih dari 0 dan maksimal 1.');
         }
 
         $db->table('tb_naive_bayes_prior')
@@ -319,7 +307,7 @@ class Admin extends BaseController
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
-        return redirect()->to('/adminprior')->with('success', 'Prior Naive Bayes berhasil diupdate.');
+        return redirect()->to($this->getSafeAdminRedirect('/adminprior'))->with('success', 'Prior Naive Bayes berhasil diupdate.');
     }
 
     public function indexNaiveBayesLikelihood()
@@ -343,12 +331,12 @@ class Admin extends BaseController
     {
         $db = db_connect();
         if (!$db->tableExists('tb_naive_bayes_likelihood')) {
-            return redirect()->to('/adminlikelihood')->with('error', 'Tabel likelihood belum tersedia.');
+            return redirect()->to($this->getSafeAdminRedirect('/adminlikelihood'))->with('error', 'Tabel likelihood belum tersedia.');
         }
 
         $probabilitas = (float) $this->request->getPost('probabilitas');
         if ($probabilitas <= 0 || $probabilitas > 1) {
-            return redirect()->to('/adminlikelihood')->with('error', 'Probabilitas harus lebih dari 0 dan maksimal 1.');
+            return redirect()->to($this->getSafeAdminRedirect('/adminlikelihood'))->with('error', 'Probabilitas harus lebih dari 0 dan maksimal 1.');
         }
 
         $db->table('tb_naive_bayes_likelihood')
@@ -358,7 +346,7 @@ class Admin extends BaseController
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
-        return redirect()->to('/adminlikelihood')->with('success', 'Likelihood Naive Bayes berhasil diupdate.');
+        return redirect()->to($this->getSafeAdminRedirect('/adminlikelihood'))->with('success', 'Likelihood Naive Bayes berhasil diupdate.');
     }
 
     public function indexNilaiProbabilitas()
@@ -407,6 +395,17 @@ class Admin extends BaseController
         }
 
         return array_values($formatted);
+    }
+
+    private function getSafeAdminRedirect(string $fallback): string
+    {
+        $target = (string) $this->request->getPost('redirect_to');
+
+        if ($target !== '' && str_starts_with($target, base_url())) {
+            return $target;
+        }
+
+        return $fallback;
     }
 
     public function createCertaintyFactor()

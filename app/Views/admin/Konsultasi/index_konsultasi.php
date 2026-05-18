@@ -63,7 +63,7 @@
                     <div class="card-body">
                         <h4 class="card-title">Hasil Terbaru</h4>
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover admin-data-table" data-page-length="5">
                                 <thead>
                                     <tr>
                                         <th>Nama</th>
@@ -83,7 +83,7 @@
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>
-                                        <tr>
+                                        <tr class="admin-empty-row">
                                             <td colspan="4" class="text-center text-muted py-4">Belum ada hasil diagnosa.</td>
                                         </tr>
                                     <?php endif; ?>
@@ -101,7 +101,7 @@
                     <div class="card-body">
                         <h4 class="card-title">Data Anak Terbaru</h4>
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover admin-data-table" data-page-length="5">
                                 <thead>
                                     <tr>
                                         <th>Nama Anak</th>
@@ -127,7 +127,7 @@
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>
-                                        <tr>
+                                        <tr class="admin-empty-row">
                                             <td colspan="7" class="text-center text-muted py-4">Belum ada data anak.</td>
                                         </tr>
                                     <?php endif; ?>

@@ -22,13 +22,14 @@
                         <p class="text-muted mb-3">Data hipotesis risiko stunting dan solusi berdasarkan tabel Excel.</p>
 
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table table-hover admin-data-table">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
                                         <th>Hipotesis</th>
                                         <th>Risiko Stunting pada Balita</th>
                                         <th>Solusi</th>
+                                        <th class="admin-no-sort">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -39,12 +40,17 @@
                                                 <td><?= $no++; ?></td>
                                                 <td><?= esc($hipotesis['kode_hipotesis'] ?? '-'); ?></td>
                                                 <td><?= esc($hipotesis['risiko_stunting'] ?? '-'); ?></td>
-                                                <td><?= esc($hipotesis['solusi'] ?? '-'); ?></td>
+                                                <td><div class="admin-table-text"><?= esc($hipotesis['solusi'] ?? '-'); ?></div></td>
+                                                <td>
+                                                    <div class="admin-table-actions">
+                                                        <a class="btn btn-primary btn-sm" href="<?= base_url('adminprior'); ?>">Kelola Prior</a>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>
-                                        <tr>
-                                            <td colspan="4">Data tidak tersedia.</td>
+                                        <tr class="admin-empty-row">
+                                            <td colspan="5">Data tidak tersedia.</td>
                                         </tr>
                                     <?php endif; ?>
                                 </tbody>

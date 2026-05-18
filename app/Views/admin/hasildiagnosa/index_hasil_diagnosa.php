@@ -24,7 +24,7 @@
                     <div class="card-body">
                         <h4 class="card-title">Tabel Hasil Diagnosa</h4>
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover admin-data-table">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
@@ -61,7 +61,7 @@
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>
-                                        <tr>
+                                        <tr class="admin-empty-row">
                                             <td colspan="9" class="text-center text-muted py-4">Belum ada hasil diagnosa tersimpan.</td>
                                         </tr>
                                     <?php endif; ?>

@@ -22,14 +22,14 @@
                         <p class="text-muted mb-3">Halaman ini menampilkan relasi gejala lama. Perhitungan terbaru memakai data status gizi untuk Naive Bayes dan menu Certainty Factor untuk bobot keyakinan.</p>
                         <h4 class="card-title">Relasi Gejala</h4>
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table table-hover admin-data-table">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
                                         <th>Hasil NB</th>
                                         <th>Gejala</th>
                                         <th>Bobot CF</th>
-                                        <th>Aksi</th>
+                                        <th class="admin-no-sort">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -50,14 +50,15 @@
                                                     <?= esc((string) $kasusgejala['nilai']); ?>
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-primary btn-sm">Edit</button>
-                                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                                    <div class="admin-table-actions">
+                                                        <a class="btn btn-primary btn-sm" href="<?= base_url('admincf'); ?>">Kelola CF</a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>
-                                        <tr>
-                                            <td colspan="7">Data tidak tersedia.</td>
+                                        <tr class="admin-empty-row">
+                                            <td colspan="5">Data tidak tersedia.</td>
                                         </tr>
                                     <?php endif; ?>
                                 </tbody>

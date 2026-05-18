@@ -37,13 +37,13 @@
                         <?php endif; ?>
 
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table table-hover admin-data-table">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
                                         <th>Kode Gejala</th>
                                         <th>Nama Gejala</th>
-                                        <th>Aksi</th>
+                                        <th class="admin-no-sort">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -55,6 +55,7 @@
                                                 <td><?= esc($gejala['kode_gejala'] ?? '-'); ?></td>
                                                 <td><?= esc($gejala['nama_gejala']); ?></td>
                                                 <td>
+                                                    <div class="admin-table-actions">
                                                     <button class="btn btn-primary btn-sm" data-toggle="modal"
                                                         data-target="#editGejalaModal"
                                                         data-id="<?= esc($gejala['id_gejala'], 'attr'); ?>"
@@ -63,11 +64,12 @@
                                                     <a href="<?= base_url('/admin/deleteGejala/' . $gejala['id_gejala']); ?>"
                                                         class="btn btn-danger btn-sm"
                                                         onclick="return confirm('Apakah Anda yakin ingin menghapus data gejala ini?');">Delete</a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>
-                                        <tr>
+                                        <tr class="admin-empty-row">
                                             <td colspan="4">Data tidak tersedia.</td>
                                         </tr>
                                     <?php endif; ?>

@@ -37,7 +37,7 @@
                         </div>
 
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover admin-data-table">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
@@ -47,87 +47,113 @@
                                         <th>Tinggi</th>
                                         <th>Median</th>
                                         <th>SD</th>
-                                        <th>Aksi</th>
+                                        <th class="admin-no-sort">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $no = (((int) ($page ?? 1) - 1) * (int) ($per_page ?? 10)) + 1; ?>
+                                    <?php $no = 1; ?>
                                     <?php foreach ($tb_standar ?? [] as $row): ?>
                                         <tr>
-                                            <form action="<?= base_url('admin/updateStandar/' . $row['id_standar']); ?>" method="post">
-                                                <?= csrf_field() ?>
-                                                <td><?= esc((string) $no++); ?></td>
-                                                <td><?= esc($row['indikator']); ?></td>
-                                                <td><?= esc($row['jenis_kelamin']); ?></td>
-                                                <td><?= $row['umur_bulan'] !== null ? esc((string) $row['umur_bulan']) . ' bulan' : '-'; ?></td>
-                                                <td><?= $row['tinggi_cm'] !== null ? esc((string) $row['tinggi_cm']) . ' cm' : '-'; ?></td>
-                                                <td><input class="form-control form-control-sm" type="number" step="0.01" name="median" value="<?= esc((string) $row['median'], 'attr'); ?>" required></td>
-                                                <td><input class="form-control form-control-sm" type="number" step="0.01" min="0.01" name="sd" value="<?= esc((string) $row['sd'], 'attr'); ?>" required></td>
-                                                <input type="hidden" name="sumber" value="<?= esc($row['sumber'] ?? '', 'attr'); ?>">
-                                                <input type="hidden" name="catatan" value="<?= esc($row['catatan'] ?? '', 'attr'); ?>">
-                                                <td><button class="btn btn-primary btn-sm" type="submit">Simpan</button></td>
-                                            </form>
+                                            <td><?= esc((string) $no++); ?></td>
+                                            <td><?= esc($row['indikator']); ?></td>
+                                            <td><?= esc($row['jenis_kelamin']); ?></td>
+                                            <td><?= $row['umur_bulan'] !== null ? esc((string) $row['umur_bulan']) . ' bulan' : '-'; ?></td>
+                                            <td><?= $row['tinggi_cm'] !== null ? esc((string) $row['tinggi_cm']) . ' cm' : '-'; ?></td>
+                                            <td><?= esc(number_format((float) $row['median'], 2, '.', '')); ?></td>
+                                            <td><?= esc(number_format((float) $row['sd'], 2, '.', '')); ?></td>
+                                            <td>
+                                                <div class="admin-table-actions">
+                                                    <button class="btn btn-primary btn-sm"
+                                                        type="button"
+                                                        data-toggle="modal"
+                                                        data-target="#editStandarModal"
+                                                        data-id="<?= esc($row['id_standar'], 'attr'); ?>"
+                                                        data-indikator="<?= esc($row['indikator'], 'attr'); ?>"
+                                                        data-jk="<?= esc($row['jenis_kelamin'], 'attr'); ?>"
+                                                        data-umur="<?= esc((string) ($row['umur_bulan'] ?? ''), 'attr'); ?>"
+                                                        data-tinggi="<?= esc((string) ($row['tinggi_cm'] ?? ''), 'attr'); ?>"
+                                                        data-median="<?= esc((string) $row['median'], 'attr'); ?>"
+                                                        data-sd="<?= esc((string) $row['sd'], 'attr'); ?>"
+                                                        data-sumber="<?= esc($row['sumber'] ?? '', 'attr'); ?>"
+                                                        data-catatan="<?= esc($row['catatan'] ?? '', 'attr'); ?>">
+                                                        Edit
+                                                    </button>
+                                                </div>
+                                            </td>
                                         </tr>
                                     <?php endforeach; ?>
                                     <?php if (empty($tb_standar)): ?>
-                                        <tr><td colspan="8" class="text-center text-muted py-4">Data standar belum tersedia.</td></tr>
+                                        <tr class="admin-empty-row"><td colspan="8" class="text-center text-muted py-4">Data standar belum tersedia.</td></tr>
                                     <?php endif; ?>
                                 </tbody>
                             </table>
-                        </div>
-
-                        <?php
-                            $page = (int) ($page ?? 1);
-                            $perPage = (int) ($per_page ?? 10);
-                            $totalRows = (int) ($total_rows ?? 0);
-                            $totalPages = (int) ($total_pages ?? 1);
-                            $start = $totalRows > 0 ? (($page - 1) * $perPage) + 1 : 0;
-                            $end = min($page * $perPage, $totalRows);
-                            $paginationUrl = static fn ($targetPage) => base_url('adminstandar') . '?indikator=' . urlencode((string) ($indikator_aktif ?? 'TB/U')) . '&page=' . $targetPage;
-                            $firstPage = max(1, $page - 2);
-                            $lastPage = min($totalPages, $page + 2);
-                        ?>
-
-                        <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between mt-3">
-                            <div class="text-muted mb-2 mb-lg-0">
-                                Menampilkan <?= esc((string) $start); ?> sampai <?= esc((string) $end); ?> dari <?= esc((string) $totalRows); ?> data
-                            </div>
-
-                            <nav aria-label="Pagination standar antropometri">
-                                <ul class="pagination mb-0">
-                                    <li class="page-item <?= $page <= 1 ? 'disabled' : ''; ?>">
-                                        <a class="page-link" href="<?= $page <= 1 ? '#' : esc($paginationUrl($page - 1), 'attr'); ?>">Sebelumnya</a>
-                                    </li>
-
-                                    <?php if ($firstPage > 1): ?>
-                                        <li class="page-item"><a class="page-link" href="<?= esc($paginationUrl(1), 'attr'); ?>">1</a></li>
-                                        <?php if ($firstPage > 2): ?>
-                                            <li class="page-item disabled"><span class="page-link">...</span></li>
-                                        <?php endif; ?>
-                                    <?php endif; ?>
-
-                                    <?php for ($i = $firstPage; $i <= $lastPage; $i++): ?>
-                                        <li class="page-item <?= $i === $page ? 'active' : ''; ?>">
-                                            <a class="page-link" href="<?= esc($paginationUrl($i), 'attr'); ?>"><?= esc((string) $i); ?></a>
-                                        </li>
-                                    <?php endfor; ?>
-
-                                    <?php if ($lastPage < $totalPages): ?>
-                                        <?php if ($lastPage < $totalPages - 1): ?>
-                                            <li class="page-item disabled"><span class="page-link">...</span></li>
-                                        <?php endif; ?>
-                                        <li class="page-item"><a class="page-link" href="<?= esc($paginationUrl($totalPages), 'attr'); ?>"><?= esc((string) $totalPages); ?></a></li>
-                                    <?php endif; ?>
-
-                                    <li class="page-item <?= $page >= $totalPages ? 'disabled' : ''; ?>">
-                                        <a class="page-link" href="<?= $page >= $totalPages ? '#' : esc($paginationUrl($page + 1), 'attr'); ?>">Berikutnya</a>
-                                    </li>
-                                </ul>
-                            </nav>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="editStandarModal" tabindex="-1" role="dialog" aria-labelledby="editStandarModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form method="post" id="editStandarForm">
+                <?= csrf_field() ?>
+                <input type="hidden" name="redirect_to" value="<?= esc((string) current_url(true), 'attr'); ?>">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editStandarModalLabel">Edit Standar Antropometri</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="edit-standar-info">Data Referensi</label>
+                            <input type="text" class="form-control" id="edit-standar-info" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-standar-median">Median</label>
+                            <input type="number" class="form-control" id="edit-standar-median" name="median" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-standar-sd">SD</label>
+                            <input type="number" class="form-control" id="edit-standar-sd" name="sd" step="0.01" min="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-standar-sumber">Sumber</label>
+                            <input type="text" class="form-control" id="edit-standar-sumber" name="sumber">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-standar-catatan">Catatan</label>
+                            <textarea class="form-control" id="edit-standar-catatan" name="catatan" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            $('#editStandarModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var id = button.data('id');
+                var umur = button.data('umur') ? button.data('umur') + ' bulan' : '-';
+                var tinggi = button.data('tinggi') ? button.data('tinggi') + ' cm' : '-';
+                var info = button.data('indikator') + ' - ' + button.data('jk') + ' - Umur: ' + umur + ' - Tinggi: ' + tinggi;
+
+                $('#editStandarForm').attr('action', '<?= base_url('admin/updateStandar'); ?>/' + id);
+                $('#edit-standar-info').val(info);
+                $('#edit-standar-median').val(button.data('median'));
+                $('#edit-standar-sd').val(button.data('sd'));
+                $('#edit-standar-sumber').val(button.data('sumber'));
+                $('#edit-standar-catatan').val(button.data('catatan'));
+            });
+        });
+    </script>
+
     <?= $this->include('layout/dashboard/footer') ?>

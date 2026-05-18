@@ -35,14 +35,14 @@
                         <?php endif; ?>
 
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover admin-data-table">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
                                         <th>Gejala</th>
                                         <th>Bobot CF</th>
                                         <th>Keterangan</th>
-                                        <th>Aksi</th>
+                                        <th class="admin-no-sort">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -53,8 +53,9 @@
                                                 <td><?= $no++; ?></td>
                                                 <td><?= esc($cf['nama_gejala'] ?? ('Gejala #' . $cf['id_gejala'])); ?></td>
                                                 <td><?= esc(number_format((float) $cf['bobot_cf'], 2, '.', '')); ?></td>
-                                                <td><?= esc($cf['keterangan'] ?? '-'); ?></td>
+                                                <td><div class="admin-table-text"><?= esc($cf['keterangan'] ?? '-'); ?></div></td>
                                                 <td>
+                                                    <div class="admin-table-actions">
                                                     <button class="btn btn-primary btn-sm"
                                                         data-toggle="modal"
                                                         data-target="#editCfModal"
@@ -65,11 +66,12 @@
                                                     <a href="<?= base_url('/admin/deleteCf/' . $cf['id_cf']); ?>"
                                                         class="btn btn-danger btn-sm"
                                                         onclick="return confirm('Apakah Anda yakin ingin menghapus data CF ini?');">Delete</a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>
-                                        <tr>
+                                        <tr class="admin-empty-row">
                                             <td colspan="5">Data CF belum tersedia.</td>
                                         </tr>
                                     <?php endif; ?>

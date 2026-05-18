@@ -31,7 +31,7 @@
                             </div>
                         <?php endif; ?>
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table table-hover admin-data-table">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
@@ -40,7 +40,7 @@
                                         <th>Email</th>
                                         <th>Role</th>
                                         <th>created At</th>
-                                        <th>Aksi</th>
+                                        <th class="admin-no-sort">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -67,6 +67,7 @@
                                                     <?= $user['created_at']; ?>
                                                 </td>
                                                 <td>
+                                                    <div class="admin-table-actions">
                                                     <button class="btn btn-primary btn-sm" data-toggle="modal"
                                                         data-target="#editUserModal"
                                                         data-id="<?= $user['id_users']; ?>"
@@ -76,11 +77,12 @@
                                                     <a href="<?= base_url('/admin/deleteUser/' . $user['id_users']); ?>"
                                                         class="btn btn-danger btn-sm"
                                                         onclick="return confirm('Apakah Anda yakin ingin menghapus data user ini?');">Delete</a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>
-                                        <tr>
+                                        <tr class="admin-empty-row">
                                             <td colspan="7">Data tidak tersedia.</td>
                                         </tr>
                                     <?php endif; ?>

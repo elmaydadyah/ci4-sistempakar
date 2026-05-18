@@ -37,7 +37,7 @@
                         <?php endif; ?>
 
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table table-hover admin-data-table">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
@@ -45,7 +45,7 @@
                                         <th>Nama Penyakit</th>
                                         <th>Deskripsi</th>
                                         <th>Solusi</th>
-                                        <th>Aksi</th>
+                                        <th class="admin-no-sort">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -56,9 +56,10 @@
                                                 <td><?= $no++; ?></td>
                                                 <td><?= esc($penyakit['id_kasus']); ?></td>
                                                 <td><?= esc($penyakit['nama_kasus']); ?></td>
-                                                <td><?= esc($penyakit['deskripsi']); ?></td>
-                                                <td><?= esc($penyakit['solusi']); ?></td>
+                                                <td><div class="admin-table-text"><?= esc($penyakit['deskripsi']); ?></div></td>
+                                                <td><div class="admin-table-text"><?= esc($penyakit['solusi']); ?></div></td>
                                                 <td>
+                                                    <div class="admin-table-actions">
                                                     <button class="btn btn-primary btn-sm" data-toggle="modal"
                                                         data-target="#editPenyakitModal"
                                                         data-id="<?= esc($penyakit['id_kasus'], 'attr'); ?>"
@@ -68,11 +69,12 @@
                                                     <a href="<?= base_url('/admin/deletePenyakit/' . $penyakit['id_kasus']); ?>"
                                                         class="btn btn-danger btn-sm"
                                                         onclick="return confirm('Apakah Anda yakin ingin menghapus data penyakit ini?');">Delete</a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>
-                                        <tr>
+                                        <tr class="admin-empty-row">
                                             <td colspan="6">Data tidak tersedia.</td>
                                         </tr>
                                     <?php endif; ?>

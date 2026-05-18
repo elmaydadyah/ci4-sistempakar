@@ -168,7 +168,7 @@ $detailGroups = [
                                         <th>Orang Tua</th>
                                         <th>Desa/Kel</th>
                                         <th>Posyandu</th>
-                                        <th>Aksi</th>
+                                        <th class="admin-no-sort">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -188,9 +188,11 @@ $detailGroups = [
                                                 <td><?= esc($anak['desa_kel']); ?></td>
                                                 <td><?= esc($anak['posyandu']); ?></td>
                                                 <td>
+                                                    <div class="admin-table-actions">
                                                     <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#detailStatusGiziModal<?= esc($anak['id_status_gizi'], 'attr'); ?>">
                                                         Lihat Detail
                                                     </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -261,6 +263,9 @@ $detailGroups = [
                 searching: true,
                 info: true,
                 autoWidth: false,
+                columnDefs: [
+                    { orderable: false, targets: 'admin-no-sort' }
+                ],
                 language: {
                     search: 'Cari:',
                     info: 'Menampilkan _START_ sampai _END_ dari _TOTAL_ data',

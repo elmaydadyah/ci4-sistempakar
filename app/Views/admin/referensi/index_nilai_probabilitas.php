@@ -17,7 +17,7 @@
                     <div class="card-body">
                         <h4 class="card-title">Tabel Nilai Probabilitas</h4>
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover admin-data-table">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
@@ -26,6 +26,7 @@
                                         <th>H1</th>
                                         <th>H2</th>
                                         <th>H3</th>
+                                        <th class="admin-no-sort">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -39,11 +40,16 @@
                                                 <td><?= esc($row['H1'] !== null ? number_format((float) $row['H1'], 2) : '-'); ?></td>
                                                 <td><?= esc($row['H2'] !== null ? number_format((float) $row['H2'], 2) : '-'); ?></td>
                                                 <td><?= esc($row['H3'] !== null ? number_format((float) $row['H3'], 2) : '-'); ?></td>
+                                                <td>
+                                                    <div class="admin-table-actions">
+                                                        <a class="btn btn-primary btn-sm" href="<?= base_url('adminlikelihood'); ?>">Kelola Likelihood</a>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>
-                                        <tr>
-                                            <td colspan="6" class="text-center text-muted py-4">Data nilai probabilitas belum tersedia.</td>
+                                        <tr class="admin-empty-row">
+                                            <td colspan="7" class="text-center text-muted py-4">Data nilai probabilitas belum tersedia.</td>
                                         </tr>
                                     <?php endif; ?>
                                 </tbody>
