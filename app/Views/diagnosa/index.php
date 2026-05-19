@@ -26,7 +26,7 @@
                 </div>
             </div>
 
-            <div class="consult-layout wide">
+            <div class="consult-layout wide <?= !empty($hasil) ? 'result-only' : '' ?>">
                 <aside class="result-panel" aria-label="Hasil konsultasi">
                     <?php if (!empty($hasil)): ?>
                         <?php $diagnosa = $hasil['diagnosa']; ?>
@@ -87,6 +87,13 @@
                                 </div>
                                 <a href="<?= base_url('konsultasi/laporan/' . $hasil['id_hasil_diagnosa']); ?>" target="_blank" rel="noopener">Download laporan</a>
                             </div>
+                            <div class="report-download-box">
+                                <div>
+                                    <b>Konsultasi baru</b>
+                                    <p>Mulai pemeriksaan untuk anak berikutnya dengan form kosong.</p>
+                                </div>
+                                <a href="<?= base_url('konsultasi'); ?>">Mulai baru</a>
+                            </div>
                         <?php endif; ?>
 
                         <details class="technical-details">
@@ -122,7 +129,7 @@
                     <?php else: ?>
                         <span class="result-label">Bantuan pengisian</span>
                         <h2>Tenang, isi pelan-pelan saja.</h2>
-                        <p>Bagian yang wajib hanya nama anak, jenis kelamin, umur, berat badan, dan tinggi badan. Kolom lain membantu catatan admin jika tersedia.</p>
+                        <p>Lengkapi semua kolom yang tersedia agar hasil konsultasi bisa dicatat dengan rapi.</p>
                         <div class="consult-steps">
                             <span>Umur pakai bulan</span>
                             <span>Berat pakai kg</span>
@@ -136,6 +143,7 @@
                     <?php endif; ?>
                 </aside>
 
+                <?php if (empty($hasil)): ?>
                 <form class="consult-form" action="<?= base_url('/konsultasi') ?>" method="post">
                     <?= csrf_field() ?>
 
@@ -163,8 +171,8 @@
                         </label>
                         <label>
                             <span>NIK anak</span>
-                            <input type="text" name="nik" value="<?= esc($old['nik'] ?? '', 'attr') ?>" inputmode="numeric" placeholder="Boleh dikosongkan">
-                            <small>Isi jika tersedia di KK/KIA.</small>
+                            <input type="text" name="nik" value="<?= esc($old['nik'] ?? '', 'attr') ?>" inputmode="numeric" placeholder="Masukkan NIK anak" required>
+                            <small>Isi sesuai KK/KIA.</small>
                         </label>
                         <label>
                             <span>Jenis Kelamin</span>
@@ -177,7 +185,7 @@
                         </label>
                         <label>
                             <span>Tanggal Lahir</span>
-                            <input type="date" id="tanggal-lahir-anak" name="tanggal_lahir" value="<?= esc($old['tanggal_lahir'] ?? '', 'attr') ?>">
+                            <input type="date" id="tanggal-lahir-anak" name="tanggal_lahir" value="<?= esc($old['tanggal_lahir'] ?? '', 'attr') ?>" required>
                             <small>Isi tanggal lahir, umur akan terhitung otomatis.</small>
                         </label>
                         <label>
@@ -190,7 +198,7 @@
                         </label>
                         <label>
                             <span>Nama ibu/ayah</span>
-                            <input type="text" name="nama_ortu" value="<?= esc($old['nama_ortu'] ?? '', 'attr') ?>" placeholder="Nama orang tua">
+                            <input type="text" name="nama_ortu" value="<?= esc($old['nama_ortu'] ?? '', 'attr') ?>" placeholder="Nama orang tua" required>
                             <small>Untuk catatan admin.</small>
                         </label>
                     </div>
@@ -223,18 +231,18 @@
                         <label>
                             <span>Lingkar lengan atas</span>
                             <div class="input-with-unit">
-                                <input type="number" name="lingkar_lengan" value="<?= esc($old['lingkar_lengan'] ?? '', 'attr') ?>" min="0" step="0.01" placeholder="13.5">
+                                <input type="number" name="lingkar_lengan" value="<?= esc($old['lingkar_lengan'] ?? '', 'attr') ?>" min="0" step="0.01" placeholder="13.5" required>
                                 <b>cm</b>
                             </div>
-                            <small>Opsional. Biasanya diukur dengan pita LILA.</small>
+                            <small>Biasanya diukur dengan pita LILA.</small>
                         </label>
                         <label>
                             <span>Lingkar kepala</span>
                             <div class="input-with-unit">
-                                <input type="number" name="lingkar_kepala" value="<?= esc($old['lingkar_kepala'] ?? '', 'attr') ?>" min="0" step="0.01" placeholder="46">
+                                <input type="number" name="lingkar_kepala" value="<?= esc($old['lingkar_kepala'] ?? '', 'attr') ?>" min="0" step="0.01" placeholder="46" required>
                                 <b>cm</b>
                             </div>
-                            <small>Opsional, isi jika ada catatannya.</small>
+                            <small>Gunakan sentimeter. Contoh: 46.</small>
                         </label>
                     </div>
 
@@ -252,7 +260,7 @@
                             <?php foreach ($tb_gejala as $gejala): ?>
                                 <?php
                                     $idGejala = (int) ($gejala['id_gejala'] ?? 0);
-                                    $jawaban = $jawabanGejala[$idGejala] ?? 'tidak';
+                                    $jawaban = $jawabanGejala[$idGejala] ?? null;
                                 ?>
                                 <article class="symptom-question">
                                     <div>
@@ -261,11 +269,11 @@
                                     </div>
                                     <div class="symptom-answer" role="radiogroup" aria-label="<?= esc($gejala['pertanyaan_gejala'] ?? $gejala['nama_gejala'] ?? '', 'attr') ?>">
                                         <label>
-                                            <input type="radio" name="jawaban_gejala[<?= esc((string) $idGejala, 'attr') ?>]" value="ya" <?= $jawaban === 'ya' ? 'checked' : '' ?>>
+                                            <input type="radio" name="jawaban_gejala[<?= esc((string) $idGejala, 'attr') ?>]" value="ya" <?= $jawaban === 'ya' ? 'checked' : '' ?> required>
                                             <b>Ya</b>
                                         </label>
                                         <label>
-                                            <input type="radio" name="jawaban_gejala[<?= esc((string) $idGejala, 'attr') ?>]" value="tidak" <?= $jawaban !== 'ya' ? 'checked' : '' ?>>
+                                            <input type="radio" name="jawaban_gejala[<?= esc((string) $idGejala, 'attr') ?>]" value="tidak" <?= $jawaban === 'tidak' ? 'checked' : '' ?>>
                                             <b>Tidak</b>
                                         </label>
                                     </div>
@@ -286,6 +294,7 @@
 
                     <button class="btn-submit-consult" type="submit">Lihat Saran untuk Anak</button>
                 </form>
+                <?php endif; ?>
             </div>
         </section>
     </main>

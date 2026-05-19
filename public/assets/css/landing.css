@@ -1418,6 +1418,12 @@ h1 {
     grid-template-columns: minmax(0, 1fr);
 }
 
+.consult-layout.result-only {
+    max-width: 980px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
 .consult-form,
 .result-panel {
     border: 1px solid rgba(206, 212, 218, .86);

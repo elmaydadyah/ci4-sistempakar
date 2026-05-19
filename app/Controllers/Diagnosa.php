@@ -76,10 +76,6 @@ class Diagnosa extends BaseController
     private function getHasilDiagnosaFromRequest(): ?array
     {
         $hasilId = (int) ($this->request->getGet('hasil') ?? 0);
-        if ($hasilId <= 0) {
-            $hasilId = (int) (session()->get('last_hasil_diagnosa_id') ?? 0);
-        }
-
         if ($hasilId <= 0 || !db_connect()->tableExists('tb_hasil_diagnosa')) {
             return null;
         }
@@ -276,7 +272,9 @@ class Diagnosa extends BaseController
             $errors[] = 'Nama balita wajib diisi.';
         }
 
-        if ($input['nik'] !== '' && !preg_match('/^[0-9]{8,32}$/', $input['nik'])) {
+        if ($input['nik'] === '') {
+            $errors[] = 'NIK anak wajib diisi.';
+        } elseif (!preg_match('/^[0-9]{8,32}$/', $input['nik'])) {
             $errors[] = 'NIK diisi angka minimal 8 digit.';
         }
 
@@ -284,8 +282,18 @@ class Diagnosa extends BaseController
             $errors[] = 'Jenis kelamin wajib dipilih.';
         }
 
+        if ($input['tanggal_lahir'] === '') {
+            $errors[] = 'Tanggal lahir wajib diisi.';
+        } elseif (!$this->isValidBirthDate($input['tanggal_lahir'])) {
+            $errors[] = 'Tanggal lahir tidak valid.';
+        }
+
         if ($input['umur'] === '' || !ctype_digit($input['umur']) || (int) $input['umur'] < 0 || (int) $input['umur'] > 60) {
             $errors[] = 'Umur balita harus 0 sampai 60 bulan.';
+        }
+
+        if ($input['nama_ortu'] === '') {
+            $errors[] = 'Nama ibu/ayah wajib diisi.';
         }
 
         foreach (['berat_badan' => 'Berat badan', 'tinggi_badan' => 'Tinggi badan'] as $field => $label) {
@@ -295,12 +303,36 @@ class Diagnosa extends BaseController
         }
 
         foreach (['lingkar_lengan' => 'Lingkar lengan', 'lingkar_kepala' => 'Lingkar kepala'] as $field => $label) {
-            if ($input[$field] !== '' && (!is_numeric($input[$field]) || (float) $input[$field] <= 0)) {
-                $errors[] = $label . ' harus berupa angka lebih dari 0.';
+            if ($input[$field] === '' || !is_numeric($input[$field]) || (float) $input[$field] <= 0) {
+                $errors[] = $label . ' wajib diisi dengan angka lebih dari 0.';
+            }
+        }
+
+        foreach ($this->getGejalaPertanyaan() as $gejala) {
+            $idGejala = (int) ($gejala['id_gejala'] ?? 0);
+            if ($idGejala <= 0) {
+                continue;
+            }
+
+            if (!in_array($input['jawaban_gejala'][$idGejala] ?? null, ['ya', 'tidak'], true)) {
+                $errors[] = 'Semua pertanyaan gejala wajib dijawab.';
+                break;
             }
         }
 
         return $errors;
+    }
+
+    private function isValidBirthDate(string $date): bool
+    {
+        $birthDate = \DateTimeImmutable::createFromFormat('!Y-m-d', $date);
+        $errors = \DateTimeImmutable::getLastErrors();
+
+        if (!$birthDate || ($errors !== false && ($errors['warning_count'] > 0 || $errors['error_count'] > 0))) {
+            return false;
+        }
+
+        return $birthDate <= new \DateTimeImmutable('today');
     }
 
     private function hitungDiagnosa(array $input): array
@@ -909,8 +941,8 @@ class Diagnosa extends BaseController
                 $kodeGejala = (string) ($item['kode'] ?? '');
                 $evidenceKey = $kodeGejala !== '' ? $kodeGejala : trim($indicator . ' ' . $category);
                 $probability = $likelihoodMap[$class][$indicator][$category]
-                    ?? ($kodeGejala !== '' ? ($gejalaLikelihoodMap[$class][$kodeGejala] ?? null) : null)
                     ?? ($kodeGejala !== '' ? ($ruleLikelihoodMap[$class][$kodeGejala] ?? null) : null)
+                    ?? ($kodeGejala !== '' ? ($gejalaLikelihoodMap[$class][$kodeGejala] ?? null) : null)
                     ?? 0.01;
                 $likelihood[$class][$evidenceKey] = $probability;
                 $logScore += log(max($probability, 0.00001));
