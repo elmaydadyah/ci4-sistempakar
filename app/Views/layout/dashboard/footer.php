@@ -28,6 +28,86 @@
   });
 </script>
 <script>
+  (function () {
+    var pendingElement = null;
+    var confirmOverlay = document.createElement('div');
+    confirmOverlay.className = 'admin-confirm-overlay';
+    confirmOverlay.innerHTML = [
+      '<div class="admin-confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="adminConfirmTitle">',
+      '<h5 id="adminConfirmTitle">Konfirmasi Hapus</h5>',
+      '<p id="adminConfirmMessage">Apakah Anda yakin ingin menghapus data ini?</p>',
+      '<div class="admin-confirm-actions">',
+      '<button type="button" class="admin-confirm-button admin-confirm-cancel" data-confirm-cancel>Cancel</button>',
+      '<button type="button" class="admin-confirm-button admin-confirm-ok" data-confirm-ok>OK</button>',
+      '</div>',
+      '</div>'
+    ].join('');
+    document.body.appendChild(confirmOverlay);
+
+    function getConfirmMessage(onclickValue) {
+      var match = String(onclickValue || '').match(/confirm\((['"])(.*?)\1\)/);
+      return match ? match[2] : 'Apakah Anda yakin ingin menghapus data ini?';
+    }
+
+    function closeConfirm() {
+      confirmOverlay.classList.remove('is-visible');
+      pendingElement = null;
+    }
+
+    document.addEventListener('click', function (event) {
+      var target = event.target.closest('[onclick*="confirm("]');
+      if (!target || target.dataset.confirmApproved === '1') {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+
+      pendingElement = target;
+      document.getElementById('adminConfirmMessage').textContent = getConfirmMessage(target.getAttribute('onclick'));
+      confirmOverlay.classList.add('is-visible');
+      confirmOverlay.querySelector('[data-confirm-ok]').focus();
+    }, true);
+
+    confirmOverlay.querySelector('[data-confirm-cancel]').addEventListener('click', closeConfirm);
+    confirmOverlay.addEventListener('click', function (event) {
+      if (event.target === confirmOverlay) {
+        closeConfirm();
+      }
+    });
+
+    confirmOverlay.querySelector('[data-confirm-ok]').addEventListener('click', function () {
+      if (!pendingElement) {
+        closeConfirm();
+        return;
+      }
+
+      var approvedElement = pendingElement;
+      approvedElement.dataset.confirmApproved = '1';
+      closeConfirm();
+
+      if (approvedElement.tagName === 'A' && approvedElement.href) {
+        window.location.href = approvedElement.href;
+        return;
+      }
+
+      if (approvedElement.form) {
+        approvedElement.form.submit();
+        return;
+      }
+
+      approvedElement.click();
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && confirmOverlay.classList.contains('is-visible')) {
+        closeConfirm();
+      }
+    });
+  })();
+</script>
+<script>
   (function ($) {
     if (!window.jQuery || !$.fn.DataTable) {
       return;
