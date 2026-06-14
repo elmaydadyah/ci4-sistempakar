@@ -18,6 +18,16 @@
 <script src="<?= base_url('assets/skydash/js/template.js') ?>"></script>
 <script src="<?= base_url('assets/skydash/js/Chart.roundedBarCharts.js') ?>"></script>
 <script>
+  window.addEventListener('pageshow', function (event) {
+    var navEntry = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    var restoredFromBackCache = event.persisted || (navEntry && navEntry.type === 'back_forward');
+
+    if (restoredFromBackCache) {
+      window.location.reload();
+    }
+  });
+</script>
+<script>
   (function ($) {
     if (!window.jQuery || !$.fn.DataTable) {
       return;
@@ -31,7 +41,7 @@
         return;
       }
 
-      $table.DataTable({
+      var dataTable = $table.DataTable({
         pageLength: Number($table.data('page-length')) || 10,
         lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'Semua']],
         ordering: $table.data('ordering') !== false,
@@ -56,6 +66,20 @@
           { orderable: false, targets: 'admin-no-sort' }
         ]
       });
+
+      $table.closest('.dataTables_wrapper').find('div[id$=_filter] input').attr('placeholder', 'Cari');
+
+      var filterSelector = $table.data('filter-select');
+      var filterColumn = Number($table.data('filter-column'));
+      if (filterSelector && !Number.isNaN(filterColumn)) {
+        $(document).on('change', filterSelector, function () {
+          var selectedValue = $.fn.dataTable.util.escapeRegex($(this).val() || '');
+          dataTable
+            .column(filterColumn)
+            .search(selectedValue ? '^' + selectedValue + '$' : '', true, false)
+            .draw();
+        });
+      }
     });
   })(jQuery);
 </script>

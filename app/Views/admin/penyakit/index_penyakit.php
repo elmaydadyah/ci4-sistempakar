@@ -5,25 +5,15 @@
 <div class="main-panel">
     <div class="content-wrapper">
         <div class="row">
-            <div class="col-md-12 grid-margin">
-                <div class="row align-items-center">
-                    <div class="col-12 col-xl-8 mb-2 mb-xl-0">
-                        <h3 class="font-weight-bold">Data Penyakit</h3>
-                    </div>
-                    <div class="col-12 col-xl-4 text-xl-right">
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#createPenyakitModal">
-                            Tambah Penyakit
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
             <div class="col-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Tabel Penyakit</h4>
+                        <div class="admin-table-toolbar">
+                            <h4 class="card-title mb-0">Tabel Penyakit</h4>
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#createPenyakitModal">
+                                Tambah Penyakit
+                            </button>
+                        </div>
 
                         <?php if (session()->getFlashdata('success')): ?>
                             <div class="alert alert-success">

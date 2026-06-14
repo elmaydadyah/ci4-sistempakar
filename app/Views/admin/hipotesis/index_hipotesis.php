@@ -5,16 +5,6 @@
 <div class="main-panel">
     <div class="content-wrapper">
         <div class="row">
-            <div class="col-md-12 grid-margin">
-                <div class="row align-items-center">
-                    <div class="col-12 mb-2 mb-xl-0">
-                        <h3 class="font-weight-bold">Data Hipotesis</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
             <div class="col-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">

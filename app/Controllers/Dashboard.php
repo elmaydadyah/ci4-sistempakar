@@ -31,6 +31,8 @@ class Dashboard extends BaseController
         ];
         $recentNutritionRows = [];
         $diagnosisDailyChart = $this->getEmptyDailyChart();
+        $diagnosisClassDailyChart = $this->getEmptyClassDailyChart();
+        $diagnosisClassTotalChart = $this->getEmptyClassTotalChart();
         $recentDiagnosisRows = [];
 
         if ($db->tableExists('tb_anak_status_gizi')) {
@@ -55,6 +57,8 @@ class Dashboard extends BaseController
 
         if ($db->tableExists('tb_hasil_diagnosa')) {
             $diagnosisDailyChart = $this->getDiagnosisDailyChart($db);
+            $diagnosisClassDailyChart = $this->getDiagnosisClassDailyChart($db);
+            $diagnosisClassTotalChart = $this->getDiagnosisClassTotalChart($db);
             $recentDiagnosisRows = $db->table('tb_hasil_diagnosa')
                 ->select('nama, umur, nama_kasus, persentase, jumlah_gejala, created_at')
                 ->orderBy('id_hasil_diagnosa', 'DESC')
@@ -67,6 +71,8 @@ class Dashboard extends BaseController
             'nutritionStatus' => $nutritionStatus,
             'recentNutritionRows' => $recentNutritionRows,
             'diagnosisDailyChart' => $diagnosisDailyChart,
+            'diagnosisClassDailyChart' => $diagnosisClassDailyChart,
+            'diagnosisClassTotalChart' => $diagnosisClassTotalChart,
             'recentDiagnosisRows' => $recentDiagnosisRows,
         ]);
     }
@@ -93,6 +99,39 @@ class Dashboard extends BaseController
         return [
             'labels' => $labels,
             'values' => $values,
+        ];
+    }
+
+    private function getEmptyClassDailyChart(): array
+    {
+        $labels = [];
+        $dateKeys = [];
+
+        for ($i = 6; $i >= 0; $i--) {
+            $date = date('Y-m-d', strtotime("-{$i} days"));
+            $dateKeys[$date] = [
+                'H1' => 0,
+                'H2' => 0,
+                'H3' => 0,
+            ];
+            $labels[] = date('d M', strtotime($date));
+        }
+
+        return [
+            'labels' => $labels,
+            'datasets' => [
+                'H1' => array_column($dateKeys, 'H1'),
+                'H2' => array_column($dateKeys, 'H2'),
+                'H3' => array_column($dateKeys, 'H3'),
+            ],
+        ];
+    }
+
+    private function getEmptyClassTotalChart(): array
+    {
+        return [
+            'labels' => ['H1', 'H2', 'H3'],
+            'values' => [0, 0, 0],
         ];
     }
 
@@ -130,6 +169,78 @@ class Dashboard extends BaseController
         return [
             'labels' => $labels,
             'values' => $values,
+        ];
+    }
+
+    private function getDiagnosisClassDailyChart($db): array
+    {
+        $labels = [];
+        $dateKeys = [];
+
+        for ($i = 6; $i >= 0; $i--) {
+            $date = date('Y-m-d', strtotime("-{$i} days"));
+            $dateKeys[$date] = [
+                'H1' => 0,
+                'H2' => 0,
+                'H3' => 0,
+            ];
+            $labels[] = date('d M', strtotime($date));
+        }
+
+        $rows = $db->table('tb_hasil_diagnosa')
+            ->select('DATE(created_at) as tanggal, kelas_hasil, COUNT(*) as total', false)
+            ->where('created_at >=', date('Y-m-d 00:00:00', strtotime('-6 days')))
+            ->whereIn('kelas_hasil', ['H1', 'H2', 'H3'])
+            ->groupBy('DATE(created_at)', false)
+            ->groupBy('kelas_hasil')
+            ->orderBy('tanggal', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        foreach ($rows as $row) {
+            $tanggal = $row['tanggal'] ?? null;
+            $kelas = (string) ($row['kelas_hasil'] ?? '');
+
+            if (isset($dateKeys[$tanggal][$kelas])) {
+                $dateKeys[$tanggal][$kelas] = (int) ($row['total'] ?? 0);
+            }
+        }
+
+        return [
+            'labels' => $labels,
+            'datasets' => [
+                'H1' => array_column($dateKeys, 'H1'),
+                'H2' => array_column($dateKeys, 'H2'),
+                'H3' => array_column($dateKeys, 'H3'),
+            ],
+        ];
+    }
+
+    private function getDiagnosisClassTotalChart($db): array
+    {
+        $totals = [
+            'H1' => 0,
+            'H2' => 0,
+            'H3' => 0,
+        ];
+
+        $rows = $db->table('tb_hasil_diagnosa')
+            ->select('kelas_hasil, COUNT(*) as total')
+            ->whereIn('kelas_hasil', ['H1', 'H2', 'H3'])
+            ->groupBy('kelas_hasil')
+            ->get()
+            ->getResultArray();
+
+        foreach ($rows as $row) {
+            $kelas = (string) ($row['kelas_hasil'] ?? '');
+            if (array_key_exists($kelas, $totals)) {
+                $totals[$kelas] = (int) ($row['total'] ?? 0);
+            }
+        }
+
+        return [
+            'labels' => ['H1', 'H2', 'H3'],
+            'values' => array_values($totals),
         ];
     }
 }

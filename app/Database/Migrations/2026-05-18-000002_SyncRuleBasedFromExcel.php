@@ -130,6 +130,7 @@ class SyncRuleBasedFromExcel extends Migration
         return [
             ['H1', 'G02'],
             ['H1', 'G11'],
+            ['H1', 'G12'],
             ['H1', 'G01'],
             ['H1', 'G04'],
             ['H1', 'G06'],

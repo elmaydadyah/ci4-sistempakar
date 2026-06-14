@@ -4,13 +4,6 @@
 
 <div class="main-panel">
     <div class="content-wrapper">
-        <div class="row">
-            <div class="col-md-12 grid-margin">
-                <h3 class="font-weight-bold">Standar Antropometri</h3>
-                <h6 class="font-weight-normal mb-0 text-muted">Referensi median dan SD untuk perhitungan Z-Score BB/U, TB/U, dan BB/TB.</h6>
-            </div>
-        </div>
-
         <?php if (session()->getFlashdata('success')): ?>
             <div class="alert alert-success"><?= esc(session()->getFlashdata('success')); ?></div>
         <?php endif; ?>
@@ -23,17 +16,42 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Tabel Standar</h4>
-                        <p class="text-muted">Menampilkan data standar per indikator. Edit nilai median dan SD sesuai rujukan yang dipakai.</p>
+                        <p class="text-muted">Referensi median dan SD untuk perhitungan Z-Score BB/U, TB/U, dan BB/TB. Edit nilai sesuai rujukan yang dipakai.</p>
 
-                        <div class="btn-group mb-3" role="group" aria-label="Filter indikator standar antropometri">
-                            <?php foreach ($indikator_options ?? ['TB/U', 'BB/U', 'BB/TB'] as $indikator): ?>
-                                <?php $isActive = ($indikator_aktif ?? 'TB/U') === $indikator; ?>
-                                <a
-                                    class="btn btn-sm <?= $isActive ? 'btn-primary' : 'btn-outline-primary'; ?>"
-                                    href="<?= base_url('adminstandar') . '?indikator=' . urlencode($indikator); ?>">
-                                    <?= esc($indikator); ?>
-                                </a>
-                            <?php endforeach; ?>
+                        <div class="d-flex flex-wrap align-items-center mb-3" style="gap: .75rem;">
+                            <div class="btn-group" role="group" aria-label="Filter indikator standar antropometri">
+                                <?php foreach ($indikator_options ?? ['TB/U', 'BB/U', 'BB/TB'] as $indikator): ?>
+                                    <?php
+                                        $isActive = ($indikator_aktif ?? 'TB/U') === $indikator;
+                                        $query = array_filter([
+                                            'indikator' => $indikator,
+                                            'jenis_kelamin' => $jenis_kelamin_aktif ?? '',
+                                        ], static fn ($value) => $value !== '');
+                                    ?>
+                                    <a
+                                        class="btn btn-sm <?= $isActive ? 'btn-primary' : 'btn-outline-primary'; ?>"
+                                        href="<?= base_url('adminstandar') . '?' . http_build_query($query); ?>">
+                                        <?= esc($indikator); ?>
+                                    </a>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <div class="btn-group" role="group" aria-label="Filter jenis kelamin standar antropometri">
+                                <?php foreach ($jenis_kelamin_options ?? ['' => 'Semua', 'L' => 'Laki-laki', 'P' => 'Perempuan'] as $kodeJk => $labelJk): ?>
+                                    <?php
+                                        $isActive = ($jenis_kelamin_aktif ?? '') === (string) $kodeJk;
+                                        $query = array_filter([
+                                            'indikator' => $indikator_aktif ?? 'TB/U',
+                                            'jenis_kelamin' => (string) $kodeJk,
+                                        ], static fn ($value) => $value !== '');
+                                    ?>
+                                    <a
+                                        class="btn btn-sm <?= $isActive ? 'btn-info' : 'btn-outline-info'; ?>"
+                                        href="<?= base_url('adminstandar') . '?' . http_build_query($query); ?>">
+                                        <?= esc($labelJk); ?>
+                                    </a>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
 
                         <div class="table-responsive">

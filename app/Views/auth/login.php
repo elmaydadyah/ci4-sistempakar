@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>StuntCare</title>
     <link rel="stylesheet" href="<?= base_url('assets/bootstrap/css/bootstrap.min.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/css/login.css') ?>">
-    <link rel="shortcut icon" href="<?= base_url('assets/images/logo/logo.png') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/login.css?v=' . filemtime(FCPATH . 'assets/css/login.css')) ?>">
+    <link rel="shortcut icon" href="<?= base_url('assets/images/logo/logo_puskesmas.png') ?>">
 </head>
 
 <body>
@@ -15,13 +15,14 @@
         <section class="login-card" aria-label="Login StuntCare">
             <div class="login-visual">
                 <div class="login-brand">
-                    <img src="<?= base_url('assets/images/logo/logo.png') ?>" alt="Logo StuntCare">
-                    <strong>StuntCare</strong>
-                    <small>Deteksi Dini, Cegah Stunting<br>Wujudkan Generasi Sehat</small>
+                    <div class="login-logo-pair">
+                        <img src="<?= base_url('assets/images/logo/logokabbogor.png') ?>" alt="Logo Kabupaten Bogor">
+                        <img src="<?= base_url('assets/images/logo/logo_puskesmas.png') ?>" alt="Logo Puskesmas">
+                    </div>
                 </div>
                 <div class="login-visual-copy">
                     <h1>Deteksi stunting dini, lebih mudah dan terarah.</h1>
-                    <p>Masuk untuk melanjutkan konsultasi dan mengelola data sistem.</p>
+                    <p>Masuk sebagai Admin untuk mengelola data sistem.</p>
                 </div>
             </div>
 
@@ -47,7 +48,10 @@
                             <label for="password">Password</label>
                             <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password" required>
                         </div>
-                        <button type="submit" class="btn-login">Login</button>
+                        <div class="login-actions">
+                            <button type="submit" class="btn-login">Login</button>
+                            <a class="btn-login btn-login-secondary" href="<?= base_url('/') ?>">Kembali</a>
+                        </div>
                     </form>
                 </div>
             </div>

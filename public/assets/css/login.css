@@ -1,8 +1,8 @@
 :root {
-    --login-ink: #20263a;
-    --login-muted: #747b8f;
-    --login-primary: #31206b;
-    --login-primary-light: #4B49AC;
+    --login-ink: #072618;
+    --login-muted: #C2C3C3;
+    --login-primary: #29512F;
+    --login-primary-light: #29512F;
     --login-panel: #ffffff;
     --login-input: #f1eef7;
 }
@@ -47,7 +47,7 @@ body {
     color: #ffffff;
     background:
         linear-gradient(180deg, rgba(32, 38, 58, .28), rgba(49, 32, 107, .72)),
-        url("../images/landing/foto.png") center / cover no-repeat;
+        url("../images/landing/puskesmas2.jpeg") center / cover no-repeat;
 }
 
 .login-brand {
@@ -55,27 +55,39 @@ body {
     display: inline-flex;
     align-items: center;
     flex-direction: column;
-    gap: 5px;
+    gap: 8px;
     text-align: center;
     color: #ffffff;
 }
 
-.login-brand img {
-    width: 72px;
-    height: 72px;
+.login-logo-pair {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 6px 9px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, .86);
+}
+
+.login-logo-pair img {
+    width: 44px;
+    height: 44px;
     object-fit: contain;
 }
 
 .login-brand strong {
-    font-size: 20px;
+    font-size: 18px;
     line-height: 1;
     font-weight: 800;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, .24);
 }
 
 .login-brand small {
-    font-size: 6px;
+    font-size: 10px;
     line-height: 1.2;
     font-weight: 600;
+    color: rgba(255, 255, 255, .9);
 }
 
 .login-visual-copy {
@@ -152,23 +164,48 @@ body {
 
 .form-control:focus {
     background: #ffffff;
-    box-shadow: 0 0 0 3px rgba(75, 73, 172, .18);
+    box-shadow: 0 0 0 3px rgba(41, 81, 47, .18);
+}
+
+.login-actions {
+    display: grid;
+    gap: 10px;
+    margin-top: 8px;
 }
 
 .btn-login {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     min-height: 48px;
-    margin-top: 8px;
+    margin: 0;
     border: 0;
     border-radius: 999px;
     color: #ffffff;
     background: var(--login-primary);
     font-size: 14px;
     font-weight: 800;
+    text-decoration: none;
 }
 
 .btn-login:hover {
+    color: #ffffff;
     background: var(--login-primary-light);
+    text-decoration: none;
+}
+
+.btn-login-secondary {
+    border: 1px solid rgba(41, 81, 47, .28);
+    color: var(--login-primary);
+    background: #ffffff;
+}
+
+.btn-login-secondary:hover,
+.btn-login-secondary:focus-visible {
+    color: #ffffff;
+    background: var(--login-primary);
+    text-decoration: none;
 }
 
 @media (max-width: 767.98px) {

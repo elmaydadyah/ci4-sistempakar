@@ -4,13 +4,6 @@
 
 <div class="main-panel">
     <div class="content-wrapper">
-        <div class="row">
-            <div class="col-md-12 grid-margin">
-                <h3 class="font-weight-bold">Prior Naive Bayes</h3>
-                <h6 class="font-weight-normal mb-0 text-muted">Probabilitas awal setiap kelas H1, H2, dan H3.</h6>
-            </div>
-        </div>
-
         <?php if (session()->getFlashdata('success')): ?>
             <div class="alert alert-success"><?= esc(session()->getFlashdata('success')); ?></div>
         <?php endif; ?>
@@ -23,6 +16,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Tabel Prior</h4>
+                        <p class="text-muted mb-3">Probabilitas awal setiap kelas H1, H2, dan H3.</p>
                         <div class="table-responsive">
                             <table class="table table-hover admin-data-table">
                                 <thead>

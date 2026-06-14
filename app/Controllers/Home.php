@@ -13,9 +13,27 @@ class Home extends BaseController
             . '<main class="landing-shell">'
             . view('layout/landing/content')
             . view('layout/landing/about')
-            . view('layout/landing/features')
+            . view('layout/landing/features', ['articles' => $this->getArticles()])
             . view('layout/landing/contact')
             . view('layout/landing/faq')
+            . view('layout/landing/footer');
+    }
+
+    public function artikel(string $slug)
+    {
+        $articles = $this->getArticles();
+
+        if (!isset($articles[$slug])) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Artikel tidak ditemukan.');
+        }
+
+        return view('layout/landing/header')
+            . view('layout/landing/navbar')
+            . '<main class="landing-shell article-shell">'
+            . view('layout/landing/article', [
+                'article' => $articles[$slug],
+                'articles' => $articles,
+            ])
             . view('layout/landing/footer');
     }
 
@@ -98,5 +116,59 @@ class Home extends BaseController
         $model->insert($payload);
 
         return redirect()->to('/konsultasi?anak=' . $model->getInsertID());
+    }
+
+    private function getArticles(): array
+    {
+        return [
+            'mengenal-stunting-pada-balita' => [
+                'title' => 'Mengenal Stunting pada Balita',
+                'category' => 'Stunting',
+                'image' => 'assets/images/landing/puskesmas2.jpeg',
+                'excerpt' => 'Pahami apa itu stunting, mengapa perlu dicegah sejak dini, dan bagaimana keluarga dapat memantau pertumbuhan anak.',
+                'date' => '05 Jun, 2026',
+                'body' => [
+                    'Stunting adalah kondisi ketika pertumbuhan anak terhambat sehingga tinggi badan tidak sesuai dengan standar usianya. Kondisi ini biasanya berkaitan dengan asupan gizi, kesehatan ibu dan anak, infeksi berulang, serta lingkungan tempat tinggal.',
+                    'Pemantauan tinggi dan berat badan secara rutin penting dilakukan karena perubahan pertumbuhan anak sering terlihat dari data pengukuran. Jika ditemukan tanda pertumbuhan tidak sesuai, keluarga dapat segera berkonsultasi ke posyandu atau puskesmas.',
+                    'StuntCare membantu orang tua melakukan skrining awal. Hasil sistem bukan pengganti diagnosis dokter, tetapi dapat menjadi bahan awal untuk menentukan apakah anak perlu dipantau lebih lanjut.',
+                ],
+            ],
+            'penyebab-stunting' => [
+                'title' => 'Penyebab Stunting',
+                'category' => 'Faktor Risiko',
+                'image' => 'assets/images/landing/about1.png',
+                'excerpt' => 'Kenali faktor yang dapat meningkatkan risiko stunting, mulai dari gizi, riwayat kehamilan, sampai sanitasi rumah.',
+                'date' => '05 Jun, 2026',
+                'body' => [
+                    'Penyebab stunting tidak hanya satu. Faktor yang sering berpengaruh antara lain asupan gizi yang kurang, infeksi berulang, riwayat kehamilan ibu, serta kurangnya pemantauan pertumbuhan anak.',
+                    'Lingkungan rumah juga dapat memengaruhi kesehatan anak. Akses air bersih, jamban sehat, kebersihan makanan, dan pola pengasuhan ikut berperan dalam mendukung tumbuh kembang balita.',
+                    'Karena penyebabnya beragam, pencegahan stunting perlu dilakukan bersama. Orang tua, kader posyandu, dan tenaga kesehatan dapat saling membantu memantau kondisi anak sejak dini.',
+                ],
+            ],
+            '1000-hpk-masa-penting-cegah-stunting' => [
+                'title' => '1000 HPK: Masa Penting Cegah Stunting',
+                'category' => 'Pencegahan',
+                'image' => 'assets/images/landing/foto.png',
+                'excerpt' => 'Seribu hari pertama kehidupan adalah masa penting untuk memenuhi gizi dan menjaga kesehatan ibu serta anak.',
+                'date' => '05 Jun, 2026',
+                'body' => [
+                    '1000 HPK adalah masa sejak awal kehamilan sampai anak berusia sekitar dua tahun. Pada masa ini, pertumbuhan otak dan tubuh anak berlangsung sangat cepat sehingga kebutuhan gizi perlu diperhatikan.',
+                    'Upaya pencegahan dapat dimulai dari pemeriksaan kehamilan, konsumsi makanan bergizi, pemberian ASI, MPASI yang sesuai usia, imunisasi, dan pemantauan tumbuh kembang di posyandu.',
+                    'Jika orang tua melihat tanda anak sulit naik berat badan, tinggi badan tidak bertambah sesuai usia, atau sering sakit, sebaiknya segera berkonsultasi dengan tenaga kesehatan.',
+                ],
+            ],
+            'ciri-ciri-anak-berisiko-stunting' => [
+                'title' => 'Ciri-Ciri Anak Berisiko Stunting',
+                'category' => 'Gejala',
+                'image' => 'assets/images/landing/puskesmas.jpeg',
+                'excerpt' => 'Beberapa tanda awal dapat membantu orang tua lebih cepat mengenali risiko stunting pada anak.',
+                'date' => '05 Jun, 2026',
+                'body' => [
+                    'Anak yang berisiko stunting dapat menunjukkan beberapa tanda, seperti tinggi badan lebih pendek dari anak seusianya, berat badan sulit naik, kurang aktif, atau sering mengalami sakit.',
+                    'Tanda lain yang perlu diperhatikan adalah keterlambatan perkembangan, nafsu makan menurun, serta riwayat ibu saat hamil seperti anemia atau kekurangan energi kronis.',
+                    'Tanda-tanda tersebut tidak selalu berarti anak pasti stunting. Namun, jika muncul bersamaan dengan hasil pengukuran yang kurang baik, pemeriksaan lanjutan di puskesmas sangat disarankan.',
+                ],
+            ],
+        ];
     }
 }

@@ -4,7 +4,10 @@ $stats = $dashboardStats ?? [];
 $nutritionStatus = $nutritionStatus ?? [];
 $recentNutritionRows = $recentNutritionRows ?? [];
 $diagnosisDailyChart = $diagnosisDailyChart ?? ['labels' => [], 'values' => []];
+$diagnosisClassDailyChart = $diagnosisClassDailyChart ?? ['labels' => [], 'datasets' => ['H1' => [], 'H2' => [], 'H3' => []]];
+$diagnosisClassTotalChart = $diagnosisClassTotalChart ?? ['labels' => ['H1', 'H2', 'H3'], 'values' => [0, 0, 0]];
 $recentDiagnosisRows = $recentDiagnosisRows ?? [];
+$loginSuccessMessage = session()->getFlashdata('login_success');
 
 $totalStatusGizi = (int) ($stats['status_gizi'] ?? 0);
 $riskCount = (int) ($nutritionStatus['gizi_kurang'] ?? 0) + (int) ($nutritionStatus['pendek'] ?? 0);
@@ -16,8 +19,8 @@ $likelihoodTotal = (int) ($stats['likelihood_nb'] ?? 0);
 
 $summaryCards = [
   [
-    'title' => 'Data Latih',
-    'subtitle' => 'Status gizi tersimpan',
+    'title' => 'Data Terdahulu',
+    'subtitle' => 'Riwayat data tersimpan',
     'value' => $totalStatusGizi,
     'percent' => $totalStatusGizi > 0 ? 100 : 0,
     'tone' => 'primary',
@@ -30,7 +33,7 @@ $summaryCards = [
     'value' => $diagnosisTotal,
     'percent' => min(100, $diagnosisTotal * 10),
     'tone' => 'danger',
-    'href' => base_url('adminkonsultasi'),
+    'href' => base_url('adminhasildiagnosa'),
     'icon' => 'ti-pulse',
   ],
   [
@@ -44,7 +47,7 @@ $summaryCards = [
   ],
   [
     'title' => 'Probabilitas NB',
-    'subtitle' => 'Prior dan likelihood',
+    'subtitle' => 'Prior dan antropometri',
     'value' => $priorTotal + $likelihoodTotal,
     'percent' => min(100, ($priorTotal + $likelihoodTotal) * 2),
     'tone' => 'success',
@@ -56,6 +59,21 @@ $summaryCards = [
 
 <div class="main-panel">
   <div class="content-wrapper admin-dashboard">
+    <?php if ($loginSuccessMessage): ?>
+      <div class="admin-login-success-overlay" id="adminLoginSuccessOverlay" role="status" aria-live="polite">
+        <div class="admin-login-success-popup">
+          <div class="admin-login-success-check" aria-hidden="true"></div>
+          <strong>Berhasil!</strong>
+          <p><?= esc($loginSuccessMessage); ?></p>
+        </div>
+      </div>
+    <?php endif; ?>
+    <?php if (session()->getFlashdata('error')): ?>
+      <div class="alert alert-danger"><?= esc(session()->getFlashdata('error')); ?></div>
+    <?php endif; ?>
+    <?php if (session()->getFlashdata('success')): ?>
+      <div class="alert alert-success"><?= esc(session()->getFlashdata('success')); ?></div>
+    <?php endif; ?>
     <div class="admin-board">
       <div class="admin-main-column">
         <section class="admin-welcome-panel">
@@ -63,7 +81,6 @@ $summaryCards = [
             <span>Dashboard Admin</span>
             <h3>Halo, <?= esc($profileNama); ?>!</h3>
             <p>Kelola data StuntCare, pantau hasil konsultasi harian, dan rawat referensi Z-Score serta Naive Bayes.</p>
-            <a href="<?= base_url('adminstandar'); ?>">Kelola referensi</a>
           </div>
           <div class="admin-live-widget" aria-label="Waktu saat ini">
             <small id="dashboardDate">-</small>
@@ -97,17 +114,24 @@ $summaryCards = [
         <section class="admin-panel admin-chart-panel">
           <div class="admin-section-heading">
             <div>
-              <h4>Grafik Hasil Diagnosa</h4>
-              <p>Jumlah hasil diagnosa per hari dalam 7 hari terakhir.</p>
+              <h4>Grafik Hasil Diagnosa H1/H2/H3</h4>
+              <p>Line menampilkan tren 7 hari terakhir, bar menampilkan total data per kelas.</p>
             </div>
             <div class="admin-chart-actions" aria-label="Kontrol grafik hasil diagnosa">
-              <button type="button" class="is-active" data-chart-type="line">Line</button>
-              <button type="button" data-chart-type="bar">Bar</button>
               <span><?= number_format($diagnosisTotal, 0, ',', '.'); ?> total</span>
             </div>
           </div>
-          <div class="admin-chart-wrap">
-            <canvas id="diagnosisDailyChart"></canvas>
+          <div class="row">
+            <div class="col-lg-7 mb-4 mb-lg-0">
+              <div class="admin-chart-wrap">
+                <canvas id="diagnosisClassLineChart"></canvas>
+              </div>
+            </div>
+            <div class="col-lg-5">
+              <div class="admin-chart-wrap">
+                <canvas id="diagnosisClassBarChart"></canvas>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -115,7 +139,7 @@ $summaryCards = [
           <div class="admin-section-heading">
             <div>
               <h4>Pemantauan Status Gizi</h4>
-              <p>Lima data latih status gizi terbaru yang masuk ke sistem.</p>
+              <p>Lima data terdahulu terbaru yang masuk ke sistem.</p>
             </div>
             <div class="admin-heading-actions">
               <input type="search" id="nutritionSearch" class="admin-search-input" placeholder="Cari anak">
@@ -191,7 +215,7 @@ $summaryCards = [
             <h4>Diagnosa Terbaru</h4>
             <div class="admin-heading-actions">
               <input type="search" id="diagnosisSearch" class="admin-search-input" placeholder="Cari diagnosa">
-              <a href="<?= base_url('adminkonsultasi'); ?>">lihat semua</a>
+              <a href="<?= base_url('adminhasildiagnosa'); ?>">lihat semua</a>
             </div>
           </div>
 
@@ -206,9 +230,9 @@ $summaryCards = [
                     <span><?= esc($row['nama_kasus'] ?? 'Belum ada indikasi'); ?></span>
                   </div>
                   <div class="admin-action-icons">
-                    <a href="<?= base_url('adminkonsultasi'); ?>" aria-label="Lihat diagnosa"><i class="ti-eye"></i></a>
-                    <a href="<?= base_url('adminkonsultasi'); ?>" aria-label="Analisis diagnosa"><i class="ti-bar-chart"></i></a>
-                    <a href="<?= base_url('adminkonsultasi'); ?>" aria-label="Tandai diagnosa"><i class="ti-check"></i></a>
+                    <a href="<?= base_url('adminhasildiagnosa'); ?>" aria-label="Lihat diagnosa"><i class="ti-eye"></i></a>
+                    <a href="<?= base_url('adminhasildiagnosa'); ?>" aria-label="Analisis diagnosa"><i class="ti-bar-chart"></i></a>
+                    <a href="<?= base_url('adminhasildiagnosa'); ?>" aria-label="Tandai diagnosa"><i class="ti-check"></i></a>
                   </div>
                 </div>
               <?php endforeach; ?>
@@ -366,26 +390,105 @@ $summaryCards = [
         renderRealtimeCalendar();
       }, 60000);
 
-      var chartElement = document.getElementById('diagnosisDailyChart');
-      var diagnosisChart = null;
+      var lineChartElement = document.getElementById('diagnosisClassLineChart');
+      var barChartElement = document.getElementById('diagnosisClassBarChart');
+      var diagnosisLineChart = null;
+      var diagnosisBarChart = null;
+      var diagnosisClassColors = {
+        H1: {
+          border: '#D94B4B',
+          background: 'rgba(217, 75, 75, 0.14)',
+          bar: 'rgba(217, 75, 75, 0.78)',
+        },
+        H2: {
+          border: '#D79A2B',
+          background: 'rgba(215, 154, 43, 0.14)',
+          bar: 'rgba(215, 154, 43, 0.78)',
+        },
+        H3: {
+          border: '#29512F',
+          background: 'rgba(41, 81, 47, 0.14)',
+          bar: 'rgba(41, 81, 47, 0.78)',
+        },
+      };
 
-      if (chartElement && typeof Chart !== 'undefined') {
-        diagnosisChart = new Chart(chartElement.getContext('2d'), {
+      if (lineChartElement && typeof Chart !== 'undefined') {
+        diagnosisLineChart = new Chart(lineChartElement.getContext('2d'), {
           type: 'line',
           data: {
-            labels: <?= json_encode($diagnosisDailyChart['labels'] ?? []); ?>,
+            labels: <?= json_encode($diagnosisClassDailyChart['labels'] ?? []); ?>,
+            datasets: ['H1', 'H2', 'H3'].map(function (kelas) {
+              return {
+                label: kelas,
+                data: <?= json_encode($diagnosisClassDailyChart['datasets'] ?? ['H1' => [], 'H2' => [], 'H3' => []]); ?>[kelas] || [],
+                borderColor: diagnosisClassColors[kelas].border,
+                backgroundColor: diagnosisClassColors[kelas].background,
+                pointBackgroundColor: diagnosisClassColors[kelas].border,
+                pointBorderColor: '#ffffff',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                borderWidth: 3,
+                lineTension: 0.32,
+                fill: false,
+              };
+            }),
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+              display: true,
+              position: 'bottom',
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  precision: 0,
+                },
+                gridLines: {
+                  color: 'rgba(123, 133, 153, 0.12)',
+                  drawBorder: false,
+                },
+              }],
+              xAxes: [{
+                gridLines: {
+                  display: false,
+                },
+              }],
+            },
+            tooltips: {
+              mode: 'index',
+              intersect: false,
+              callbacks: {
+                label: function (tooltipItem) {
+                  return tooltipItem.yLabel + ' hasil ' + tooltipItem.datasetLabel;
+                },
+              },
+            },
+          },
+        });
+      }
+
+      if (barChartElement && typeof Chart !== 'undefined') {
+        diagnosisBarChart = new Chart(barChartElement.getContext('2d'), {
+          type: 'bar',
+          data: {
+            labels: <?= json_encode($diagnosisClassTotalChart['labels'] ?? ['H1', 'H2', 'H3']); ?>,
             datasets: [{
-              label: 'Hasil Diagnosa',
-              data: <?= json_encode($diagnosisDailyChart['values'] ?? []); ?>,
-              borderColor: '#4b49ac',
-              backgroundColor: 'rgba(75, 73, 172, 0.12)',
-              pointBackgroundColor: '#4b49ac',
-              pointBorderColor: '#ffffff',
-              pointBorderWidth: 2,
-              pointRadius: 4,
-              borderWidth: 3,
-              lineTension: 0.35,
-              fill: true,
+              label: 'Total Hasil Diagnosa',
+              data: <?= json_encode($diagnosisClassTotalChart['values'] ?? [0, 0, 0]); ?>,
+              backgroundColor: [
+                diagnosisClassColors.H1.bar,
+                diagnosisClassColors.H2.bar,
+                diagnosisClassColors.H3.bar,
+              ],
+              borderColor: [
+                diagnosisClassColors.H1.border,
+                diagnosisClassColors.H2.border,
+                diagnosisClassColors.H3.border,
+              ],
+              borderWidth: 1,
             }],
           },
           options: {
@@ -420,21 +523,6 @@ $summaryCards = [
             },
           },
         });
-
-        document.querySelectorAll('[data-chart-type]').forEach(function (button) {
-          button.addEventListener('click', function () {
-            var chartType = button.getAttribute('data-chart-type');
-            document.querySelectorAll('[data-chart-type]').forEach(function (item) {
-              item.classList.toggle('is-active', item === button);
-            });
-            diagnosisChart.config.type = chartType;
-            diagnosisChart.data.datasets[0].fill = chartType === 'line';
-            diagnosisChart.data.datasets[0].backgroundColor = chartType === 'line'
-              ? 'rgba(75, 73, 172, 0.12)'
-              : 'rgba(75, 73, 172, 0.72)';
-            diagnosisChart.update();
-          });
-        });
       }
 
       function bindDashboardSearch(inputId, itemSelector, emptySelector) {
@@ -467,10 +555,24 @@ $summaryCards = [
       bindDashboardSearch('nutritionSearch', '.admin-nutrition-row', '#nutritionNoResult');
       bindDashboardSearch('diagnosisSearch', '.admin-applicant-item', '#diagnosisNoResult');
 
+      var loginSuccessOverlay = document.getElementById('adminLoginSuccessOverlay');
+      if (loginSuccessOverlay) {
+        setTimeout(function () {
+          loginSuccessOverlay.classList.add('is-hiding');
+        }, 1600);
+
+        setTimeout(function () {
+          loginSuccessOverlay.remove();
+        }, 2100);
+      }
+
       var resizeDashboard = function () {
         window.dispatchEvent(new Event('resize'));
-        if (diagnosisChart && typeof diagnosisChart.resize === 'function') {
-          diagnosisChart.resize();
+        if (diagnosisLineChart && typeof diagnosisLineChart.resize === 'function') {
+          diagnosisLineChart.resize();
+        }
+        if (diagnosisBarChart && typeof diagnosisBarChart.resize === 'function') {
+          diagnosisBarChart.resize();
         }
       };
 

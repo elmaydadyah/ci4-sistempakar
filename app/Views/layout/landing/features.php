@@ -35,56 +35,66 @@
             </div>
         </section>
 
-        <section class="process-section" aria-label="Alur penggunaan StuntCare">
-            <div class="process-panel">
-                <div class="section-heading">
-                    <div>
-                        <span class="section-eyebrow dark">Cara Kerja</span>
-                        <h2>Dari data anak sampai rekomendasi awal dalam tiga langkah.</h2>
-                    </div>
-                </div>
+        <section class="process-section blog-section" id="blog" aria-label="Artikel StuntCare">
+            <div class="blog-heading">
+                <h2>Artikel dan informasi stunting.</h2>
+            </div>
 
-                <div class="process-grid">
+            <?php $articleList = array_values($articles ?? []); ?>
+            <?php $featuredArticle = $articleList[0] ?? null; ?>
+            <?php if ($featuredArticle): ?>
+            <div class="blog-layout">
+                <article class="blog-featured">
+                    <img src="<?= base_url($featuredArticle['image']) ?>" alt="<?= esc($featuredArticle['title'], 'attr') ?>">
+                    <div>
+                        <span><?= esc($featuredArticle['category']) ?></span>
+                        <h3><?= esc($featuredArticle['title']) ?></h3>
+                        <p><?= esc($featuredArticle['excerpt']) ?></p>
+                        <a href="<?= base_url('/artikel/' . array_key_first($articles)) ?>">Read more</a>
+                    </div>
+                </article>
+            <?php endif; ?>
+
+            <div class="blog-grid">
+                <?php foreach (array_slice($articles ?? [], 1, null, true) as $slug => $article): ?>
                     <article>
-                        <b>1</b>
-                        <h3>Lengkapi Profil</h3>
-                        <p>Masukkan nama, usia, berat badan, tinggi badan, dan data dasar anak.</p>
-                    </article>
-                    <article>
-                        <b>2</b>
-                        <h3>Pilih Gejala</h3>
-                        <p>Tandai kondisi yang sesuai agar sistem bisa membaca indikasi awal.</p>
-                    </article>
-                    <article>
-                        <b>3</b>
-                        <h3>Lihat Hasil</h3>
-                        <p>Dapatkan kesimpulan awal dan saran tindak lanjut yang lebih terarah.</p>
-                    </article>
-                </div>
+                    <img src="<?= base_url($article['image']) ?>" alt="<?= esc($article['title'], 'attr') ?>">
+                    <div>
+                        <span><?= esc($article['category']) ?></span>
+                        <h3><?= esc($article['title']) ?></h3>
+                        <p><?= esc($article['excerpt']) ?></p>
+                        <a href="<?= base_url('/artikel/' . $slug) ?>">Read more</a>
+                    </div>
+                </article>
+                <?php endforeach; ?>
+            </div>
             </div>
         </section>
 
-        <section class="stats-section" aria-label="Ringkasan manfaat StuntCare">
-            <div>
-                <span class="section-eyebrow">Pemantauan Lebih Terarah</span>
-                <h2>Bantu keluarga mengambil langkah lebih cepat.</h2>
+        <section class="stats-section cta-section" aria-label="Ajakan konsultasi StuntCare">
+            <div class="cta-copy">
+                <span class="section-eyebrow">Mulai Konsultasi</span>
+                <h2>Cek kondisi anak dan dapatkan saran awal lebih cepat.</h2>
+                <p>Isi data anak sesuai catatan posyandu atau buku KIA. Hasil konsultasi membantu orang tua menentukan langkah pemantauan berikutnya.</p>
             </div>
-            <div class="stats-grid">
-                <article>
-                    <strong>3</strong>
-                    <span>langkah konsultasi sederhana</span>
-                </article>
-                <article>
-                    <strong>24/7</strong>
-                    <span>akses awal sebelum kunjungan lanjut</span>
-                </article>
-                <article>
-                    <strong>1</strong>
-                    <span>riwayat anak yang mudah dipantau</span>
-                </article>
-                <article>
-                    <strong>1000</strong>
-                    <span>hari pertama kehidupan perlu perhatian</span>
-                </article>
+            <div class="cta-panel" aria-label="Ringkasan konsultasi awal">
+                <div class="cta-points">
+                    <article>
+                        <strong>3 menit</strong>
+                        <span>Isi data dasar anak</span>
+                    </article>
+                    <article>
+                        <strong>Riwayat</strong>
+                        <span>Hasil tersimpan rapi</span>
+                    </article>
+                    <article>
+                        <strong>Arahan</strong>
+                        <span>Siap untuk tindak lanjut</span>
+                    </article>
+                </div>
+                <div class="cta-actions">
+                    <a class="btn-light-landing" href="<?= base_url('/konsultasi') ?>">Mulai Konsultasi</a>
+                    <a class="btn-outline-light-landing" href="<?= base_url('/#contact') ?>">Hubungi Puskesmas</a>
+                </div>
             </div>
         </section>

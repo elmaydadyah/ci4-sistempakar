@@ -117,6 +117,14 @@ class AdminModel extends Model
         return $this->find($id);
     }
 
+    public function createUser($data)
+    {
+        $this->table = 'tb_users';
+        $this->primaryKey = 'id_users';
+        $this->allowedFields = ['nama', 'email', 'password', 'role', 'foto', 'created_at'];
+        return $this->insert($data);
+    }
+
     // Method untuk tb_konsultasi (menggunakan tb_kons_detail jika sama)
     public function getKonsultasi()
     {

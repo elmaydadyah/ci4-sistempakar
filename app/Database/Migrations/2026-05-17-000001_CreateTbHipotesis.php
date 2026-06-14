@@ -61,17 +61,17 @@ class CreateTbHipotesis extends Migration
             [
                 'kode_hipotesis' => 'H1',
                 'risiko_stunting' => 'Risiko Stunting Tinggi',
-                'solusi' => 'Apabila anak terdiagnosis memiliki risiko stunting tinggi, maka diperlukan penanganan segera dengan berkonsultasi ke tenaga kesehatan. Orang tua perlu memperbaiki asupan gizi anak dengan memberikan makanan bergizi seimbang serta melakukan pemantauan pertumbuhan secara rutin agar kondisi tidak semakin memburuk.',
+                'solusi' => 'Hasil ini menunjukkan anak perlu diperiksa lebih lanjut. Segera bawa anak ke puskesmas atau dokter spesialis anak untuk penilaian pertumbuhan, status gizi, dan kemungkinan infeksi atau penyakit penyerta. Sambil menunggu pemeriksaan, berikan makanan bergizi seimbang dengan sumber protein setiap hari, pastikan anak cukup cairan, jaga kebersihan makanan dan lingkungan, serta catat berat dan tinggi badan anak secara berkala.',
             ],
             [
                 'kode_hipotesis' => 'H2',
-                'risiko_stunting' => 'Risiko Stunting Rendah',
-                'solusi' => 'Jika anak berada pada kategori risiko stunting rendah, maka disarankan untuk meningkatkan kualitas pola makan dan menjaga keseimbangan nutrisi. Pemantauan pertumbuhan tetap perlu dilakukan secara berkala untuk mencegah peningkatan risiko.',
+                'risiko_stunting' => 'Risiko Stunting Sedang',
+                'solusi' => 'Anak masih perlu dipantau karena ada beberapa tanda risiko. Lakukan konsultasi ke posyandu, puskesmas, atau dokter spesialis anak bila pertumbuhan tidak naik sesuai kurva, nafsu makan menurun, sering sakit, atau perkembangan anak tampak terlambat. Perbaiki pola makan dengan porsi cukup, lauk berprotein, sayur dan buah, lalu ulangi pengukuran berat dan tinggi badan secara rutin.',
             ],
             [
                 'kode_hipotesis' => 'H3',
-                'risiko_stunting' => 'Tidak Memiliki Risiko Stunting',
-                'solusi' => 'Apabila anak anda berada dalam kondisi normal (tidak mengalami risiko stunting), maka orang tua perlu mempertahankan pola hidup sehat dengan memberikan asupan gizi seimbang serta melakukan pemantauan pertumbuhan secara rutin ke posyandu agar kondisi tetap optimal.',
+                'risiko_stunting' => 'Risiko Stunting Rendah',
+                'solusi' => 'Risiko yang terbaca saat ini rendah, tetapi pemantauan tetap penting. Pertahankan pola makan bergizi seimbang, jadwal makan teratur, imunisasi sesuai usia, kebersihan tangan dan makanan, serta pemeriksaan rutin di posyandu atau fasilitas kesehatan. Jika berat atau tinggi badan tidak bertambah, anak sering sakit, atau muncul kekhawatiran perkembangan, konsultasikan ke dokter spesialis anak.',
             ],
         ];
 

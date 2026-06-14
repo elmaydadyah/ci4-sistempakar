@@ -29,10 +29,11 @@ class Auth extends BaseController
                     'isLoggedIn' => true,
                     'user_id' => $user['id_users'],
                     'email' => $user['email'],
-                    'nama' => $user['nama'] // FIXED (bukan nama_user)
+                    'nama' => $user['nama'], // FIXED (bukan nama_user)
+                    'role' => $this->normalizeRole((string) ($user['role'] ?? 'admin1')),
                 ]);
 
-                return redirect()->to('/dashboard');
+                return redirect()->to('/dashboard')->with('login_success', 'Login berhasil. Mengalihkan ke dashboard.');
 
             } else {
                 return redirect()->back()->with('error', 'Email atau password salah');
@@ -52,7 +53,7 @@ class Auth extends BaseController
                 'nama' => $this->request->getPost('nama'),
                 'email' => $this->request->getPost('email'),
                 'password' => $this->request->getPost('password'), // belum hash
-                'role' => 'admin'
+                'role' => 'admin1'
             ]);
 
             return redirect()->to('/login')->with('success', 'Register berhasil');
@@ -65,5 +66,14 @@ class Auth extends BaseController
     {
         session()->destroy();
         return redirect()->to('/');
+    }
+
+    private function normalizeRole(string $role): string
+    {
+        return match (strtolower(trim($role))) {
+            'admin2' => 'admin2',
+            'admin3', '1', 'user' => 'admin3',
+            default => 'admin1',
+        };
     }
 }

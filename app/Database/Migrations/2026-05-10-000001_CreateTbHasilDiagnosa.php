@@ -35,8 +35,8 @@ class CreateTbHasilDiagnosa extends Migration
                 'null'       => true,
             ],
             'persentase' => [
-                'type'       => 'INT',
-                'constraint' => 11,
+                'type'       => 'DECIMAL',
+                'constraint' => '5,2',
                 'default'    => 0,
             ],
             'jumlah_gejala' => [

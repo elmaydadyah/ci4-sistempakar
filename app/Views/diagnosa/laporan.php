@@ -1,296 +1,29 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <?php
+        $isDownloadMode = !empty($download_mode);
+        $logoKabBogor = base_url('assets/images/logo/logokabbogor.png');
+        $logoPuskesmas = base_url('assets/images/logo/logo_puskesmas.png');
+
+        if ($isDownloadMode) {
+            $logoKabBogorPath = FCPATH . 'assets/images/logo/logokabbogor.png';
+            $logoPuskesmasPath = FCPATH . 'assets/images/logo/logo_puskesmas.png';
+            $logoKabBogor = is_file($logoKabBogorPath) ? 'data:image/png;base64,' . base64_encode((string) file_get_contents($logoKabBogorPath)) : $logoKabBogor;
+            $logoPuskesmas = is_file($logoPuskesmasPath) ? 'data:image/png;base64,' . base64_encode((string) file_get_contents($logoPuskesmasPath)) : $logoPuskesmas;
+        }
+    ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laporan Konsultasi - <?= esc($hasil['nama'] ?? 'StuntCare') ?></title>
-    <link rel="shortcut icon" href="<?= base_url('assets/images/logo/logo.png') ?>">
-    <style>
-        :root {
-            --ink: #20243b;
-            --muted: #6f778d;
-            --line: #e4e8f2;
-            --primary: #4b49ac;
-            --soft: #f6f8fc;
-            --success: #35b98f;
-            --warning: #d7941f;
-            --danger: #df5c73;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            background: #eef1f7;
-            color: var(--ink);
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .report-toolbar {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            padding: 18px;
-        }
-
-        .report-toolbar button,
-        .report-toolbar a {
-            display: inline-flex;
-            align-items: center;
-            min-height: 38px;
-            padding: 0 15px;
-            border: 0;
-            border-radius: 8px;
-            background: var(--primary);
-            color: #ffffff;
-            font-size: 13px;
-            font-weight: 800;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .report-toolbar a {
-            background: #ffffff;
-            color: var(--primary);
-            border: 1px solid var(--line);
-        }
-
-        .report-page {
-            width: 210mm;
-            min-height: 297mm;
-            margin: 0 auto 24px;
-            padding: 18mm;
-            background: #ffffff;
-            box-shadow: 0 18px 50px rgba(32, 36, 59, .14);
-        }
-
-        .report-header {
-            display: grid;
-            grid-template-columns: 72px 1fr;
-            gap: 16px;
-            align-items: center;
-            padding-bottom: 16px;
-            border-bottom: 3px solid var(--primary);
-        }
-
-        .report-header img {
-            width: 68px;
-            height: 68px;
-            object-fit: contain;
-        }
-
-        .report-header h1 {
-            margin: 0;
-            color: var(--primary);
-            font-size: 24px;
-            line-height: 1.2;
-        }
-
-        .report-header p {
-            margin: 5px 0 0;
-            color: var(--muted);
-            font-size: 12px;
-            line-height: 1.5;
-        }
-
-        .report-meta {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 10px;
-            margin: 18px 0;
-        }
-
-        .meta-item,
-        .summary-card,
-        .section-box {
-            border: 1px solid var(--line);
-            border-radius: 8px;
-            background: #ffffff;
-        }
-
-        .meta-item {
-            padding: 10px 12px;
-        }
-
-        .meta-item span,
-        .summary-card span {
-            display: block;
-            color: var(--muted);
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
-
-        .meta-item strong,
-        .summary-card strong {
-            display: block;
-            margin-top: 5px;
-            color: var(--ink);
-            font-size: 14px;
-        }
-
-        .summary-card {
-            padding: 16px;
-            background: var(--soft);
-        }
-
-        .summary-card h2 {
-            margin: 6px 0 8px;
-            color: var(--ink);
-            font-size: 22px;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            min-height: 30px;
-            align-items: center;
-            padding: 0 11px;
-            border-radius: 999px;
-            color: #ffffff;
-            font-size: 12px;
-            font-weight: 900;
-        }
-
-        .status-badge.success { background: var(--success); }
-        .status-badge.warning { background: var(--warning); }
-        .status-badge.danger { background: var(--danger); }
-
-        .confidence {
-            display: inline-flex;
-            margin-left: 8px;
-            min-height: 30px;
-            align-items: center;
-            padding: 0 11px;
-            border-radius: 999px;
-            color: var(--primary);
-            background: #eef0ff;
-            font-size: 12px;
-            font-weight: 900;
-        }
-
-        .summary-card p {
-            margin: 12px 0 0;
-            color: #4e566b;
-            font-size: 13px;
-            line-height: 1.65;
-        }
-
-        .section-title {
-            margin: 22px 0 10px;
-            color: var(--primary);
-            font-size: 15px;
-            font-weight: 900;
-        }
-
-        .measure-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 10px;
-        }
-
-        .section-box {
-            padding: 12px;
-        }
-
-        .section-box span {
-            display: block;
-            color: var(--muted);
-            font-size: 11px;
-            font-weight: 900;
-        }
-
-        .section-box strong {
-            display: block;
-            margin-top: 6px;
-            color: var(--ink);
-            font-size: 15px;
-        }
-
-        .section-box small {
-            display: block;
-            margin-top: 4px;
-            color: var(--muted);
-            font-size: 11px;
-        }
-
-        .advice-box {
-            padding: 14px 16px;
-            border-radius: 8px;
-            background: #effbf7;
-            color: #315e53;
-            font-size: 13px;
-            line-height: 1.7;
-        }
-
-        .symptom-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 7px;
-        }
-
-        .symptom-list span {
-            display: inline-flex;
-            min-height: 28px;
-            align-items: center;
-            padding: 0 9px;
-            border-radius: 999px;
-            background: #f5f7ff;
-            color: #30375f;
-            font-size: 11px;
-            font-weight: 800;
-        }
-
-        .note {
-            margin-top: 24px;
-            padding-top: 12px;
-            border-top: 1px solid var(--line);
-            color: var(--muted);
-            font-size: 11px;
-            line-height: 1.6;
-        }
-
-        .signature {
-            display: grid;
-            grid-template-columns: 1fr 220px;
-            gap: 20px;
-            margin-top: 24px;
-        }
-
-        .signature-box {
-            text-align: center;
-            color: var(--ink);
-            font-size: 12px;
-        }
-
-        .signature-line {
-            margin-top: 58px;
-            border-top: 1px solid var(--ink);
-            padding-top: 6px;
-            font-weight: 800;
-        }
-
-        @media print {
-            body {
-                background: #ffffff;
-            }
-
-            .report-toolbar {
-                display: none;
-            }
-
-            .report-page {
-                width: auto;
-                min-height: auto;
-                margin: 0;
-                padding: 12mm;
-                box-shadow: none;
-            }
-        }
-    </style>
+    <link rel="shortcut icon" href="<?= base_url('assets/images/logo/logo_puskesmas.png') ?>">
+    <?php if ($isDownloadMode): ?>
+        <style><?= file_get_contents(FCPATH . 'assets/css/laporan.css') ?></style>
+    <?php else: ?>
+        <link rel="stylesheet" href="<?= base_url('assets/css/laporan.css?v=' . filemtime(FCPATH . 'assets/css/laporan.css')) ?>">
+    <?php endif; ?>
 </head>
-<body>
+<body class="<?= $isDownloadMode ? 'pdf-download' : '' ?>">
     <?php
         $diagnosa = $hasil['diagnosa'] ?? [];
         $kelas = $diagnosa['kelas'] ?? 'H1';
@@ -300,30 +33,44 @@
             default => 'success',
         };
         $friendlyLabel = match ($kelas) {
-            'H1' => 'Perlu pemeriksaan lanjutan',
-            'H2' => 'Risiko stunting rendah',
-            default => 'Tidak memiliki risiko stunting',
+            'H1' => 'Risiko stunting tinggi',
+            'H2' => 'Risiko stunting sedang',
+            default => 'Risiko stunting rendah',
         };
         $friendlyText = match ($kelas) {
-            'H1' => 'Ada beberapa tanda risiko tinggi yang perlu segera dikonsultasikan kepada tenaga kesehatan.',
-            'H2' => 'Ada tanda risiko rendah yang perlu diperhatikan dan dipantau secara berkala.',
-            default => 'Hasil awal menunjukkan anak tidak memiliki risiko stunting, namun pemantauan rutin tetap penting.',
+            'H1' => 'Ada tanda risiko tinggi. Segera lakukan pemeriksaan lanjutan ke posyandu atau puskesmas.',
+            'H2' => 'Ada tanda risiko sedang. Perbaiki kualitas makan anak dan lakukan pemantauan lanjutan di posyandu atau puskesmas.',
+            default => 'Ada tanda risiko rendah yang perlu diperhatikan dan dipantau secara berkala.',
+        };
+        $interpretationText = match ($kelas) {
+            'H1' => 'Risiko stunting tinggi berarti hasil pengukuran dan tanda yang terbaca lebih banyak mengarah pada kemungkinan stunting, sehingga anak perlu segera diperiksa lebih lanjut oleh tenaga kesehatan.',
+            'H2' => 'Risiko stunting sedang berarti terdapat beberapa tanda yang perlu diwaspadai, tetapi belum sekuat kategori tinggi. Anak perlu dipantau pertumbuhannya dan diperbaiki asupan gizinya.',
+            default => 'Risiko stunting rendah berarti anak tidak terindikasi memiliki risiko stunting tinggi. Jika nilai keyakinan sistem berada di bawah 70%, hasil ini dibaca sebagai tidak terindikasi risiko stunting, namun pemantauan rutin tetap diperlukan.',
         };
     ?>
 
-    <div class="report-toolbar">
-        <button type="button" onclick="window.print()">Simpan PDF / Cetak</button>
-        <a href="<?= base_url('konsultasi?hasil=' . ($hasil['id_hasil_diagnosa'] ?? '')) ?>">Kembali ke hasil</a>
-    </div>
+    <?php if (!$isDownloadMode): ?>
+        <div class="report-toolbar">
+            <button type="button" onclick="window.print()">Simpan PDF / Cetak</button>
+            <a href="<?= base_url('konsultasi/laporan/download/' . ($hasil['id_hasil_diagnosa'] ?? 0)) ?>">Download Laporan</a>
+            <a href="<?= base_url('konsultasi?hasil=' . ($hasil['id_hasil_diagnosa'] ?? '')) ?>">Kembali ke hasil</a>
+        </div>
+    <?php endif; ?>
 
     <main class="report-page">
         <header class="report-header">
-            <img src="<?= base_url('assets/images/logo/logo.png') ?>" alt="Logo StuntCare">
-            <div>
-                <h1>Laporan Hasil Konsultasi StuntCare</h1>
-                <p>Skrining awal tumbuh kembang dan risiko stunting anak. Laporan ini membantu orang tua membawa ringkasan hasil ke posyandu, puskesmas, atau tenaga kesehatan.</p>
+            <img src="<?= esc($logoKabBogor, 'attr') ?>" alt="Logo Kabupaten Bogor">
+            <div class="header-copy">
+                <h1>PUSKESMAS KECAMATAN CILEUNGSI</h1>
+                <div class="header-contact">
+                    <span>Jl. Camat Enjan No. 1, Cileungsi, Bogor 16820</span>
+                    <span>Telp. (021) 8230348 | puskesmascileungsi@yahoo.co.id</span>
+                </div>
             </div>
+            <img src="<?= esc($logoPuskesmas, 'attr') ?>" alt="Logo Puskesmas">
         </header>
+
+        <div class="report-document-title">LAPORAN HASIL DIAGNOSA</div>
 
         <section class="report-meta">
             <div class="meta-item">
@@ -347,11 +94,12 @@
         <section class="summary-card">
             <span>Kesimpulan awal</span>
             <h2><?= esc($friendlyLabel) ?></h2>
-            <div>
+            <div class="summary-badges">
                 <span class="status-badge <?= esc($statusTone, 'attr') ?>"><?= esc($diagnosa['kelas'] ?? '-') ?> - <?= esc($diagnosa['label'] ?? '-') ?></span>
                 <span class="confidence">Keyakinan sistem <?= esc((string) ($diagnosa['posterior_persen'] ?? $hasil['persentase'] ?? 0)) ?>%</span>
             </div>
             <p><?= esc($friendlyText) ?></p>
+            <p><?= esc($interpretationText) ?></p>
         </section>
 
         <h3 class="section-title">Ringkasan Ukuran Anak</h3>
@@ -368,16 +116,6 @@
         <h3 class="section-title">Rekomendasi</h3>
         <section class="advice-box">
             <?= esc($hasil['rekomendasi'] ?? '-') ?>
-        </section>
-
-        <h3 class="section-title">Tanda yang Terbaca Sistem</h3>
-        <section class="symptom-list">
-            <?php foreach (($hasil['gejala_terbaca'] ?? []) as $gejala): ?>
-                <span><?= esc($gejala['nama'] ?? '-') ?></span>
-            <?php endforeach; ?>
-            <?php if (empty($hasil['gejala_terbaca'])): ?>
-                <span>Tidak ada tanda khusus yang tersimpan.</span>
-            <?php endif; ?>
         </section>
 
         <section class="signature">

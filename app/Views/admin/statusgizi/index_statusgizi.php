@@ -55,21 +55,16 @@ $detailGroups = [
         'Diupdate' => 'updated_at',
     ],
 ];
+$adminRole = match (strtolower(trim((string) (session()->get('role') ?? 'admin1')))) {
+    'admin2' => 'admin2',
+    'admin3', '1', 'user' => 'admin3',
+    default => 'admin1',
+};
+$canUploadStatusGizi = in_array($adminRole, ['admin1', 'admin2'], true);
 ?>
 
 <div class="main-panel">
     <div class="content-wrapper">
-        <div class="row">
-            <div class="col-md-12 grid-margin">
-                <div class="row align-items-center">
-                    <div class="col-12 col-xl-8 mb-2 mb-xl-0">
-                        <h3 class="font-weight-bold">Data Status Gizi Anak</h3>
-                        <h6 class="font-weight-normal mb-0 text-muted">Upload file Excel status gizi dan data akan langsung masuk ke database.</h6>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <?php if (session()->getFlashdata('success')): ?>
             <div class="alert alert-success">
                 <?= session()->getFlashdata('success'); ?>
@@ -82,6 +77,7 @@ $detailGroups = [
         <?php endif; ?>
 
         <div class="row">
+            <?php if ($canUploadStatusGizi): ?>
             <div class="col-md-4 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
@@ -100,8 +96,9 @@ $detailGroups = [
                     </div>
                 </div>
             </div>
+            <?php endif; ?>
 
-            <div class="col-md-8 grid-margin">
+            <div class="<?= $canUploadStatusGizi ? 'col-md-8' : 'col-md-12'; ?> grid-margin">
                 <div class="row">
                     <div class="col-md-4 mb-3 stretch-card">
                         <div class="card card-tale">
@@ -281,6 +278,8 @@ $detailGroups = [
                     },
                 },
             });
+
+            jQuery('#statusGiziTable').closest('.dataTables_wrapper').find('div[id$="_filter"] input').attr('placeholder', 'Cari');
         });
     </script>
 

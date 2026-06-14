@@ -11,22 +11,6 @@ $inactiveRules = max(0, $totalRules - $activeRules);
 
 <div class="main-panel">
     <div class="content-wrapper">
-        <div class="row">
-            <div class="col-md-12 grid-margin">
-                <div class="row align-items-center">
-                    <div class="col-12 col-xl-8 mb-2 mb-xl-0">
-                        <h3 class="font-weight-bold">Rule Based Z-Score</h3>
-                        <h6 class="font-weight-normal mb-0 text-muted">Kelola relasi hipotesis dan gejala untuk basis aturan sistem pakar.</h6>
-                    </div>
-                    <div class="col-12 col-xl-4 text-xl-right">
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#createRuleModal">
-                            Tambah Rule
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <?php if (session()->getFlashdata('success')): ?>
             <div class="alert alert-success"><?= esc(session()->getFlashdata('success')); ?></div>
         <?php endif; ?>
@@ -65,8 +49,15 @@ $inactiveRules = max(0, $totalRules - $activeRules);
             <div class="col-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Tabel Rule Based</h4>
-                        <p class="text-muted mb-3">Data ini mengikuti format Rule Base.xlsx: satu hipotesis dapat memiliki banyak kode gejala.</p>
+                        <div class="admin-table-toolbar">
+                            <div>
+                                <h4 class="card-title mb-1">Tabel Rule Based</h4>
+                                <p class="text-muted mb-0">Data ini mengikuti format Rule Base.xlsx: satu hipotesis dapat memiliki banyak kode gejala.</p>
+                            </div>
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#createRuleModal">
+                                Tambah Rule
+                            </button>
+                        </div>
 
                         <div class="table-responsive">
                             <table class="table table-hover admin-data-table">

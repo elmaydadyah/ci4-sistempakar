@@ -14,29 +14,40 @@ if (session()->get('user_id')) {
     }
   }
 }
+
+$profileNamaEsc = htmlspecialchars((string) $profileNama, ENT_QUOTES, 'UTF-8');
 ?>
-<nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+<nav class="navbar dashboard-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
   <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-    <a class="navbar-brand brand-logo mr-5 d-flex align-items-center" href="<?= base_url('dashboard') ?>">
-      <img src="<?= base_url('assets/images/logo/logo.png') ?>" class="mr-2" alt="Logo StuntCare" />
-      <span class="dashboard-brand-text">
-        <strong>StuntCare</strong>
-        <small>Sistem Deteksi Dini Stunting</small>
+    <a class="dashboard-brand brand" href="<?= base_url('dashboard') ?>" aria-label="Puskesmas Cileungsi">
+      <img class="dashboard-brand-logo landing-brand-logo" src="<?= base_url('assets/images/logo/logo_puskesmas.png') ?>" alt="Logo Puskesmas" width="52" height="52">
+      <span class="dashboard-brand-text brand-text">
+        <strong>Puskesmas Cileungsi</strong>
+        <small>Deteksi Dini Risiko Stunting</small>
       </span>
     </a>
     <a class="navbar-brand brand-logo-mini" href="<?= base_url('dashboard') ?>"><img
-        src="<?= base_url('assets/images/logo/logo.png') ?>" alt="Logo StuntCare" /></a>
+        src="<?= base_url('assets/images/logo/logo_puskesmas.png') ?>" alt="Logo Puskesmas" /></a>
   </div>
-  <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-    <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-      <span class="icon-menu"></span>
-    </button>
-    <ul class="navbar-nav navbar-nav-right">
-      <li class="nav-item nav-profile dropdown ml-auto">
-        <a class="nav-link dropdown-toggle d-flex align-items-center justify-content-end" href="#"
-          data-toggle="dropdown" id="profileDropdown">
-          <span class="mr-2 d-none d-md-inline">Welcome, <?= htmlspecialchars($profileNama, ENT_QUOTES, 'UTF-8'); ?></span>
-          <img src="<?= $profileFoto; ?>" alt="<?= htmlspecialchars($profileNama, ENT_QUOTES, 'UTF-8'); ?>" />
+  <div class="navbar-menu-wrapper d-flex align-items-center">
+    <div class="dashboard-navbar-left">
+      <button class="navbar-toggler dashboard-navbar-icon dashboard-navbar-minimize align-self-center" type="button" data-toggle="minimize" aria-label="Tutup sidebar">
+        <span class="icon-menu"></span>
+      </button>
+      <a class="dashboard-navbar-icon" href="<?= base_url('adminhasildiagnosa') ?>" aria-label="Notifikasi konsultasi">
+        <i class="ti-bell"></i>
+      </a>
+    </div>
+
+    <ul class="navbar-nav dashboard-navbar-profile">
+      <li class="nav-item nav-profile dropdown">
+        <a class="nav-link dashboard-welcome-link dropdown-toggle d-flex align-items-center" href="#"
+          data-toggle="dropdown" id="profileDropdown" aria-label="Menu profil <?= $profileNamaEsc; ?>">
+          <img src="<?= $profileFoto; ?>" alt="<?= $profileNamaEsc; ?>" />
+          <span class="dashboard-welcome-copy">
+            <strong>Welcome, <?= $profileNamaEsc; ?></strong>
+            <small>Kelola dashboard Puskesmas hari ini</small>
+          </span>
         </a>
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
           <a class="dropdown-item" href="<?= base_url('logout') ?>">
@@ -46,7 +57,8 @@ if (session()->get('user_id')) {
         </div>
       </li>
     </ul>
-    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+
+    <button class="navbar-toggler dashboard-navbar-icon navbar-toggler-right d-lg-none align-self-center" type="button"
       data-toggle="offcanvas">
       <span class="icon-menu"></span>
     </button>

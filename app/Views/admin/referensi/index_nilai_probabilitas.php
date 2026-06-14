@@ -5,17 +5,11 @@
 <div class="main-panel">
     <div class="content-wrapper">
         <div class="row">
-            <div class="col-md-12 grid-margin">
-                <h3 class="font-weight-bold">Nilai Probabilitas</h3>
-                <h6 class="font-weight-normal mb-0 text-muted">Tingkat kepentingan setiap gejala terhadap hipotesis H1, H2, dan H3.</h6>
-            </div>
-        </div>
-
-        <div class="row">
             <div class="col-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Tabel Nilai Probabilitas</h4>
+                        <h4 class="card-title">Tabel Probabilitas Gejala</h4>
+                        <p class="text-muted mb-3">Peluang setiap gejala terhadap hipotesis H1, H2, dan H3.</p>
                         <div class="table-responsive">
                             <table class="table table-hover admin-data-table">
                                 <thead>
@@ -42,14 +36,14 @@
                                                 <td><?= esc($row['H3'] !== null ? number_format((float) $row['H3'], 2) : '-'); ?></td>
                                                 <td>
                                                     <div class="admin-table-actions">
-                                                        <a class="btn btn-primary btn-sm" href="<?= base_url('adminlikelihood'); ?>">Kelola Likelihood</a>
+                                                        <a class="btn btn-primary btn-sm" href="<?= base_url('adminlikelihood'); ?>">Kelola Probabilitas Antropometri</a>
                                                     </div>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>
                                         <tr class="admin-empty-row">
-                                            <td colspan="7" class="text-center text-muted py-4">Data nilai probabilitas belum tersedia.</td>
+                                            <td colspan="7" class="text-center text-muted py-4">Data probabilitas gejala belum tersedia.</td>
                                         </tr>
                                     <?php endif; ?>
                                 </tbody>

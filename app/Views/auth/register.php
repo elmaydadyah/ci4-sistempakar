@@ -16,7 +16,7 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="<?= base_url('assets/skydash/css/vertical-layout-light/style.css') ?>">
     <!-- endinject -->
-    <link rel="shortcut icon" href="<?= base_url('assets/images/logo/logo.png') ?>" />
+    <link rel="shortcut icon" href="<?= base_url('assets/images/logo/logo_puskesmas.png') ?>" />
 </head>
 
 <body>

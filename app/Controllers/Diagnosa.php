@@ -4,13 +4,15 @@ namespace App\Controllers;
 
 use App\Models\AnakModel;
 use App\Models\HasilDiagnosaModel;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class Diagnosa extends BaseController
 {
     private array $kelas = [
         'H1' => 'Risiko Stunting Tinggi',
-        'H2' => 'Risiko Stunting Rendah',
-        'H3' => 'Tidak Memiliki Risiko Stunting',
+        'H2' => 'Risiko Stunting Sedang',
+        'H3' => 'Risiko Stunting Rendah',
     ];
 
     public function index()
@@ -22,6 +24,7 @@ class Diagnosa extends BaseController
             'old' => $this->emptyOldInput(),
             'errors' => [],
             'tb_gejala' => $this->getGejalaPertanyaan(),
+            'riwayat' => $this->getRiwayatKonsultasiSession(),
         ];
 
         if (!$this->request->is('post')) {
@@ -44,7 +47,9 @@ class Diagnosa extends BaseController
                 $this->simpanHasilDiagnosa($data['hasil']);
 
                 if (!empty($data['hasil']['id_hasil_diagnosa'])) {
-                    session()->set('last_hasil_diagnosa_id', (int) $data['hasil']['id_hasil_diagnosa']);
+                    $hasilId = (int) $data['hasil']['id_hasil_diagnosa'];
+                    session()->set('last_hasil_diagnosa_id', $hasilId);
+                    $this->simpanRiwayatKonsultasiSession($hasilId);
                     return redirect()->to('/konsultasi?hasil=' . $data['hasil']['id_hasil_diagnosa']);
                 }
             }
@@ -53,7 +58,82 @@ class Diagnosa extends BaseController
         return view('diagnosa/index', $data);
     }
 
+    private function simpanRiwayatKonsultasiSession(int $hasilId): void
+    {
+        if ($hasilId <= 0) {
+            return;
+        }
+
+        $riwayat = session()->get('riwayat_konsultasi');
+        $riwayat = is_array($riwayat) ? array_map('intval', $riwayat) : [];
+        array_unshift($riwayat, $hasilId);
+        $riwayat = array_values(array_unique(array_filter($riwayat, static fn ($id) => $id > 0)));
+
+        session()->set('riwayat_konsultasi', array_slice($riwayat, 0, 10));
+    }
+
+    private function getRiwayatKonsultasiSession(): array
+    {
+        $ids = session()->get('riwayat_konsultasi');
+        $ids = is_array($ids) ? array_values(array_unique(array_filter(array_map('intval', $ids)))) : [];
+
+        if ($ids === [] || !db_connect()->tableExists('tb_hasil_diagnosa')) {
+            return [];
+        }
+
+        $rows = (new HasilDiagnosaModel())
+            ->select('id_hasil_diagnosa, nama, umur, kelas_hasil, nama_kasus, persentase, created_at')
+            ->whereIn('id_hasil_diagnosa', $ids)
+            ->findAll();
+
+        $rowsById = [];
+        foreach ($rows as $row) {
+            $rowsById[(int) ($row['id_hasil_diagnosa'] ?? 0)] = $row;
+        }
+
+        $riwayat = [];
+        foreach ($ids as $id) {
+            if (!isset($rowsById[$id])) {
+                continue;
+            }
+
+            $riwayat[] = $rowsById[$id];
+        }
+
+        return $riwayat;
+    }
+
     public function laporan(int $id)
+    {
+        $data = $this->getLaporanData($id);
+
+        return view('diagnosa/laporan', $data);
+    }
+
+    public function downloadLaporan(int $id)
+    {
+        $data = $this->getLaporanData($id);
+        $html = view('diagnosa/laporan', array_merge($data, ['download_mode' => true]));
+        $nama = preg_replace('/[^A-Za-z0-9_-]+/', '-', (string) ($data['hasil']['nama'] ?? 'laporan'));
+        $filename = 'laporan-hasil-diagnosa-' . trim($nama, '-') . '-' . $id . '.pdf';
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true);
+        $options->set('chroot', FCPATH);
+        $options->set('defaultFont', 'Arial');
+
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        return $this->response
+            ->setHeader('Content-Type', 'application/pdf')
+            ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
+            ->setBody($dompdf->output());
+    }
+
+    private function getLaporanData(int $id): array
     {
         if ($id <= 0 || !db_connect()->tableExists('tb_hasil_diagnosa')) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Laporan tidak ditemukan.');
@@ -64,13 +144,11 @@ class Diagnosa extends BaseController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Laporan tidak ditemukan.');
         }
 
-        $hasil = $this->formatStoredHasilDiagnosa($row);
-
-        return view('diagnosa/laporan', [
-            'hasil' => $hasil,
+        return [
+            'hasil' => $this->formatStoredHasilDiagnosa($row),
             'row' => $row,
             'tanggal_cetak' => date('d/m/Y H:i'),
-        ]);
+        ];
     }
 
     private function getHasilDiagnosaFromRequest(): ?array
@@ -107,8 +185,8 @@ class Diagnosa extends BaseController
         $diagnosa = $alternatif[0] ?? [
             'kelas' => $row['kelas_hasil'] ?? 'H1',
             'label' => $this->kelas[$row['kelas_hasil'] ?? 'H1'] ?? 'Risiko Stunting Tinggi',
-            'posterior_persen' => (int) ($row['persentase'] ?? 0),
-            'posterior' => ((int) ($row['persentase'] ?? 0)) / 100,
+            'posterior_persen' => (float) ($row['persentase'] ?? 0),
+            'posterior' => ((float) ($row['persentase'] ?? 0)) / 100,
         ];
         if (!empty($diagnosa['kelas']) && isset($this->kelas[$diagnosa['kelas']])) {
             $diagnosa['label'] = $this->kelas[$diagnosa['kelas']];
@@ -158,7 +236,7 @@ class Diagnosa extends BaseController
             'prior' => is_array($prior) ? $prior : [],
             'likelihood' => is_array($likelihood) ? $likelihood : [],
             'jumlah_data_latih' => 0,
-            'persentase' => (int) ($row['persentase'] ?? ($diagnosa['posterior_persen'] ?? 0)),
+            'persentase' => (float) ($row['persentase'] ?? ($diagnosa['posterior_persen'] ?? 0)),
             'rekomendasi' => $this->getRekomendasi((string) ($diagnosa['kelas'] ?? 'H1')),
             'stored_row' => $row,
         ];
@@ -179,7 +257,12 @@ class Diagnosa extends BaseController
             'lingkar_lengan' => $row['lingkar_lengan'] !== null ? (string) $row['lingkar_lengan'] : '',
             'lingkar_kepala' => $row['lingkar_kepala'] !== null ? (string) $row['lingkar_kepala'] : '',
             'nama_ortu' => '',
-            'alamat' => '',
+            'alamat' => (string) ($row['alamat'] ?? ''),
+            'rt' => (string) ($row['rt'] ?? ''),
+            'rw' => (string) ($row['rw'] ?? ''),
+            'desa' => (string) ($row['desa'] ?? ''),
+            'kelurahan' => (string) ($row['kelurahan'] ?? ''),
+            'kecamatan' => (string) ($row['kecamatan'] ?? ''),
             'tempat_tinggal' => (string) ($row['tempat_tinggal'] ?? ''),
             'riwayat_kehamilan' => (string) ($row['riwayat_kehamilan'] ?? ''),
             'pola_makan' => (string) ($row['pola_makan'] ?? ''),
@@ -201,6 +284,11 @@ class Diagnosa extends BaseController
             'lingkar_kepala' => '',
             'nama_ortu' => '',
             'alamat' => '',
+            'rt' => '',
+            'rw' => '',
+            'desa' => '',
+            'kelurahan' => '',
+            'kecamatan' => '',
             'tempat_tinggal' => '',
             'riwayat_kehamilan' => '',
             'pola_makan' => '',
@@ -233,6 +321,11 @@ class Diagnosa extends BaseController
             'lingkar_kepala' => $anak['lingkar_kepala'] !== null ? (string) $anak['lingkar_kepala'] : '',
             'nama_ortu' => (string) ($anak['nama_ortu'] ?? ''),
             'alamat' => (string) ($anak['alamat'] ?? ''),
+            'rt' => (string) ($anak['rt'] ?? ''),
+            'rw' => (string) ($anak['rw'] ?? ''),
+            'desa' => (string) ($anak['desa'] ?? ''),
+            'kelurahan' => (string) ($anak['kelurahan'] ?? ''),
+            'kecamatan' => (string) ($anak['kecamatan'] ?? ''),
             'tempat_tinggal' => (string) ($anak['tempat_tinggal'] ?? ''),
             'riwayat_kehamilan' => (string) ($anak['riwayat_kehamilan'] ?? ''),
             'pola_makan' => (string) ($anak['pola_makan'] ?? ''),
@@ -244,6 +337,7 @@ class Diagnosa extends BaseController
     {
         $jawabanGejala = $this->request->getPost('jawaban_gejala');
         $jawabanGejala = is_array($jawabanGejala) ? $jawabanGejala : [];
+        $kelurahan = trim((string) $this->request->getPost('kelurahan'));
 
         return [
             'nama' => trim((string) $this->request->getPost('nama')),
@@ -257,6 +351,11 @@ class Diagnosa extends BaseController
             'lingkar_kepala' => trim((string) $this->request->getPost('lingkar_kepala')),
             'nama_ortu' => trim((string) $this->request->getPost('nama_ortu')),
             'alamat' => trim((string) $this->request->getPost('alamat')),
+            'rt' => trim((string) $this->request->getPost('rt')),
+            'rw' => trim((string) $this->request->getPost('rw')),
+            'desa' => $kelurahan,
+            'kelurahan' => $kelurahan,
+            'kecamatan' => 'CILEUNGSI',
             'tempat_tinggal' => trim((string) $this->request->getPost('tempat_tinggal')),
             'riwayat_kehamilan' => trim((string) $this->request->getPost('riwayat_kehamilan')),
             'pola_makan' => trim((string) $this->request->getPost('pola_makan')),
@@ -274,8 +373,8 @@ class Diagnosa extends BaseController
 
         if ($input['nik'] === '') {
             $errors[] = 'NIK anak wajib diisi.';
-        } elseif (!preg_match('/^[0-9]{8,32}$/', $input['nik'])) {
-            $errors[] = 'NIK diisi angka minimal 8 digit.';
+        } elseif (!preg_match('/^[0-9]{16}$/', $input['nik'])) {
+            $errors[] = 'NIK Harus berisikan 16 angka';
         }
 
         if (!in_array($input['jenis_kelamin'], ['L', 'P'], true)) {
@@ -294,6 +393,28 @@ class Diagnosa extends BaseController
 
         if ($input['nama_ortu'] === '') {
             $errors[] = 'Nama ibu/ayah wajib diisi.';
+        }
+
+        foreach ([
+            'alamat' => 'Alamat lengkap',
+            'rt' => 'RT',
+            'rw' => 'RW',
+            'kelurahan' => 'Desa/Kel',
+            'kecamatan' => 'Kecamatan',
+        ] as $field => $label) {
+            if ($input[$field] === '') {
+                $errors[] = $label . ' wajib diisi.';
+            }
+        }
+
+        if ($input['kelurahan'] !== '' && !in_array($input['kelurahan'], $this->getKelurahanOptions(), true)) {
+            $errors[] = 'Desa/Kel wajib dipilih dari daftar.';
+        }
+
+        foreach (['rt' => 'RT', 'rw' => 'RW'] as $field => $label) {
+            if ($input[$field] !== '' && !preg_match('/^[0-9]+$/', $input[$field])) {
+                $errors[] = $label . ' wajib diisi angka.';
+            }
         }
 
         foreach (['berat_badan' => 'Berat badan', 'tinggi_badan' => 'Tinggi badan'] as $field => $label) {
@@ -370,7 +491,7 @@ class Diagnosa extends BaseController
             'prior' => $bayes['prior'],
             'likelihood' => $bayes['likelihood'],
             'jumlah_data_latih' => $bayes['jumlah_data_latih'],
-            'persentase' => (int) round($posterior * 100),
+            'persentase' => round($posterior * 100, 2),
             'rekomendasi' => $this->getRekomendasi($diagnosa['kelas'] ?? 'H1'),
         ];
     }
@@ -403,25 +524,26 @@ class Diagnosa extends BaseController
     {
         $pertanyaan = [
             'G01' => 'Apakah berat badan anak cenderung kurang atau tidak sesuai dengan anak seusianya?',
-            'G02' => 'Apakah tinggi badan anak lebih pendek atau lebih rendah dari standar anak seusianya?',
-            'G03' => 'Apakah anak terlihat kurang aktif dalam aktivitas sehari-hari?',
-            'G04' => 'Apakah anak sering sakit atau daya tahan tubuhnya terlihat rendah?',
+            'G02' => 'Apakah tinggi badan anak lebih pendek atau rendah dari standar anak seusianya?',
+            'G03' => 'Apakah anak terlihat kurang aktif?',
+            'G04' => 'Apakah daya tahan tubuh anak rendah atau anak sering sakit?',
             'G05' => 'Apakah anak mengalami keterlambatan dalam berbicara?',
             'G06' => 'Apakah perkembangan keterampilan fisik anak lambat, seperti berguling, duduk, berdiri, atau berjalan?',
-            'G07' => 'Apakah anak susah fokus saat diajak bermain, belajar, atau berinteraksi?',
+            'G07' => 'Apakah anak susah fokus saat bermain, belajar, atau berinteraksi?',
             'G08' => 'Apakah gigi susu atau gigi permanen anak terlambat tumbuh?',
-            'G09' => 'Apakah ada riwayat keluarga yang mengalami stunting?',
+            'G09' => 'Apakah anak mendapat pengukuran tinggi dan berat badan rutin sebanyak 8x dalam setahun di posyandu/klinik bidan dan dicatat di buku KMS?',
             'G10' => 'Apakah nafsu makan anak berkurang?',
             'G11' => 'Apakah anak terlihat mengalami kekurangan gizi?',
             'G12' => 'Apakah kepala anak terlihat lebih besar dibandingkan badannya?',
-            'G13' => 'Apakah kulit anak terlihat kering dan rambutnya tampak tipis?',
-            'G14' => 'Apakah anak sering mengalami mimisan tanpa sebab yang jelas?',
-            'G15' => 'Apakah ibu mengalami anemia saat hamil?',
-            'G16' => 'Apakah ibu sering merasa lemas, pusing, dan mudah lelah saat hamil?',
-            'G17' => 'Apakah ibu mengalami penurunan atau kenaikan berat badan yang tidak normal saat hamil?',
-            'G18' => 'Apakah ibu mengalami Kekurangan Energi Kronis (KEK) selama masa kehamilan?',
-            'G19' => 'Apakah keluarga menerapkan gaya hidup bersih dan sehat di lingkungan rumah?',
-            'G20' => 'Apakah anak tidak memiliki respon yang baik saat diajak berkomunikasi?',
+            'G13' => 'Apakah anak mendapatkan imunisasi dasar lengkap seperti HB 0, BCG, Polio, DPT, dan Campak?',
+            'G14' => 'Apakah anak rutin mendapatkan obat kecacingan 2 kali setahun?',
+            'G15' => 'Apakah ibu memiliki HB kurang dari 11 selama masa kehamilan?',
+            'G16' => 'Apakah selama hamil ibu mengalami mual muntah setelah trimester 1 atau lebih dari trimester 1?',
+            'G17' => 'Apakah ibu sering merasa lemas, pusing, dan mudah lelah saat hamil?',
+            'G18' => 'Apakah ibu mengalami penurunan atau kenaikan berat badan tidak normal saat hamil?',
+            'G19' => 'Apakah ibu memiliki lingkar lengan atas kurang dari 23,5 cm?',
+            'G20' => 'Apakah keluarga memiliki akses jamban sehat, seperti jenis leher angsa atau septic tank?',
+            'G21' => 'Apakah keluarga memiliki akses air bersih di rumah?',
         ];
 
         if (isset($pertanyaan[$kodeGejala])) {
@@ -433,8 +555,7 @@ class Diagnosa extends BaseController
 
     private function gejalaTambahanDariJawaban($db, array $jawabanGejala): array
     {
-        $jawabanYa = array_keys(array_filter($jawabanGejala, static fn ($jawaban) => $jawaban === 'ya'));
-        $ids = array_values(array_filter(array_map('intval', $jawabanYa), static fn ($id) => $id > 0));
+        $ids = array_values(array_filter(array_map('intval', array_keys($jawabanGejala)), static fn ($id) => $id > 0));
 
         if ($ids === [] || !$db->tableExists('tb_gejala')) {
             return [];
@@ -447,13 +568,37 @@ class Diagnosa extends BaseController
             ->get()
             ->getResultArray();
 
-        return array_map(static fn ($row) => [
-            'kode' => (string) ($row['kode_gejala'] ?? ('G' . $row['id_gejala'])),
-            'indikator' => 'Pertanyaan gejala',
-            'nama' => (string) ($row['nama_gejala'] ?? ''),
-            'kategori' => 'Ya',
-            'id_gejala' => (int) ($row['id_gejala'] ?? 0),
-        ], $rows);
+        $gejala = [];
+        foreach ($rows as $row) {
+            $idGejala = (int) ($row['id_gejala'] ?? 0);
+            $kodeGejala = (string) ($row['kode_gejala'] ?? ('G' . $idGejala));
+            $jawaban = (string) ($jawabanGejala[$idGejala] ?? '');
+
+            if (!$this->jawabanGejalaMasukHitungan($kodeGejala, $jawaban)) {
+                continue;
+            }
+
+            $gejala[] = [
+                'kode' => $kodeGejala,
+                'indikator' => 'Pertanyaan gejala',
+                'nama' => (string) ($row['nama_gejala'] ?? ''),
+                'kategori' => ucfirst($jawaban),
+                'id_gejala' => $idGejala,
+            ];
+        }
+
+        return $gejala;
+    }
+
+    private function jawabanGejalaMasukHitungan(string $kodeGejala, string $jawaban): bool
+    {
+        $kodeDenganRisikoJikaTidak = ['G09', 'G13', 'G14', 'G20', 'G21'];
+
+        if (in_array($kodeGejala, $kodeDenganRisikoJikaTidak, true)) {
+            return $jawaban === 'tidak';
+        }
+
+        return $jawaban === 'ya';
     }
 
     private function hitungZScore($db, array $pengukuran): array
@@ -940,9 +1085,9 @@ class Diagnosa extends BaseController
                 $category = (string) ($item['kategori'] ?? '');
                 $kodeGejala = (string) ($item['kode'] ?? '');
                 $evidenceKey = $kodeGejala !== '' ? $kodeGejala : trim($indicator . ' ' . $category);
-                $probability = $likelihoodMap[$class][$indicator][$category]
+                $probability = ($kodeGejala !== '' ? ($gejalaLikelihoodMap[$class][$kodeGejala] ?? null) : null)
+                    ?? ($likelihoodMap[$class][$indicator][$category] ?? null)
                     ?? ($kodeGejala !== '' ? ($ruleLikelihoodMap[$class][$kodeGejala] ?? null) : null)
-                    ?? ($kodeGejala !== '' ? ($gejalaLikelihoodMap[$class][$kodeGejala] ?? null) : null)
                     ?? 0.01;
                 $likelihood[$class][$evidenceKey] = $probability;
                 $logScore += log(max($probability, 0.00001));
@@ -1178,7 +1323,7 @@ class Diagnosa extends BaseController
 
         foreach ($scores as &$score) {
             $score['posterior'] = $total > 0 ? exp($score['skor'] - $max) / $total : 0;
-            $score['posterior_persen'] = (int) round($score['posterior'] * 100);
+            $score['posterior_persen'] = round($score['posterior'] * 100, 2);
         }
         unset($score);
 
@@ -1305,9 +1450,9 @@ class Diagnosa extends BaseController
         }
 
         return match ($class) {
-            'H1' => 'Apabila anak terdiagnosis memiliki risiko stunting tinggi, maka diperlukan penanganan segera dengan berkonsultasi ke tenaga kesehatan. Orang tua perlu memperbaiki asupan gizi anak dengan memberikan makanan bergizi seimbang serta melakukan pemantauan pertumbuhan secara rutin agar kondisi tidak semakin memburuk.',
-            'H2' => 'Jika anak berada pada kategori risiko stunting rendah, maka disarankan untuk meningkatkan kualitas pola makan dan menjaga keseimbangan nutrisi. Pemantauan pertumbuhan tetap perlu dilakukan secara berkala untuk mencegah peningkatan risiko.',
-            default => 'Apabila anak anda berada dalam kondisi normal (tidak mengalami risiko stunting), maka orang tua perlu mempertahankan pola hidup sehat dengan memberikan asupan gizi seimbang serta melakukan pemantauan pertumbuhan secara rutin ke posyandu agar kondisi tetap optimal.',
+            'H1' => 'Apabila anak berada pada kategori risiko stunting tinggi, segera konsultasikan ke tenaga kesehatan atau puskesmas. Perbaiki asupan gizi anak dan lakukan pemantauan pertumbuhan secara rutin.',
+            'H2' => 'Jika anak berada pada kategori risiko stunting sedang, maka disarankan untuk meningkatkan kualitas pola makan, menjaga keseimbangan nutrisi, dan melakukan konsultasi ke posyandu atau tenaga kesehatan untuk pemantauan lanjutan.',
+            default => 'Jika anak berada pada kategori risiko stunting rendah, tetap jaga pola makan bergizi seimbang dan lakukan pemantauan pertumbuhan secara berkala di posyandu.',
         };
     }
 
@@ -1377,9 +1522,14 @@ class Diagnosa extends BaseController
             'lingkar_kepala' => $input['lingkar_kepala'] !== '' ? (float) $input['lingkar_kepala'] : null,
             'nama_ortu' => $input['nama_ortu'] ?: null,
             'alamat' => $input['alamat'] ?: null,
+            'rt' => $input['rt'] ?: null,
+            'rw' => $input['rw'] ?: null,
+            'desa' => $input['desa'] ?: null,
+            'kelurahan' => $input['kelurahan'] ?: null,
+            'kecamatan' => $input['kecamatan'] ?: null,
             'riwayat_kehamilan' => $input['riwayat_kehamilan'] ?: null,
             'pola_makan' => $input['pola_makan'] ?: null,
-            'tempat_tinggal' => $input['tempat_tinggal'] ?: null,
+            'tempat_tinggal' => $input['tempat_tinggal'] ?: $this->formatTempatTinggal($input),
             'zs_bb_u' => $zscore['bb_u']['nilai'],
             'kategori_bb_u' => $zscore['bb_u']['kategori'],
             'zs_tb_u' => $zscore['tb_u']['nilai'],
@@ -1416,9 +1566,15 @@ class Diagnosa extends BaseController
             'tinggi_badan' => (float) $input['tinggi_badan'],
             'lingkar_lengan' => $input['lingkar_lengan'] !== '' ? (float) $input['lingkar_lengan'] : null,
             'lingkar_kepala' => $input['lingkar_kepala'] !== '' ? (float) $input['lingkar_kepala'] : null,
+            'alamat' => $input['alamat'] ?: null,
+            'rt' => $input['rt'] ?: null,
+            'rw' => $input['rw'] ?: null,
+            'desa' => $input['desa'] ?: null,
+            'kelurahan' => $input['kelurahan'] ?: null,
+            'kecamatan' => $input['kecamatan'] ?: null,
             'riwayat_kehamilan' => $input['riwayat_kehamilan'] ?: null,
             'pola_makan' => $input['pola_makan'] ?: null,
-            'tempat_tinggal' => $input['tempat_tinggal'] ?: null,
+            'tempat_tinggal' => $input['tempat_tinggal'] ?: $this->formatTempatTinggal($input),
             'zs_bb_u' => $zscore['bb_u']['nilai'],
             'kategori_bb_u' => $zscore['bb_u']['kategori'],
             'zs_tb_u' => $zscore['tb_u']['nilai'],
@@ -1448,5 +1604,34 @@ class Diagnosa extends BaseController
         $fields = db_connect()->getFieldNames($table);
 
         return array_intersect_key($payload, array_flip($fields));
+    }
+
+    private function getKelurahanOptions(): array
+    {
+        return [
+            'Cileungsi',
+            'Cileungsi Kidul',
+            'Cipenjo',
+            'Cipeucang',
+            'Dayeuh',
+            'Gandoang',
+            'Jatisari',
+            'Limus Nunggal',
+            'Mampir',
+            'Mekarsari',
+            'Pasir Angin',
+            'Situsari',
+        ];
+    }
+
+    private function formatTempatTinggal(array $input): ?string
+    {
+        $parts = array_filter([
+            $input['desa'] ?? '',
+            $input['kelurahan'] ?? '',
+            $input['kecamatan'] ?? '',
+        ], static fn ($value) => trim((string) $value) !== '');
+
+        return $parts === [] ? null : implode(', ', $parts);
     }
 }

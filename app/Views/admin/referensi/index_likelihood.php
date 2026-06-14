@@ -4,13 +4,6 @@
 
 <div class="main-panel">
     <div class="content-wrapper">
-        <div class="row">
-            <div class="col-md-12 grid-margin">
-                <h3 class="font-weight-bold">Likelihood Naive Bayes</h3>
-                <h6 class="font-weight-normal mb-0 text-muted">Peluang kategori Z-Score terhadap kelas H1, H2, dan H3.</h6>
-            </div>
-        </div>
-
         <?php if (session()->getFlashdata('success')): ?>
             <div class="alert alert-success"><?= esc(session()->getFlashdata('success')); ?></div>
         <?php endif; ?>
@@ -22,7 +15,8 @@
             <div class="col-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Tabel Likelihood</h4>
+                        <h4 class="card-title">Tabel Probabilitas Antropometri</h4>
+                        <p class="text-muted mb-3">Peluang kategori Z-Score terhadap kelas H1, H2, dan H3.</p>
                         <div class="table-responsive">
                             <table class="table table-hover admin-data-table">
                                 <thead>
@@ -59,7 +53,7 @@
                                         </tr>
                                     <?php endforeach; ?>
                                     <?php if (empty($tb_likelihood)): ?>
-                                        <tr class="admin-empty-row"><td colspan="5" class="text-center text-muted py-4">Data likelihood belum tersedia.</td></tr>
+                                        <tr class="admin-empty-row"><td colspan="5" class="text-center text-muted py-4">Data probabilitas antropometri belum tersedia.</td></tr>
                                     <?php endif; ?>
                                 </tbody>
                             </table>
@@ -77,7 +71,7 @@
                 <input type="hidden" name="redirect_to" value="<?= esc((string) current_url(true), 'attr'); ?>">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editLikelihoodModalLabel">Edit Likelihood Naive Bayes</h5>
+                        <h5 class="modal-title" id="editLikelihoodModalLabel">Edit Probabilitas Antropometri</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

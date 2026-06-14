@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Models\AnakStatusGiziModel;
 use App\Models\AdminModel;
-use App\Models\CertaintyFactorModel;
 use App\Models\AnakModel;
 use App\Models\HasilDiagnosaModel;
 
@@ -146,15 +145,220 @@ class Admin extends BaseController
         return view('admin/users/index_users', $data);
     }
 
+    public function settings()
+    {
+        $userId = (int) session()->get('user_id');
+
+        if ($userId <= 0) {
+            return redirect()->to('/login');
+        }
+
+        $user = (new \App\Models\UsersModel())->find($userId);
+
+        if (!$user) {
+            return redirect()->to('/dashboard')->with('error', 'Data admin tidak ditemukan.');
+        }
+
+        return view('admin/settings/index_settings', [
+            'user' => $user,
+        ]);
+    }
+
+    public function updateSettings()
+    {
+        $userId = (int) session()->get('user_id');
+
+        if ($userId <= 0) {
+            return redirect()->to('/login');
+        }
+
+        $model = new \App\Models\UsersModel();
+        $user = $model->find($userId);
+
+        if (!$user) {
+            return redirect()->to('/dashboard')->with('error', 'Data admin tidak ditemukan.');
+        }
+
+        $nama = trim((string) $this->request->getPost('nama'));
+        $email = trim((string) $this->request->getPost('email'));
+
+        if ($nama === '' || $email === '') {
+            return redirect()->to('/adminsettings')->with('error', 'Nama dan email wajib diisi.');
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return redirect()->to('/adminsettings')->with('error', 'Format email tidak valid.');
+        }
+
+        $emailExists = $model
+            ->where('email', $email)
+            ->where('id_users !=', $userId)
+            ->first();
+
+        if ($emailExists) {
+            return redirect()->to('/adminsettings')->with('error', 'Email sudah digunakan admin lain.');
+        }
+
+        $payload = [
+            'nama' => $nama,
+            'email' => $email,
+        ];
+
+        $password = trim((string) $this->request->getPost('password'));
+        if ($password !== '') {
+            $payload['password'] = $password;
+        }
+
+        $foto = $this->request->getFile('foto');
+        if ($foto && $foto->isValid() && !$foto->hasMoved()) {
+            $allowedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
+
+            if (!in_array($foto->getMimeType(), $allowedTypes, true)) {
+                return redirect()->to('/adminsettings')->with('error', 'Format foto harus JPG, JPEG, atau PNG.');
+            }
+
+            $uploadPath = FCPATH . 'uploads/foto_users';
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
+
+            $namaFoto = $foto->getRandomName();
+            $foto->move($uploadPath, $namaFoto);
+            $payload['foto'] = $namaFoto;
+
+            if (!empty($user['foto']) && is_file($uploadPath . DIRECTORY_SEPARATOR . $user['foto'])) {
+                unlink($uploadPath . DIRECTORY_SEPARATOR . $user['foto']);
+            }
+        }
+
+        $model->update($userId, $payload);
+        session()->set('nama', $nama);
+        session()->set('email', $email);
+
+        return redirect()->to('/adminsettings')->with('success', 'Profil admin berhasil diperbarui.');
+    }
+
     public function indexAnak()
     {
+        $anakId = (int) ($this->request->getGet('anak') ?? 0);
+        $kelurahan = trim((string) $this->request->getGet('kelurahan'));
+        $tanggalMulai = trim((string) $this->request->getGet('tanggal_mulai'));
+        $tanggalSelesai = trim((string) $this->request->getGet('tanggal_selesai'));
+
+        $builder = (new AnakModel())->orderBy('id_anak', 'DESC');
+
+        if ($anakId > 0) {
+            $builder->where('id_anak', $anakId);
+        }
+
+        if ($kelurahan !== '') {
+            $builder->where('kelurahan', $kelurahan);
+        }
+
+        if ($tanggalMulai !== '') {
+            $builder->where('created_at >=', $tanggalMulai . ' 00:00:00');
+        }
+
+        if ($tanggalSelesai !== '') {
+            $builder->where('created_at <=', $tanggalSelesai . ' 23:59:59');
+        }
+
         $data = [
-            'tb_anak' => (new AnakModel())
-                ->orderBy('id_anak', 'DESC')
-                ->findAll(100),
+            'tb_anak' => $builder->findAll(200),
+            'kelurahan_options' => $this->getKelurahanOptions(),
+            'filter' => [
+                'anak' => $anakId,
+                'kelurahan' => $kelurahan,
+                'tanggal_mulai' => $tanggalMulai,
+                'tanggal_selesai' => $tanggalSelesai,
+            ],
         ];
 
         return view('admin/anak/index_anak', $data);
+    }
+
+    private function getKelurahanOptions(): array
+    {
+        return [
+            'Cileungsi',
+            'Cileungsi Kidul',
+            'Cipenjo',
+            'Cipeucang',
+            'Dayeuh',
+            'Gandoang',
+            'Jatisari',
+            'Limus Nunggal',
+            'Mampir',
+            'Mekarsari',
+            'Pasir Angin',
+            'Situsari',
+        ];
+    }
+
+    public function updateAnak($id)
+    {
+        $model = new AnakModel();
+        $anak = $model->find((int) $id);
+
+        if (!$anak) {
+            return redirect()->to('/adminanak')->with('error', 'Data anak tidak ditemukan.');
+        }
+
+        $namaAnak = trim((string) $this->request->getPost('nama_anak'));
+        $jenisKelamin = trim((string) $this->request->getPost('jenis_kelamin'));
+        $umurBulan = trim((string) $this->request->getPost('umur_bulan'));
+
+        if ($namaAnak === '' || !in_array($jenisKelamin, ['L', 'P'], true) || $umurBulan === '' || !ctype_digit($umurBulan)) {
+            return redirect()->to('/adminanak')->with('error', 'Nama anak, jenis kelamin, dan umur wajib diisi dengan benar.');
+        }
+
+        $payload = [
+            'nama_anak' => $namaAnak,
+            'nik' => trim((string) $this->request->getPost('nik')) ?: null,
+            'jenis_kelamin' => $jenisKelamin,
+            'jk_anak' => $jenisKelamin,
+            'tanggal_lahir' => trim((string) $this->request->getPost('tanggal_lahir')) ?: null,
+            'umur_bulan' => (int) $umurBulan,
+            'umur_anak' => $umurBulan,
+            'berat_badan' => $this->toDecimal($this->request->getPost('berat_badan')),
+            'berat_anak' => $this->toDecimal($this->request->getPost('berat_badan')),
+            'tinggi_badan' => $this->toDecimal($this->request->getPost('tinggi_badan')),
+            'tinggi_anak' => $this->toDecimal($this->request->getPost('tinggi_badan')),
+            'lingkar_lengan' => $this->toDecimal($this->request->getPost('lingkar_lengan')),
+            'lingkar_kepala' => $this->toDecimal($this->request->getPost('lingkar_kepala')),
+            'nama_ortu' => trim((string) $this->request->getPost('nama_ortu')) ?: null,
+            'alamat' => trim((string) $this->request->getPost('alamat')) ?: null,
+            'rt' => trim((string) $this->request->getPost('rt')) ?: null,
+            'rw' => trim((string) $this->request->getPost('rw')) ?: null,
+            'desa' => trim((string) $this->request->getPost('kelurahan')) ?: null,
+            'kelurahan' => trim((string) $this->request->getPost('kelurahan')) ?: null,
+            'kecamatan' => trim((string) $this->request->getPost('kecamatan')) ?: null,
+            'riwayat_kehamilan' => trim((string) $this->request->getPost('riwayat_kehamilan')) ?: null,
+            'pola_makan' => trim((string) $this->request->getPost('pola_makan')) ?: null,
+            'tempat_tinggal' => trim((string) $this->request->getPost('tempat_tinggal')) ?: null,
+        ];
+
+        $model->update((int) $id, $payload);
+
+        return redirect()->to('/adminanak')->with('success', 'Data anak berhasil diupdate.');
+    }
+
+    public function deleteAnak($id)
+    {
+        $model = new AnakModel();
+        $anak = $model->find((int) $id);
+
+        if (!$anak) {
+            return redirect()->to('/adminanak')->with('error', 'Data anak tidak ditemukan.');
+        }
+
+        try {
+            $model->delete((int) $id);
+        } catch (\Throwable $e) {
+            return redirect()->to('/adminanak')->with('error', 'Data anak gagal dihapus karena masih dipakai data lain.');
+        }
+
+        return redirect()->to('/adminanak')->with('success', 'Data anak berhasil dihapus.');
     }
 
     public function indexKasusGejala()
@@ -164,54 +368,31 @@ class Admin extends BaseController
         return view('admin/kasusgejala/index_kasusgejala', $data);
     }
 
-    public function indexKonsultasi()
-    {
-        $db = db_connect();
-        $data = [
-            'total_anak' => $db->tableExists('tb_anak') ? $db->table('tb_anak')->countAllResults() : 0,
-            'total_data_latih' => $db->tableExists('tb_anak_status_gizi') ? $db->table('tb_anak_status_gizi')->countAllResults() : 0,
-            'total_h1' => $db->tableExists('tb_hasil_diagnosa') && $db->fieldExists('kelas_hasil', 'tb_hasil_diagnosa') ? $db->table('tb_hasil_diagnosa')->where('kelas_hasil', 'H1')->countAllResults() : 0,
-            'total_h2' => $db->tableExists('tb_hasil_diagnosa') && $db->fieldExists('kelas_hasil', 'tb_hasil_diagnosa') ? $db->table('tb_hasil_diagnosa')->where('kelas_hasil', 'H2')->countAllResults() : 0,
-            'total_h3' => $db->tableExists('tb_hasil_diagnosa') && $db->fieldExists('kelas_hasil', 'tb_hasil_diagnosa') ? $db->table('tb_hasil_diagnosa')->where('kelas_hasil', 'H3')->countAllResults() : 0,
-            'total_hasil' => $db->tableExists('tb_hasil_diagnosa') ? $db->table('tb_hasil_diagnosa')->countAllResults() : 0,
-            'recent_anak' => $db->tableExists('tb_anak')
-                ? $db->table('tb_anak')->orderBy('id_anak', 'DESC')->get(5)->getResultArray()
-                : [],
-            'recent_hasil' => $db->tableExists('tb_hasil_diagnosa')
-                ? $db->table('tb_hasil_diagnosa')->orderBy('id_hasil_diagnosa', 'DESC')->get(5)->getResultArray()
-                : [],
-        ];
-
-        return view('admin/konsultasi/index_konsultasi', $data);
-    }
-
     public function indexHasilDiagnosa()
     {
+        $kelasHasil = strtoupper(trim((string) $this->request->getGet('kelas_hasil')));
+        if (!in_array($kelasHasil, ['H1', 'H2', 'H3'], true)) {
+            $kelasHasil = '';
+        }
+
+        $model = (new HasilDiagnosaModel())->orderBy('id_hasil_diagnosa', 'DESC');
+        if ($kelasHasil !== '') {
+            $model->where('kelas_hasil', $kelasHasil);
+        }
+
         $data = [
-            'tb_hasil_diagnosa' => (new HasilDiagnosaModel())
-                ->orderBy('id_hasil_diagnosa', 'DESC')
-                ->findAll(100),
+            'tb_hasil_diagnosa' => $model->findAll(100),
+            'kelas_hasil_options' => [
+                'H1' => 'H1 - Risiko Stunting Tinggi',
+                'H2' => 'H2 - Risiko Stunting Sedang',
+                'H3' => 'H3 - Risiko Stunting Rendah',
+            ],
+            'filter' => [
+                'kelas_hasil' => $kelasHasil,
+            ],
         ];
 
         return view('admin/hasildiagnosa/index_hasil_diagnosa', $data);
-    }
-
-    public function indexCertaintyFactor()
-    {
-        $db = db_connect();
-        $data = [
-            'tb_gejala' => (new AdminModel())->getGejala(),
-            'tb_cf' => $db->tableExists('tb_certainty_factor')
-                ? $db->table('tb_certainty_factor cf')
-                ->select('cf.*, g.nama_gejala')
-                ->join('tb_gejala g', 'g.id_gejala = cf.id_gejala', 'left')
-                ->orderBy('cf.id_cf', 'DESC')
-                ->get()
-                ->getResultArray()
-                : [],
-        ];
-
-        return view('admin/certaintyfactor/index_cf', $data);
     }
 
     public function indexStandarAntropometri()
@@ -222,27 +403,45 @@ class Admin extends BaseController
         if (!in_array($indikatorAktif, $indikatorOptions, true)) {
             $indikatorAktif = 'TB/U';
         }
+        $jenisKelaminOptions = [
+            '' => 'Semua',
+            'L' => 'Laki-laki',
+            'P' => 'Perempuan',
+        ];
+        $jenisKelaminAktif = (string) $this->request->getGet('jenis_kelamin');
+        if (!array_key_exists($jenisKelaminAktif, $jenisKelaminOptions)) {
+            $jenisKelaminAktif = '';
+        }
         $totalRows = 0;
+        $standarRows = [];
 
         if ($db->tableExists('tb_standar_antropometri')) {
-            $totalRows = $db->table('tb_standar_antropometri')
-                ->where('indikator', $indikatorAktif)
-                ->countAllResults();
+            $totalBuilder = $db->table('tb_standar_antropometri')
+                ->where('indikator', $indikatorAktif);
+            $dataBuilder = $db->table('tb_standar_antropometri')
+                ->where('indikator', $indikatorAktif);
+
+            if ($jenisKelaminAktif !== '') {
+                $totalBuilder->where('jenis_kelamin', $jenisKelaminAktif);
+                $dataBuilder->where('jenis_kelamin', $jenisKelaminAktif);
+            }
+
+            $totalRows = $totalBuilder->countAllResults();
+            $standarRows = $dataBuilder
+                ->orderBy('jenis_kelamin', 'ASC')
+                ->orderBy('umur_bulan', 'ASC')
+                ->orderBy('tinggi_cm', 'ASC')
+                ->get()
+                ->getResultArray();
         }
 
         $data = [
             'indikator_options' => $indikatorOptions,
             'indikator_aktif' => $indikatorAktif,
+            'jenis_kelamin_options' => $jenisKelaminOptions,
+            'jenis_kelamin_aktif' => $jenisKelaminAktif,
             'total_rows' => $totalRows,
-            'tb_standar' => $db->tableExists('tb_standar_antropometri')
-                ? $db->table('tb_standar_antropometri')
-                    ->where('indikator', $indikatorAktif)
-                    ->orderBy('jenis_kelamin', 'ASC')
-                    ->orderBy('umur_bulan', 'ASC')
-                    ->orderBy('tinggi_cm', 'ASC')
-                    ->get()
-                    ->getResultArray()
-                : [],
+            'tb_standar' => $standarRows,
         ];
 
         return view('admin/referensi/index_standar', $data);
@@ -504,7 +703,7 @@ class Admin extends BaseController
     {
         $db = db_connect();
         if (!$db->tableExists('tb_naive_bayes_likelihood')) {
-            return redirect()->to($this->getSafeAdminRedirect('/adminlikelihood'))->with('error', 'Tabel likelihood belum tersedia.');
+            return redirect()->to($this->getSafeAdminRedirect('/adminlikelihood'))->with('error', 'Tabel probabilitas antropometri belum tersedia.');
         }
 
         $probabilitas = (float) $this->request->getPost('probabilitas');
@@ -519,7 +718,7 @@ class Admin extends BaseController
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
-        return redirect()->to($this->getSafeAdminRedirect('/adminlikelihood'))->with('success', 'Likelihood Naive Bayes berhasil diupdate.');
+        return redirect()->to($this->getSafeAdminRedirect('/adminlikelihood'))->with('success', 'Probabilitas antropometri berhasil diupdate.');
     }
 
     public function indexNilaiProbabilitas()
@@ -581,60 +780,6 @@ class Admin extends BaseController
         return $fallback;
     }
 
-    public function createCertaintyFactor()
-    {
-        $data = $this->getCertaintyFactorPostData();
-
-        if ($data['id_gejala'] <= 0 || $data['bobot_cf'] < 0 || $data['bobot_cf'] > 1) {
-            session()->setFlashdata('error', 'Gejala wajib dipilih dan bobot CF harus berada di rentang 0 sampai 1.');
-            return redirect()->to('/admincf');
-        }
-
-        $model = new CertaintyFactorModel();
-        if ($model->where('id_gejala', $data['id_gejala'])->first()) {
-            session()->setFlashdata('error', 'Gejala tersebut sudah memiliki bobot CF.');
-            return redirect()->to('/admincf');
-        }
-
-        $result = $model->insert($data);
-        session()->setFlashdata($result ? 'success' : 'error', $result ? 'Data CF berhasil ditambahkan' : 'Gagal menambahkan data CF');
-
-        return redirect()->to('/admincf');
-    }
-
-    public function updateCertaintyFactor($id)
-    {
-        $data = $this->getCertaintyFactorPostData();
-
-        if ($data['id_gejala'] <= 0 || $data['bobot_cf'] < 0 || $data['bobot_cf'] > 1) {
-            session()->setFlashdata('error', 'Gejala wajib dipilih dan bobot CF harus berada di rentang 0 sampai 1.');
-            return redirect()->to('/admincf');
-        }
-
-        $model = new CertaintyFactorModel();
-        $existing = $model->where('id_gejala', $data['id_gejala'])
-            ->where('id_cf !=', $id)
-            ->first();
-
-        if ($existing) {
-            session()->setFlashdata('error', 'Gejala tersebut sudah memiliki bobot CF.');
-            return redirect()->to('/admincf');
-        }
-
-        $result = $model->update($id, $data);
-        session()->setFlashdata($result ? 'success' : 'error', $result ? 'Data CF berhasil diupdate' : 'Gagal mengupdate data CF');
-
-        return redirect()->to('/admincf');
-    }
-
-    public function deleteCertaintyFactor($id)
-    {
-        $result = (new CertaintyFactorModel())->delete($id);
-        session()->setFlashdata($result ? 'success' : 'error', $result ? 'Data CF berhasil dihapus' : 'Gagal menghapus data CF');
-
-        return redirect()->to('/admincf');
-    }
-
     public function indexStatusGizi()
     {
         $model = new AnakStatusGiziModel();
@@ -645,15 +790,6 @@ class Admin extends BaseController
         ];
 
         return view('admin/statusgizi/index_statusgizi', $data);
-    }
-
-    private function getCertaintyFactorPostData(): array
-    {
-        return [
-            'id_gejala' => (int) $this->request->getPost('id_gejala'),
-            'bobot_cf' => (float) $this->request->getPost('bobot_cf'),
-            'keterangan' => trim((string) $this->request->getPost('keterangan')) ?: null,
-        ];
     }
 
     public function uploadStatusGizi()
@@ -720,6 +856,62 @@ class Admin extends BaseController
         return redirect()->to('/adminusers');
     }
 
+    public function createUser()
+    {
+        $model = new AdminModel();
+
+        $nama = trim((string) $this->request->getPost('nama'));
+        $email = trim((string) $this->request->getPost('email'));
+        $password = trim((string) $this->request->getPost('password'));
+
+        if ($nama === '' || $email === '' || $password === '') {
+            return redirect()->to('/adminusers')->with('error', 'Nama, email, dan password wajib diisi.');
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return redirect()->to('/adminusers')->with('error', 'Format email tidak valid.');
+        }
+
+        if (db_connect()->table('tb_users')->where('email', $email)->countAllResults() > 0) {
+            return redirect()->to('/adminusers')->with('error', 'Email sudah digunakan.');
+        }
+
+        $role = $this->normalizeAdminRole((string) $this->request->getPost('role'));
+
+        $data = [
+            'nama' => $nama,
+            'email' => $email,
+            'password' => $password,
+            'role' => $role,
+            'created_at' => date('Y-m-d H:i:s'),
+        ];
+
+        $foto = $this->request->getFile('foto');
+        if ($foto && $foto->isValid() && !$foto->hasMoved()) {
+            $allowedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
+
+            if (!in_array($foto->getMimeType(), $allowedTypes, true)) {
+                return redirect()->to('/adminusers')->with('error', 'Format foto harus JPG, JPEG, atau PNG.');
+            }
+
+            $uploadPath = FCPATH . 'uploads/foto_users';
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
+
+            $namaFoto = $foto->getRandomName();
+            $foto->move($uploadPath, $namaFoto);
+            $data['foto'] = $namaFoto;
+        }
+
+        $result = $model->createUser($data);
+
+        return redirect()->to('/adminusers')->with(
+            $result ? 'success' : 'error',
+            $result ? 'Admin berhasil ditambahkan.' : 'Gagal menambahkan admin.'
+        );
+    }
+
     public function updateUser($id)
     {
         $model = new AdminModel();
@@ -728,7 +920,7 @@ class Admin extends BaseController
         $data = [
             'nama' => $this->request->getPost('nama'),
             'email' => $this->request->getPost('email'),
-            'role' => $this->request->getPost('role'),
+            'role' => $this->normalizeAdminRole((string) $this->request->getPost('role')),
         ];
 
         $password = $this->request->getPost('password');
@@ -768,6 +960,15 @@ class Admin extends BaseController
         }
 
         return redirect()->to('/adminusers');
+    }
+
+    private function normalizeAdminRole(string $role): string
+    {
+        return match (strtolower(trim($role))) {
+            'admin2' => 'admin2',
+            'admin3', '1', 'user' => 'admin3',
+            default => 'admin1',
+        };
     }
 
     private function parseStatusGiziRows(string $html, string $fileName): array

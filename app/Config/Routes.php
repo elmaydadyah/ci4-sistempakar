@@ -6,11 +6,13 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', 'Home::index');
+$routes->get('/artikel/(:segment)', 'Home::artikel/$1');
 $routes->get('/konseling', 'Home::konseling');
 $routes->post('/konseling-anak', 'Home::storeAnak');
 $routes->get('/konsultasi', 'Diagnosa::index');
 $routes->post('/konsultasi', 'Diagnosa::index');
 $routes->get('/konsultasi/laporan/(:num)', 'Diagnosa::laporan/$1');
+$routes->get('/konsultasi/laporan/download/(:num)', 'Diagnosa::downloadLaporan/$1');
 $routes->get('/login', 'Auth::login');
 $routes->post('/login', 'Auth::login');
 
@@ -31,13 +33,12 @@ $routes->post('/admin/createPenyakit', 'Admin::createPenyakit');
 $routes->post('/admin/updatePenyakit/(:num)', 'Admin::updatePenyakit/$1');
 $routes->get('/admin/deletePenyakit/(:num)', 'Admin::deletePenyakit/$1');
 $routes->get('/adminusers', 'Admin::indexUsers');
+$routes->get('/adminsettings', 'Admin::settings');
+$routes->post('/adminsettings', 'Admin::updateSettings');
 $routes->get('/adminanak', 'Admin::indexAnak');
+$routes->post('/admin/updateAnak/(:num)', 'Admin::updateAnak/$1');
+$routes->get('/admin/deleteAnak/(:num)', 'Admin::deleteAnak/$1');
 $routes->get('/adminkasusgejala', 'Admin::indexKasusGejala');
-$routes->get('/admincf', 'Admin::indexCertaintyFactor');
-$routes->post('/admin/createCf', 'Admin::createCertaintyFactor');
-$routes->post('/admin/updateCf/(:num)', 'Admin::updateCertaintyFactor/$1');
-$routes->get('/admin/deleteCf/(:num)', 'Admin::deleteCertaintyFactor/$1');
-$routes->get('/adminkonsultasi', 'Admin::indexKonsultasi');
 $routes->get('/adminhasildiagnosa', 'Admin::indexHasilDiagnosa');
 $routes->get('/adminstatusgizi', 'Admin::indexStatusGizi');
 $routes->post('/admin/uploadStatusGizi', 'Admin::uploadStatusGizi');
@@ -53,4 +54,5 @@ $routes->post('/admin/createRuleBased', 'Admin::createRuleBased');
 $routes->post('/admin/updateRuleBased/(:num)', 'Admin::updateRuleBased/$1');
 $routes->get('/admin/deleteRuleBased/(:num)', 'Admin::deleteRuleBased/$1');
 $routes->get('/admin/deleteUser/(:num)', 'Admin::deleteUser/$1');
+$routes->post('/admin/createUser', 'Admin::createUser');
 $routes->post('/admin/updateUser/(:num)', 'Admin::updateUser/$1');

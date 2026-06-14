@@ -6,64 +6,83 @@
     <title>Konsultasi StuntCare</title>
     <link rel="stylesheet" href="<?= base_url('assets/bootstrap/css/bootstrap.min.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/landing.css?v=' . filemtime(FCPATH . 'assets/css/landing.css')) ?>">
-    <link rel="shortcut icon" href="<?= base_url('assets/images/logo/logo.png') ?>">
+    <link rel="shortcut icon" href="<?= base_url('assets/images/logo/logo_puskesmas.png') ?>">
 </head>
-<body>
+<body class="consult-page">
     <?= $this->include('layout/landing/navbar') ?>
 
-    <main class="landing-shell consult-shell">
+    <main class="landing-shell consult-shell <?= !empty($hasil) ? 'has-result' : '' ?>">
         <img class="consult-bg-image" src="<?= base_url('assets/images/landing/foto.png') ?>" alt="" aria-hidden="true">
 
         <section class="consult-hero" aria-label="Form konsultasi stunting">
-            <div class="consult-heading">
-                <span class="consult-kicker">Cek Tumbuh Kembang</span>
-                <h1>Ceritakan kondisi anak, nanti StuntCare bantu membaca hasilnya.</h1>
-                <p>Isi data yang biasa ada di buku KIA atau catatan posyandu. Hasil ini adalah pemeriksaan awal, bukan pengganti diagnosis dokter.</p>
-                <div class="parent-steps" aria-label="Langkah konsultasi">
-                    <span><b>1</b> Isi data anak</span>
-                    <span><b>2</b> Masukkan ukuran tubuh</span>
-                    <span><b>3</b> Lihat saran awal</span>
+            <?php if (empty($hasil)): ?>
+                <div class="consult-heading">
+                    <span class="consult-kicker">Cek Tumbuh Kembang</span>
+                    <h1>Cek kondisi anak dengan mudah.</h1>
+                    <p>Isi data yang biasa ada di buku KIA atau catatan posyandu. Hasil ini adalah pemeriksaan awal, bukan pengganti diagnosis dokter.</p>
+                    <div class="parent-steps" aria-label="Langkah konsultasi">
+                        <span><b>1</b> Isi data anak</span>
+                        <span><b>2</b> Masukkan ukuran tubuh</span>
+                        <span><b>3</b> Lihat saran awal</span>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
 
             <div class="consult-layout wide <?= !empty($hasil) ? 'result-only' : '' ?>">
+                <?php if (!empty($hasil)): ?>
                 <aside class="result-panel" aria-label="Hasil konsultasi">
-                    <?php if (!empty($hasil)): ?>
                         <?php $diagnosa = $hasil['diagnosa']; ?>
                         <?php
                             $kelas = $diagnosa['kelas'] ?? 'H1';
                             $friendlyLabel = match ($kelas) {
-                                'H1' => 'Anak perlu diperiksa lebih lanjut',
-                                'H2' => 'Risiko stunting rendah',
-                                default => 'Tidak memiliki risiko stunting',
+                                'H1' => 'Risiko stunting tinggi',
+                                'H2' => 'Risiko stunting sedang',
+                                default => 'Risiko stunting rendah',
                             };
                             $friendlyText = match ($kelas) {
-                                'H1' => 'Ada beberapa tanda risiko tinggi. Sebaiknya segera konsultasikan ke posyandu, puskesmas, atau tenaga kesehatan agar anak diperiksa langsung.',
-                                'H2' => 'Ada tanda risiko rendah yang perlu tetap dipantau. Perbaiki kualitas makan anak dan lakukan pengukuran ulang secara berkala.',
-                                default => 'Hasil awal menunjukkan anak tidak memiliki risiko stunting. Tetap pertahankan pola makan bergizi dan pemantauan rutin.',
+                                'H1' => 'Ada tanda risiko tinggi. Segera lakukan pemeriksaan lanjutan ke posyandu atau puskesmas.',
+                                'H2' => 'Ada tanda risiko sedang. Perbaiki kualitas makan anak dan lakukan pemantauan lanjutan di posyandu atau puskesmas.',
+                                default => 'Ada tanda risiko rendah yang perlu diperhatikan dan dipantau secara berkala.',
                             };
                             $statusTone = match ($kelas) {
                                 'H1' => 'danger',
                                 'H2' => 'warning',
                                 default => 'success',
                             };
+                            $confidencePercent = $diagnosa['posterior_persen'] ?? $hasil['persentase'] ?? 0;
+                            $interpretationText = match ($kelas) {
+                                'H1' => 'Risiko stunting tinggi berarti hasil pengukuran dan tanda yang terbaca lebih banyak mengarah pada kemungkinan stunting, sehingga anak perlu segera diperiksa lebih lanjut oleh tenaga kesehatan.',
+                                'H2' => 'Risiko stunting sedang berarti terdapat beberapa tanda yang perlu diwaspadai, tetapi belum sekuat kategori tinggi. Anak perlu dipantau pertumbuhannya dan diperbaiki asupan gizinya.',
+                                default => 'Risiko stunting rendah berarti anak tidak terindikasi memiliki risiko stunting tinggi. Jika nilai keyakinan sistem berada di bawah 70%, hasil ini dibaca sebagai tidak terindikasi risiko stunting, namun pemantauan rutin tetap diperlukan.',
+                            };
                         ?>
                         <div class="parent-result-head">
                             <div>
-                                <span class="result-label">Hasil awal untuk orang tua</span>
-                                <h2><?= esc($hasil['nama']) ?></h2>
-                                <div class="result-meta">
+                                <span class="result-label">Kesimpulan awal</span>
+                                <h2><?= esc($friendlyLabel) ?></h2>
+                                <div class="result-meta parent-identity-meta">
+                                    <span><?= esc($hasil['nama']) ?></span>
                                     <span><?= esc((string) $hasil['umur']) ?> bulan</span>
                                     <span><?= esc((string) $hasil['jumlah_gejala']) ?> tanda terbaca</span>
                                 </div>
                             </div>
-                            <div class="parent-status-stack">
-                                <span class="parent-status-badge <?= esc($statusTone, 'attr') ?>"><?= esc($friendlyLabel) ?></span>
-                                <span class="parent-confidence">Keyakinan sistem <?= esc((string) ($diagnosa['posterior_persen'] ?? $hasil['persentase'] ?? 0)) ?>%</span>
+                            <div class="parent-result-summary">
+                                <span class="parent-status-badge <?= esc($statusTone, 'attr') ?>"><?= esc($kelas) ?></span>
+                                <span class="parent-confidence">
+                                    Keyakinan <?= esc((string) $confidencePercent) ?>%
+                                </span>
                             </div>
                         </div>
 
-                        <p class="parent-result-message"><?= esc($friendlyText) ?></p>
+                        <div class="parent-result-message-box <?= esc($statusTone, 'attr') ?>">
+                            <p class="parent-result-message"><?= esc($friendlyText) ?></p>
+                            <p class="parent-result-message"><?= esc($interpretationText) ?></p>
+                        </div>
+
+                        <div class="solution-box parent-advice">
+                            <b>Langkah berikutnya</b>
+                            <p><?= esc($hasil['rekomendasi']) ?></p>
+                        </div>
 
                         <div class="parent-measure-grid" aria-label="Ringkasan ukuran anak">
                             <?php foreach ($hasil['zscore'] as $item): ?>
@@ -74,9 +93,38 @@
                             <?php endforeach; ?>
                         </div>
 
-                        <div class="solution-box parent-advice">
-                            <b>Langkah berikutnya</b>
-                            <p><?= esc($hasil['rekomendasi']) ?></p>
+                        <?php $gejalaTerbaca = is_array($hasil['gejala_terbaca'] ?? null) ? $hasil['gejala_terbaca'] : ($hasil['gejala'] ?? []); ?>
+                        <div class="parent-symptom-detail" aria-label="Detail gejala yang dipilih">
+                            <div class="parent-symptom-detail-head">
+                                <div>
+                                    <b>Detail tanda/gejala terbaca</b>
+                                    <p>Gejala berikut berasal dari hasil ukur dan jawaban yang dipilih saat konsultasi.</p>
+                                </div>
+                                <span><?= esc((string) count($gejalaTerbaca)) ?> gejala</span>
+                            </div>
+                            <?php if (!empty($gejalaTerbaca)): ?>
+                                <div class="parent-symptom-list">
+                                    <?php foreach ($gejalaTerbaca as $gejalaItem): ?>
+                                        <article>
+                                            <span><?= esc($gejalaItem['kode'] ?? '-') ?></span>
+                                            <div>
+                                                <strong><?= esc($gejalaItem['nama'] ?? $gejalaItem['indikator'] ?? '-') ?></strong>
+                                                <small>
+                                                    <?= esc($gejalaItem['indikator'] ?? 'Gejala') ?>
+                                                    <?php if (!empty($gejalaItem['kategori'])): ?>
+                                                        - <?= esc($gejalaItem['kategori']) ?>
+                                                    <?php endif; ?>
+                                                    <?php if (array_key_exists('zscore', $gejalaItem) && $gejalaItem['zscore'] !== null && $gejalaItem['zscore'] !== ''): ?>
+                                                        (Z-Score <?= esc((string) $gejalaItem['zscore']) ?>)
+                                                    <?php endif; ?>
+                                                </small>
+                                            </div>
+                                        </article>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php else: ?>
+                                <p class="parent-symptom-empty">Belum ada gejala yang masuk perhitungan.</p>
+                            <?php endif; ?>
                         </div>
 
                         <?php if (!empty($hasil['id_hasil_diagnosa'])): ?>
@@ -96,52 +144,20 @@
                             </div>
                         <?php endif; ?>
 
-                        <details class="technical-details">
-                            <summary>Lihat rincian teknis untuk admin</summary>
-
-                            <div class="zscore-list">
-                                <?php foreach ($hasil['zscore'] as $item): ?>
-                                    <article>
-                                        <b><?= esc($item['label']) ?></b>
-                                        <strong><?= $item['nilai'] !== null ? esc((string) $item['nilai']) : '-' ?></strong>
-                                        <span><?= esc($item['kategori']) ?></span>
-                                    </article>
+                        <?php if (!empty($riwayat)): ?>
+                            <div class="consult-history-box">
+                                <b>Riwayat di browser ini</b>
+                                <?php foreach ($riwayat as $item): ?>
+                                    <a href="<?= base_url('konsultasi?hasil=' . ($item['id_hasil_diagnosa'] ?? 0)); ?>">
+                                        <span><?= esc($item['nama'] ?? '-') ?>, <?= esc((string) ($item['umur'] ?? 0)) ?> bulan</span>
+                                        <small><?= esc(($item['kelas_hasil'] ?? '-') . ' - ' . number_format((float) ($item['persentase'] ?? 0), 2, '.', '') . '%'); ?></small>
+                                    </a>
                                 <?php endforeach; ?>
                             </div>
+                        <?php endif; ?>
 
-                            <h3 class="result-subtitle">Tanda yang dibaca sistem</h3>
-                            <div class="consult-steps">
-                                <?php foreach ($hasil['gejala_terbaca'] ?? $hasil['gejala'] as $gejala): ?>
-                                    <span><?= esc($gejala['nama']) ?></span>
-                                <?php endforeach; ?>
-                            </div>
-
-                            <h3 class="result-subtitle">Kelas sistem</h3>
-                            <div class="posterior-list">
-                                <?php foreach ($hasil['alternatif'] as $alt): ?>
-                                    <article>
-                                        <span><?= esc($alt['kelas'] . ' - ' . $alt['label']) ?></span>
-                                        <strong><?= esc((string) $alt['posterior_persen']) ?>%</strong>
-                                    </article>
-                                <?php endforeach; ?>
-                            </div>
-                        </details>
-                    <?php else: ?>
-                        <span class="result-label">Bantuan pengisian</span>
-                        <h2>Tenang, isi pelan-pelan saja.</h2>
-                        <p>Lengkapi semua kolom yang tersedia agar hasil konsultasi bisa dicatat dengan rapi.</p>
-                        <div class="consult-steps">
-                            <span>Umur pakai bulan</span>
-                            <span>Berat pakai kg</span>
-                            <span>Tinggi pakai cm</span>
-                            <span>Hasil awal saja</span>
-                        </div>
-                        <div class="friendly-panel mini">
-                            <strong>Contoh</strong>
-                            <p>Anak umur 2 tahun ditulis 24 bulan. Berat 10,5 kg bisa ditulis 10.5.</p>
-                        </div>
-                    <?php endif; ?>
                 </aside>
+                <?php endif; ?>
 
                 <?php if (empty($hasil)): ?>
                 <form class="consult-form" action="<?= base_url('/konsultasi') ?>" method="post">
@@ -171,8 +187,9 @@
                         </label>
                         <label>
                             <span>NIK anak</span>
-                            <input type="text" name="nik" value="<?= esc($old['nik'] ?? '', 'attr') ?>" inputmode="numeric" placeholder="Masukkan NIK anak" required>
-                            <small>Isi sesuai KK/KIA.</small>
+                            <input type="text" id="nik-anak" name="nik" value="<?= esc($old['nik'] ?? '', 'attr') ?>" inputmode="numeric" pattern="[0-9]{16}" minlength="16" maxlength="16" placeholder="Masukkan 16 angka NIK anak" required>
+                            <small class="nik-hint">Isi 16 angka sesuai KK/KIA.</small>
+                            <small class="nik-error" id="nik-anak-error">NIK Harus berisikan 16 angka</small>
                         </label>
                         <label>
                             <span>Jenis Kelamin</span>
@@ -206,6 +223,49 @@
                     <div class="form-section-title">
                         <div>
                             <span class="section-label">Bagian 2</span>
+                            <h2>Alamat anak</h2>
+                            <p>Isi alamat domisili agar catatan konsultasi lebih lengkap untuk admin puskesmas.</p>
+                        </div>
+                    </div>
+
+                    <div class="identity-grid">
+                        <label>
+                            <span>RT</span>
+                            <input type="text" name="rt" value="<?= esc($old['rt'] ?? '', 'attr') ?>" inputmode="numeric" pattern="[0-9]+" placeholder="001" required>
+                            <small>Isi angka RT.</small>
+                        </label>
+                        <label>
+                            <span>RW</span>
+                            <input type="text" name="rw" value="<?= esc($old['rw'] ?? '', 'attr') ?>" inputmode="numeric" pattern="[0-9]+" placeholder="004" required>
+                            <small>Isi angka RW.</small>
+                        </label>
+                        <label>
+                            <span>Desa/Kel</span>
+                            <?php $kelurahanOptions = ['Cileungsi', 'Cileungsi Kidul', 'Cipenjo', 'Cipeucang', 'Dayeuh', 'Gandoang', 'Jatisari', 'Limus Nunggal', 'Mampir', 'Mekarsari', 'Pasir Angin', 'Situsari']; ?>
+                            <?php $selectedKelurahan = $old['kelurahan'] ?? $old['desa'] ?? ''; ?>
+                            <select name="kelurahan" required>
+                                <option value="">Pilih desa/kel</option>
+                                <?php foreach ($kelurahanOptions as $kelurahan): ?>
+                                    <option value="<?= esc($kelurahan, 'attr') ?>" <?= $selectedKelurahan === $kelurahan ? 'selected' : '' ?>><?= esc($kelurahan) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <small>Pilih desa/kel domisili anak.</small>
+                            </label>
+                            <label>
+                                <span>Kecamatan</span>
+                                <input type="text" name="kecamatan" value="CILEUNGSI" readonly required>
+                                <small>Kecamatan sudah ditetapkan otomatis.</small>
+                            </label>
+                            <label class="identity-full">
+                                <span>Alamat lengkap</span>
+                                <textarea name="alamat" rows="3" placeholder="Contoh: Kp. Cileungsi Kidul No. 12" required><?= esc($old['alamat'] ?? '') ?></textarea>
+                                <small>Nama jalan, kampung, nomor rumah, atau patokan.</small>
+                            </label>
+                    </div>
+
+                    <div class="form-section-title">
+                        <div>
+                            <span class="section-label">Bagian 3</span>
                             <h2>Ukuran tubuh terakhir</h2>
                             <p>Gunakan hasil timbang dan ukur paling baru dari rumah, posyandu, puskesmas, atau buku KIA.</p>
                         </div>
@@ -248,7 +308,7 @@
 
                     <div class="form-section-title">
                         <div>
-                            <span class="section-label">Bagian 3</span>
+                            <span class="section-label">Bagian 4</span>
                             <h2>Pertanyaan gejala</h2>
                             <p>Jawab sesuai kondisi yang terlihat pada anak dan riwayat ibu saat hamil.</p>
                         </div>
@@ -294,6 +354,22 @@
 
                     <button class="btn-submit-consult" type="submit">Lihat Saran untuk Anak</button>
                 </form>
+
+                <?php if (!empty($riwayat)): ?>
+                    <aside class="result-panel consult-history-panel" aria-label="Riwayat konsultasi">
+                        <span class="result-label">Riwayat di browser ini</span>
+                        <h2>Hasil sebelumnya</h2>
+                        <p>Riwayat ini tersimpan tanpa login selama ibu memakai browser yang sama.</p>
+                        <div class="consult-history-box compact-history">
+                            <?php foreach ($riwayat as $item): ?>
+                                <a href="<?= base_url('konsultasi?hasil=' . ($item['id_hasil_diagnosa'] ?? 0)); ?>">
+                                    <span><?= esc($item['nama'] ?? '-') ?>, <?= esc((string) ($item['umur'] ?? 0)) ?> bulan</span>
+                                    <small><?= esc(($item['kelas_hasil'] ?? '-') . ' - ' . number_format((float) ($item['persentase'] ?? 0), 2, '.', '') . '%'); ?></small>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    </aside>
+                <?php endif; ?>
                 <?php endif; ?>
             </div>
         </section>
@@ -333,6 +409,27 @@
 
             birthDateInput.addEventListener('change', calculateAgeInMonths);
             calculateAgeInMonths();
+
+            var nikInput = document.getElementById('nik-anak');
+            var nikError = document.getElementById('nik-anak-error');
+            var nikHint = document.querySelector('.nik-hint');
+
+            if (nikInput && nikError) {
+                function validateNik() {
+                    nikInput.value = nikInput.value.replace(/\D/g, '').slice(0, 16);
+                    var hasError = nikInput.value.length > 0 && nikInput.value.length !== 16;
+                    nikInput.classList.toggle('is-invalid', hasError);
+                    nikError.classList.toggle('is-visible', hasError);
+                    if (nikHint) {
+                        nikHint.classList.toggle('is-hidden', hasError);
+                    }
+                    nikInput.setCustomValidity(hasError ? 'NIK Harus berisikan 16 angka' : '');
+                }
+
+                nikInput.addEventListener('input', validateNik);
+                nikInput.addEventListener('blur', validateNik);
+                validateNik();
+            }
         });
     </script>
 </body>
