@@ -14,7 +14,7 @@
 
                     <div class="hero-cta">
                         <a class="btn-primary-landing" href="<?= base_url('/konsultasi') ?>"><span class="btn-heart-icon" aria-hidden="true"></span>Mulai Konsultasi</a>
-                        <a class="btn-secondary-landing" href="<?= base_url('/#blog') ?>"><span class="btn-book-icon" aria-hidden="true"></span>Pelajari Lebih Lanjut</a>
+                        <a class="btn-secondary-landing" href="<?= base_url('/#layanan') ?>"><span class="btn-book-icon" aria-hidden="true"></span>Pelajari Lebih Lanjut</a>
                     </div>
                 </div>
 

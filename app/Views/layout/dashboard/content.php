@@ -80,7 +80,7 @@ $summaryCards = [
           <div>
             <span>Dashboard Admin</span>
             <h3>Halo, <?= esc($profileNama); ?>!</h3>
-            <p>Kelola data StuntCare, pantau hasil konsultasi harian, dan rawat referensi Z-Score serta Naive Bayes.</p>
+            <p>Kelola data SiPASTI, pantau hasil konsultasi harian, dan rawat referensi Z-Score serta Naive Bayes.</p>
           </div>
           <div class="admin-live-widget" aria-label="Waktu saat ini">
             <small id="dashboardDate">-</small>

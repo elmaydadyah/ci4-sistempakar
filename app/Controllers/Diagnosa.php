@@ -429,7 +429,7 @@ class Diagnosa extends BaseController
             }
         }
 
-        foreach ($this->getGejalaPertanyaan() as $gejala) {
+        foreach ($this->getGejalaPertanyaan((int) $input['umur']) as $gejala) {
             $idGejala = (int) ($gejala['id_gejala'] ?? 0);
             if ($idGejala <= 0) {
                 continue;
@@ -470,7 +470,7 @@ class Diagnosa extends BaseController
 
         $zscore = $this->hitungZScore($db, $pengukuran);
         $gejala = $this->konversiZScoreMenjadiGejala($db, $zscore);
-        $gejalaTambahan = $this->gejalaTambahanDariJawaban($db, $input['jawaban_gejala'] ?? []);
+        $gejalaTambahan = $this->gejalaTambahanDariJawaban($db, $input['jawaban_gejala'] ?? [], (int) $input['umur']);
         $gejalaTerbaca = array_merge($gejala, $gejalaTambahan);
         $bayes = $this->hitungNaiveBayes($db, $gejalaTerbaca);
         $diagnosa = $bayes['hasil'];
@@ -496,7 +496,7 @@ class Diagnosa extends BaseController
         ];
     }
 
-    private function getGejalaPertanyaan(): array
+    private function getGejalaPertanyaan(?int $umurBulan = null): array
     {
         $db = db_connect();
         if (!$db->tableExists('tb_gejala')) {
@@ -510,27 +510,44 @@ class Diagnosa extends BaseController
             ->get()
             ->getResultArray();
 
-        return array_map(function ($row) {
+        $rows = array_filter($rows, function ($row) use ($umurBulan) {
+            if ($umurBulan === null) {
+                return true;
+            }
+
+            return $this->gejalaBerlakuUntukUmur((string) ($row['kode_gejala'] ?? ''), $umurBulan);
+        });
+
+        return array_map(function ($row) use ($umurBulan) {
+            $kodeGejala = (string) ($row['kode_gejala'] ?? '');
             $row['pertanyaan_gejala'] = $this->pertanyaanGejala(
-                (string) ($row['kode_gejala'] ?? ''),
-                (string) ($row['nama_gejala'] ?? '')
+                $kodeGejala,
+                (string) ($row['nama_gejala'] ?? ''),
+                $umurBulan
             );
 
+            $row['umur_min'] = $this->umurMinGejala($kodeGejala);
+            $row['umur_max'] = $this->umurMaxGejala($kodeGejala);
+
             return $row;
-        }, $rows);
+        }, array_values($rows));
     }
 
-    private function pertanyaanGejala(string $kodeGejala, string $namaGejala): string
+    private function pertanyaanGejala(string $kodeGejala, string $namaGejala, ?int $umurBulan = null): string
     {
+        if ($kodeGejala === 'G06') {
+            return $this->pertanyaanGejalaG06($umurBulan);
+        }
+
         $pertanyaan = [
             'G01' => 'Apakah berat badan anak cenderung kurang atau tidak sesuai dengan anak seusianya?',
             'G02' => 'Apakah tinggi badan anak lebih pendek atau rendah dari standar anak seusianya?',
             'G03' => 'Apakah anak terlihat kurang aktif?',
             'G04' => 'Apakah daya tahan tubuh anak rendah atau anak sering sakit?',
-            'G05' => 'Apakah anak mengalami keterlambatan dalam berbicara?',
+            'G05' => 'Apakah anak mengalami keterlambatan bicara?',
             'G06' => 'Apakah perkembangan keterampilan fisik anak lambat, seperti berguling, duduk, berdiri, atau berjalan?',
             'G07' => 'Apakah anak susah fokus saat bermain, belajar, atau berinteraksi?',
-            'G08' => 'Apakah gigi susu atau gigi permanen anak terlambat tumbuh?',
+            'G08' => 'Apakah gigi susu anak terlambat tumbuh?',
             'G09' => 'Apakah anak mendapat pengukuran tinggi dan berat badan rutin sebanyak 8x dalam setahun di posyandu/klinik bidan dan dicatat di buku KMS?',
             'G10' => 'Apakah nafsu makan anak berkurang?',
             'G11' => 'Apakah anak terlihat mengalami kekurangan gizi?',
@@ -553,7 +570,59 @@ class Diagnosa extends BaseController
         return 'Apakah anak mengalami ' . strtolower($namaGejala) . '?';
     }
 
-    private function gejalaTambahanDariJawaban($db, array $jawabanGejala): array
+    private function pertanyaanGejalaG06(?int $umurBulan): string
+    {
+        if ($umurBulan === null) {
+            return 'Apakah perkembangan keterampilan fisik anak lambat, seperti berguling, duduk, berdiri, atau berjalan?';
+        }
+
+        if ($umurBulan >= 4 && $umurBulan <= 5) {
+            return 'Apakah anak belum mampu menahan kepala dengan stabil saat digendong atau belum mampu mengangkat tubuh saat tengkurap?';
+        }
+
+        if ($umurBulan >= 6 && $umurBulan <= 8) {
+            return 'Apakah anak belum mampu berguling atau belum mampu duduk dengan bantuan/tumpuan tangan?';
+        }
+
+        if ($umurBulan >= 9 && $umurBulan <= 11) {
+            return 'Apakah anak belum mampu duduk tanpa bantuan atau belum mulai belajar merangkak/berdiri dengan bantuan?';
+        }
+
+        if ($umurBulan >= 12 && $umurBulan <= 14) {
+            return 'Apakah anak belum mampu berdiri dengan berpegangan atau berjalan sambil berpegangan pada benda?';
+        }
+
+        if ($umurBulan >= 15 && $umurBulan <= 17) {
+            return 'Apakah anak belum mampu berjalan beberapa langkah sendiri?';
+        }
+
+        return 'Apakah anak belum mampu berjalan tanpa bantuan atau mengalami kesulitan gerak sesuai usianya?';
+    }
+
+    private function gejalaBerlakuUntukUmur(string $kodeGejala, int $umurBulan): bool
+    {
+        return $umurBulan >= $this->umurMinGejala($kodeGejala) && $umurBulan <= $this->umurMaxGejala($kodeGejala);
+    }
+
+    private function umurMinGejala(string $kodeGejala): int
+    {
+        return match ($kodeGejala) {
+            'G05', 'G08' => 10,
+            'G06' => 4,
+            'G09', 'G14' => 13,
+            default => 0,
+        };
+    }
+
+    private function umurMaxGejala(string $kodeGejala): int
+    {
+        return match ($kodeGejala) {
+            'G05', 'G06', 'G08', 'G09', 'G14' => 60,
+            default => 60,
+        };
+    }
+
+    private function gejalaTambahanDariJawaban($db, array $jawabanGejala, int $umurBulan): array
     {
         $ids = array_values(array_filter(array_map('intval', array_keys($jawabanGejala)), static fn ($id) => $id > 0));
 
@@ -573,6 +642,10 @@ class Diagnosa extends BaseController
             $idGejala = (int) ($row['id_gejala'] ?? 0);
             $kodeGejala = (string) ($row['kode_gejala'] ?? ('G' . $idGejala));
             $jawaban = (string) ($jawabanGejala[$idGejala] ?? '');
+
+            if (!$this->gejalaBerlakuUntukUmur($kodeGejala, $umurBulan)) {
+                continue;
+            }
 
             if (!$this->jawabanGejalaMasukHitungan($kodeGejala, $jawaban)) {
                 continue;

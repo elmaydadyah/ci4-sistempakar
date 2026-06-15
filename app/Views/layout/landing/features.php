@@ -1,7 +1,7 @@
         <section class="service-section" id="layanan">
             <div class="section-heading">
                 <div>
-                    <span class="section-eyebrow dark">Layanan StuntCare</span>
+                    <span class="section-eyebrow dark">Layanan SiPASTI</span>
                     <h2>Pantauan awal yang lebih mudah dipahami keluarga.</h2>
                 </div>
                 <a class="btn-primary-landing compact" href="<?= base_url('/konsultasi') ?>">Coba Konseling</a>
@@ -35,7 +35,7 @@
             </div>
         </section>
 
-        <section class="process-section blog-section" id="blog" aria-label="Artikel StuntCare">
+        <section class="process-section blog-section" id="blog" aria-label="Artikel SiPASTI">
             <div class="blog-heading">
                 <h2>Artikel dan informasi stunting.</h2>
             </div>
@@ -71,7 +71,7 @@
             </div>
         </section>
 
-        <section class="stats-section cta-section" aria-label="Ajakan konsultasi StuntCare">
+        <section class="stats-section cta-section" id="cta" aria-label="Ajakan konsultasi SiPASTI">
             <div class="cta-copy">
                 <span class="section-eyebrow">Mulai Konsultasi</span>
                 <h2>Cek kondisi anak dan dapatkan saran awal lebih cepat.</h2>

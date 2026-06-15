@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>StuntCare</title>
+    <title>SiPASTI Cileungsi</title>
     <link rel="stylesheet" href="<?= base_url('assets/bootstrap/css/bootstrap.min.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/login.css?v=' . filemtime(FCPATH . 'assets/css/login.css')) ?>">
     <link rel="shortcut icon" href="<?= base_url('assets/images/logo/logo_puskesmas.png') ?>">
@@ -12,7 +12,7 @@
 
 <body>
     <main class="login-page">
-        <section class="login-card" aria-label="Login StuntCare">
+        <section class="login-card" aria-label="Login SiPASTI">
             <div class="login-visual">
                 <div class="login-brand">
                     <div class="login-logo-pair">

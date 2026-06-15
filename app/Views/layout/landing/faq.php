@@ -6,7 +6,7 @@
             </div>
             <div class="faq-list">
                 <details open>
-                    <summary><span class="faq-item-icon faq-icon-help" aria-hidden="true"></span><span>Apakah hasil StuntCare menggantikan dokter?</span></summary>
+                    <summary><span class="faq-item-icon faq-icon-help" aria-hidden="true"></span><span>Apakah hasil SiPASTI menggantikan dokter?</span></summary>
                     <p>Tidak. Hasil sistem adalah konsultasi awal dan tetap perlu ditindaklanjuti dengan tenaga kesehatan.</p>
                 </details>
                 <details>

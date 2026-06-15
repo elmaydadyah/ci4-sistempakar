@@ -243,6 +243,27 @@ body {
     font-size: 11px;
 }
 
+.zscore-source-note {
+    margin-top: 10px;
+    padding: 11px 13px;
+    border: 1px solid #cfe9de;
+    border-radius: 8px;
+    background: #f4fbf8;
+    color: #315e53;
+}
+
+.zscore-source-note strong {
+    display: block;
+    color: #195d49;
+    font-size: 12px;
+}
+
+.zscore-source-note p {
+    margin: 4px 0 0;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
 .advice-box {
     padding: 14px 16px;
     border-radius: 8px;
@@ -325,8 +346,187 @@ body {
     width: auto;
     min-height: auto;
     margin: 0;
-    padding: 12mm;
+    padding: 9mm 10mm;
     box-shadow: none;
+}
+
+@page {
+    size: A4 portrait;
+    margin: 0;
+}
+
+.pdf-report-header {
+    width: 100%;
+    border-collapse: collapse;
+    border-bottom: 3px solid var(--primary);
+    margin-bottom: 13px;
+}
+
+.pdf-report-header td {
+    padding: 0 0 10px;
+    vertical-align: middle;
+}
+
+.pdf-report-header .pdf-logo-cell {
+    width: 74px;
+    text-align: center;
+}
+
+.pdf-report-header img {
+    width: 58px;
+    height: 58px;
+}
+
+.pdf-report-header .pdf-header-copy {
+    text-align: center;
+    color: #000000;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.pdf-report-header h1 {
+    margin: 0 0 6px;
+    color: #000000;
+    font-size: 20px;
+    line-height: 1.2;
+}
+
+.pdf-report-meta,
+.pdf-measure-grid,
+.pdf-signature {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.pdf-report-meta {
+    margin-bottom: 12px;
+}
+
+.pdf-report-meta td {
+    width: 50%;
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #ffffff;
+    vertical-align: top;
+}
+
+.pdf-report-meta span,
+.pdf-measure-grid span {
+    display: block;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.pdf-report-meta strong,
+.pdf-measure-grid strong {
+    display: block;
+    margin-top: 4px;
+    color: var(--ink);
+    font-size: 12px;
+}
+
+.pdf-measure-grid td {
+    width: 33.33%;
+    padding: 9px 10px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #ffffff;
+    vertical-align: top;
+}
+
+.pdf-measure-grid small {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.pdf-signature {
+    margin-top: 16px;
+}
+
+.pdf-signature .note {
+    width: 65%;
+    margin-top: 0;
+    vertical-align: top;
+}
+
+.pdf-signature .signature-box {
+    width: 35%;
+    padding-left: 16px;
+    vertical-align: top;
+}
+
+.pdf-download .report-document-title {
+    margin: 13px 0 10px;
+    font-size: 16px;
+}
+
+.pdf-report-header,
+.pdf-report-meta,
+.pdf-measure-grid,
+.pdf-signature,
+.pdf-download .summary-card,
+.pdf-download .zscore-source-note,
+.pdf-download .advice-box {
+    page-break-inside: avoid;
+}
+
+.pdf-download .summary-card {
+    clear: both;
+    padding: 12px;
+}
+
+.pdf-download .summary-card h2 {
+    margin: 4px 0 6px;
+    font-size: 18px;
+}
+
+.pdf-download .summary-badges {
+    display: block;
+}
+
+.pdf-download .summary-card .status-badge,
+.pdf-download .summary-card .confidence {
+    display: inline-block;
+    min-height: 0;
+    padding: 6px 9px;
+    vertical-align: middle;
+}
+
+.pdf-download .summary-card p {
+    margin-top: 9px;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.pdf-download .section-title {
+    margin: 14px 0 7px;
+    font-size: 13px;
+}
+
+.pdf-download .zscore-source-note {
+    clear: both;
+    margin-top: 8px;
+    padding: 9px 10px;
+}
+
+.pdf-download .advice-box {
+    padding: 11px 12px;
+    border: 1px solid #b6e0ef;
+    background: #eaf7fc;
+    color: #24596b;
+    font-size: 11px;
+    line-height: 1.55;
+}
+
+.pdf-download .signature-line {
+    margin-top: 42px;
 }
 
 @media (max-width: 760px) {

@@ -13,6 +13,7 @@
                     <li><a data-nav-target="about" href="<?= base_url('/#about') ?>">Tentang</a></li>
                     <li><a data-nav-target="konseling" href="<?= base_url('/konsultasi') ?>">Konseling</a></li>
                     <li><a data-nav-target="blog" href="<?= base_url('/#blog') ?>">Artikel</a></li>
+                    <li><a data-nav-target="cta" href="<?= base_url('/#cta') ?>">CTA</a></li>
                     <li><a data-nav-target="contact" href="<?= base_url('/#contact') ?>">Kontak</a></li>
                     <li><a data-nav-target="faq" href="<?= base_url('/#faq') ?>">FAQ</a></li>
                     <li class="mobile-login-link"><a href="<?= base_url('/login') ?>">Masuk</a></li>
@@ -38,7 +39,7 @@
                         return;
                     }
 
-                    var sectionTargets = ['home', 'about', 'layanan', 'blog', 'contact', 'faq'];
+                    var sectionTargets = ['home', 'about', 'layanan', 'blog', 'cta', 'contact', 'faq'];
                     var sections = sectionTargets
                         .map(function (target) {
                             return document.getElementById(target);

@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
 
+/* Navbar dashboard: brand, topbar fixed, ikon aksi, dan profil admin. */
 .navbar .navbar-brand-wrapper {
     flex: 0 0 auto;
     justify-content: flex-start !important;
@@ -219,6 +220,7 @@
     min-height: calc(100vh - 76px);
 }
 
+/* Sidebar dashboard: lebar panel, scroll area, menu utama, submenu, dan link tambahan. */
 .sidebar {
     display: flex;
     flex-direction: column;
@@ -317,6 +319,7 @@
     transform: translateX(2px);
 }
 
+/* Halaman pengaturan admin: kartu profil, form, foto admin, dan tombol aksi. */
 .admin-settings-card {
     max-width: 920px;
 }
@@ -370,6 +373,7 @@
     flex-wrap: wrap;
 }
 
+/* Navigasi sidebar Skydash: state hover, aktif, collapse, dan submenu. */
 .sidebar .nav .nav-item {
     width: 100%;
 }
@@ -508,6 +512,7 @@
     font-weight: 900;
 }
 
+/* Halaman admin umum: wrapper konten, kartu, toolbar, filter, tabel, tombol, form, dan modal. */
 .content-wrapper:not(.admin-dashboard) {
     background: #f4f5fb;
     padding-left: 1.25rem;
@@ -760,6 +765,7 @@
     border-color: #eef1f7;
 }
 
+/* DataTables admin: search, length selector, pagination, badge, dan state tabel kosong. */
 .dataTables_wrapper .dataTables_filter input,
 .dataTables_wrapper .dataTables_length select {
     border: 1px solid #e5e8f2;
@@ -916,6 +922,7 @@
     min-width: 116px;
 }
 
+/* Responsive halaman admin umum dan tabel pada layar kecil. */
 @media (max-width: 767px) {
     .navbar .navbar-brand-wrapper {
         padding: 10px .75rem;
@@ -1005,6 +1012,7 @@
 }
 
 @media (min-width: 992px) {
+    /* Mode sidebar disembunyikan pada desktop: panel utama melebar penuh. */
     .sidebar-hidden .sidebar {
         width: 0 !important;
         min-width: 0 !important;
@@ -1032,6 +1040,7 @@
     }
 }
 
+/* Dashboard utama: background halaman dan popup sukses login. */
 .admin-dashboard {
     background: #f4f5fb;
     min-height: calc(100vh - 76px);
@@ -1143,6 +1152,7 @@
     }
 }
 
+/* Dialog konfirmasi admin: overlay, kartu dialog, dan tombol batal/lanjut. */
 .admin-confirm-overlay {
     position: fixed;
     inset: 0;
@@ -1225,6 +1235,7 @@
     outline-offset: 2px;
 }
 
+/* Layout dashboard utama: grid kolom utama/samping dan panel ringkasan. */
 .admin-board {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 340px;
@@ -1354,6 +1365,7 @@
     line-height: 1;
 }
 
+/* Header section dashboard: judul panel, aksi kanan, search kecil, dan tombol filter chart. */
 .admin-section-heading {
     display: flex;
     align-items: flex-start;
@@ -1439,6 +1451,7 @@
     height: 30px;
 }
 
+/* Kartu ringkasan dashboard: total data, ikon status, dan state hover. */
 .admin-summary-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1584,6 +1597,7 @@
     text-align: center;
 }
 
+/* Kalender dashboard: panel kalender, header bulan, grid tanggal, dan event harian. */
 .admin-calendar-panel {
     min-height: 300px;
     overflow: hidden;
@@ -1765,6 +1779,7 @@
     font-size: 10px;
 }
 
+/* Tabel progres dan panel risiko: daftar ringkas, status dot, dan angka highlight. */
 .admin-progress-table {
     margin-bottom: 0;
 }
@@ -1825,6 +1840,7 @@
     color: #C2C3C3;
 }
 
+/* Responsive dashboard: susunan kartu, chart, dan panel samping pada layar kecil. */
 @media (max-width: 767px) {
     .admin-board {
         grid-template-columns: 1fr;
@@ -1877,6 +1893,7 @@
 }
 
 @media (min-width: 992px) and (max-width: 1450px) {
+    /* Tablet/desktop sempit: dashboard jadi satu kolom saat sidebar masih terbuka. */
     body:not(.sidebar-hidden) .admin-board {
         grid-template-columns: 1fr;
         max-width: 980px;
@@ -1893,6 +1910,7 @@
 }
 
 @media (max-width: 991px) {
+    /* Tablet dan mobile: topbar lebih pendek, brand diringkas, sidebar menjadi off-canvas. */
     .navbar.fixed-top {
         min-height: 68px;
         border-bottom-right-radius: 12px;
@@ -2162,6 +2180,7 @@
 }
 
 @media (max-width: 420px) {
+    /* Mobile kecil: rapatkan navbar dan kartu supaya tidak melebar. */
     .navbar .dashboard-welcome-copy {
         display: none;
     }

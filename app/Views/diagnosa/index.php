@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Konsultasi StuntCare</title>
+    <title>Konsultasi SiPASTI</title>
     <link rel="stylesheet" href="<?= base_url('assets/bootstrap/css/bootstrap.min.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/landing.css?v=' . filemtime(FCPATH . 'assets/css/landing.css')) ?>">
     <link rel="shortcut icon" href="<?= base_url('assets/images/logo/logo_puskesmas.png') ?>">
@@ -76,7 +76,7 @@
 
                         <div class="parent-result-message-box <?= esc($statusTone, 'attr') ?>">
                             <p class="parent-result-message"><?= esc($friendlyText) ?></p>
-                            <p class="parent-result-message"><?= esc($interpretationText) ?></p>
+                            <p class="parent-result-message parent-result-interpretation"><?= esc($interpretationText) ?></p>
                         </div>
 
                         <div class="solution-box parent-advice">
@@ -91,6 +91,10 @@
                                     <strong><?= esc($item['kategori']) ?></strong>
                                 </article>
                             <?php endforeach; ?>
+                        </div>
+                        <div class="zscore-source-note">
+                            <b>Sumber perhitungan Z-Score</b>
+                            <p>Hasil Z-Score pada konsultasi ini dihitung berdasarkan tabel standar antropometri anak yang mengacu pada Peraturan Menteri Kesehatan Republik Indonesia Nomor 2 Tahun 2020.</p>
                         </div>
 
                         <?php $gejalaTerbaca = is_array($hasil['gejala_terbaca'] ?? null) ? $hasil['gejala_terbaca'] : ($hasil['gejala'] ?? []); ?>
@@ -322,10 +326,13 @@
                                     $idGejala = (int) ($gejala['id_gejala'] ?? 0);
                                     $jawaban = $jawabanGejala[$idGejala] ?? null;
                                 ?>
-                                <article class="symptom-question">
+                                <article class="symptom-question"
+                                    data-kode="<?= esc($gejala['kode_gejala'] ?? '', 'attr') ?>"
+                                    data-min-umur="<?= esc((string) ($gejala['umur_min'] ?? 0), 'attr') ?>"
+                                    data-max-umur="<?= esc((string) ($gejala['umur_max'] ?? 60), 'attr') ?>">
                                     <div>
                                         <span><?= esc($gejala['kode_gejala'] ?? ('G' . $idGejala)) ?></span>
-                                        <p><?= esc($gejala['pertanyaan_gejala'] ?? $gejala['nama_gejala'] ?? '') ?></p>
+                                        <p class="symptom-question-text"><?= esc($gejala['pertanyaan_gejala'] ?? $gejala['nama_gejala'] ?? '') ?></p>
                                     </div>
                                     <div class="symptom-answer" role="radiogroup" aria-label="<?= esc($gejala['pertanyaan_gejala'] ?? $gejala['nama_gejala'] ?? '', 'attr') ?>">
                                         <label>
@@ -348,8 +355,8 @@
                     </div>
 
                     <div class="consult-flow-note">
-                        <span>Yang akan dilakukan StuntCare</span>
-                        <p>StuntCare membandingkan berat dan tinggi anak dengan data pertumbuhan, lalu memberi tanda apakah anak terlihat aman, perlu dipantau, atau perlu pemeriksaan lanjutan.</p>
+                        <span>Yang akan dilakukan SiPASTI</span>
+                        <p>SiPASTI membandingkan berat dan tinggi anak dengan data pertumbuhan, lalu memberi tanda apakah anak terlihat aman, perlu dipantau, atau perlu pemeriksaan lanjutan.</p>
                     </div>
 
                     <button class="btn-submit-consult" type="submit">Lihat Saran untuk Anak</button>
@@ -409,6 +416,67 @@
 
             birthDateInput.addEventListener('change', calculateAgeInMonths);
             calculateAgeInMonths();
+
+            var symptomQuestions = Array.prototype.slice.call(document.querySelectorAll('.symptom-question'));
+
+            function g06QuestionForAge(age) {
+                if (age >= 4 && age <= 5) {
+                    return 'Apakah anak belum mampu menahan kepala dengan stabil saat digendong atau belum mampu mengangkat tubuh saat tengkurap?';
+                }
+
+                if (age >= 6 && age <= 8) {
+                    return 'Apakah anak belum mampu berguling atau belum mampu duduk dengan bantuan/tumpuan tangan?';
+                }
+
+                if (age >= 9 && age <= 11) {
+                    return 'Apakah anak belum mampu duduk tanpa bantuan atau belum mulai belajar merangkak/berdiri dengan bantuan?';
+                }
+
+                if (age >= 12 && age <= 14) {
+                    return 'Apakah anak belum mampu berdiri dengan berpegangan atau berjalan sambil berpegangan pada benda?';
+                }
+
+                if (age >= 15 && age <= 17) {
+                    return 'Apakah anak belum mampu berjalan beberapa langkah sendiri?';
+                }
+
+                return 'Apakah anak belum mampu berjalan tanpa bantuan atau mengalami kesulitan gerak sesuai usianya?';
+            }
+
+            function updateSymptomQuestionsByAge() {
+                if (!symptomQuestions.length) {
+                    return;
+                }
+
+                var age = parseInt(ageInput.value, 10);
+                var hasAge = !Number.isNaN(age);
+
+                symptomQuestions.forEach(function (question) {
+                    var minAge = parseInt(question.getAttribute('data-min-umur') || '0', 10);
+                    var maxAge = parseInt(question.getAttribute('data-max-umur') || '60', 10);
+                    var isApplicable = !hasAge || (age >= minAge && age <= maxAge);
+                    var inputs = question.querySelectorAll('input[type="radio"]');
+
+                    question.hidden = !isApplicable;
+                    inputs.forEach(function (input) {
+                        input.required = isApplicable;
+                        input.disabled = !isApplicable;
+                        if (!isApplicable) {
+                            input.checked = false;
+                        }
+                    });
+
+                    if (isApplicable && hasAge && question.getAttribute('data-kode') === 'G06') {
+                        var questionText = question.querySelector('.symptom-question-text');
+                        if (questionText) {
+                            questionText.textContent = g06QuestionForAge(age);
+                        }
+                    }
+                });
+            }
+
+            birthDateInput.addEventListener('change', updateSymptomQuestionsByAge);
+            updateSymptomQuestionsByAge();
 
             var nikInput = document.getElementById('nik-anak');
             var nikError = document.getElementById('nik-anak-error');

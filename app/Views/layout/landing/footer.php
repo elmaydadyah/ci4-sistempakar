@@ -7,9 +7,8 @@
                     </a>
                     <p>Layanan informasi dan konsultasi awal untuk membantu keluarga memantau risiko stunting pada anak.</p>
                     <div class="footer-social" aria-label="Media sosial">
-                        <a href="#" aria-label="Facebook">f</a>
-                        <a href="#" aria-label="Twitter">t</a>
-                        <a href="#" aria-label="Instagram">ig</a>
+                        <a href="https://www.facebook.com/p/Puskesmas-Cileungsi-100066482840401/?locale=id_ID" aria-label="Facebook">f</a>
+                        <a href="https://www.instagram.com/puskesmascileungsi?igsh=MW90NXp6Y25kb2J4OA==" aria-label="Instagram">ig</a>
                     </div>
                 </div>
 

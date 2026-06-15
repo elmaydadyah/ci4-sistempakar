@@ -15,7 +15,7 @@
     ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Konsultasi - <?= esc($hasil['nama'] ?? 'StuntCare') ?></title>
+    <title>Laporan Konsultasi - <?= esc($hasil['nama'] ?? 'SiPASTI') ?></title>
     <link rel="shortcut icon" href="<?= base_url('assets/images/logo/logo_puskesmas.png') ?>">
     <?php if ($isDownloadMode): ?>
         <style><?= file_get_contents(FCPATH . 'assets/css/laporan.css') ?></style>
@@ -58,38 +58,77 @@
     <?php endif; ?>
 
     <main class="report-page">
-        <header class="report-header">
-            <img src="<?= esc($logoKabBogor, 'attr') ?>" alt="Logo Kabupaten Bogor">
-            <div class="header-copy">
-                <h1>PUSKESMAS KECAMATAN CILEUNGSI</h1>
-                <div class="header-contact">
-                    <span>Jl. Camat Enjan No. 1, Cileungsi, Bogor 16820</span>
-                    <span>Telp. (021) 8230348 | puskesmascileungsi@yahoo.co.id</span>
+        <?php if ($isDownloadMode): ?>
+            <table class="pdf-report-header">
+                <tr>
+                    <td class="pdf-logo-cell"><img src="<?= esc($logoKabBogor, 'attr') ?>" alt="Logo Kabupaten Bogor"></td>
+                    <td class="pdf-header-copy">
+                        <h1>PUSKESMAS KECAMATAN CILEUNGSI</h1>
+                        <div>Jl. Camat Enjan No. 1, Cileungsi, Bogor 16820</div>
+                        <div>Telp. (021) 8230348 | puskesmascileungsi@yahoo.co.id</div>
+                    </td>
+                    <td class="pdf-logo-cell"><img src="<?= esc($logoPuskesmas, 'attr') ?>" alt="Logo Puskesmas"></td>
+                </tr>
+            </table>
+        <?php else: ?>
+            <header class="report-header">
+                <img src="<?= esc($logoKabBogor, 'attr') ?>" alt="Logo Kabupaten Bogor">
+                <div class="header-copy">
+                    <h1>PUSKESMAS KECAMATAN CILEUNGSI</h1>
+                    <div class="header-contact">
+                        <span>Jl. Camat Enjan No. 1, Cileungsi, Bogor 16820</span>
+                        <span>Telp. (021) 8230348 | puskesmascileungsi@yahoo.co.id</span>
+                    </div>
                 </div>
-            </div>
-            <img src="<?= esc($logoPuskesmas, 'attr') ?>" alt="Logo Puskesmas">
-        </header>
+                <img src="<?= esc($logoPuskesmas, 'attr') ?>" alt="Logo Puskesmas">
+            </header>
+        <?php endif; ?>
 
         <div class="report-document-title">LAPORAN HASIL DIAGNOSA</div>
 
-        <section class="report-meta">
-            <div class="meta-item">
-                <span>Nama Anak</span>
-                <strong><?= esc($hasil['nama'] ?? '-') ?></strong>
-            </div>
-            <div class="meta-item">
-                <span>Umur</span>
-                <strong><?= esc((string) ($hasil['umur'] ?? 0)) ?> bulan</strong>
-            </div>
-            <div class="meta-item">
-                <span>Jenis Kelamin</span>
-                <strong><?= esc(($row['jenis_kelamin'] ?? '') === 'L' ? 'Laki-laki' : (($row['jenis_kelamin'] ?? '') === 'P' ? 'Perempuan' : '-')) ?></strong>
-            </div>
-            <div class="meta-item">
-                <span>Tanggal Laporan</span>
-                <strong><?= esc($tanggal_cetak ?? date('d/m/Y H:i')) ?></strong>
-            </div>
-        </section>
+        <?php if ($isDownloadMode): ?>
+            <table class="pdf-report-meta">
+                <tr>
+                    <td>
+                        <span>Nama Anak</span>
+                        <strong><?= esc($hasil['nama'] ?? '-') ?></strong>
+                    </td>
+                    <td>
+                        <span>Umur</span>
+                        <strong><?= esc((string) ($hasil['umur'] ?? 0)) ?> bulan</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Jenis Kelamin</span>
+                        <strong><?= esc(($row['jenis_kelamin'] ?? '') === 'L' ? 'Laki-laki' : (($row['jenis_kelamin'] ?? '') === 'P' ? 'Perempuan' : '-')) ?></strong>
+                    </td>
+                    <td>
+                        <span>Tanggal Laporan</span>
+                        <strong><?= esc($tanggal_cetak ?? date('d/m/Y H:i')) ?></strong>
+                    </td>
+                </tr>
+            </table>
+        <?php else: ?>
+            <section class="report-meta">
+                <div class="meta-item">
+                    <span>Nama Anak</span>
+                    <strong><?= esc($hasil['nama'] ?? '-') ?></strong>
+                </div>
+                <div class="meta-item">
+                    <span>Umur</span>
+                    <strong><?= esc((string) ($hasil['umur'] ?? 0)) ?> bulan</strong>
+                </div>
+                <div class="meta-item">
+                    <span>Jenis Kelamin</span>
+                    <strong><?= esc(($row['jenis_kelamin'] ?? '') === 'L' ? 'Laki-laki' : (($row['jenis_kelamin'] ?? '') === 'P' ? 'Perempuan' : '-')) ?></strong>
+                </div>
+                <div class="meta-item">
+                    <span>Tanggal Laporan</span>
+                    <strong><?= esc($tanggal_cetak ?? date('d/m/Y H:i')) ?></strong>
+                </div>
+            </section>
+        <?php endif; ?>
 
         <section class="summary-card">
             <span>Kesimpulan awal</span>
@@ -103,14 +142,32 @@
         </section>
 
         <h3 class="section-title">Ringkasan Ukuran Anak</h3>
-        <section class="measure-grid">
-            <?php foreach ($hasil['zscore'] as $item): ?>
-                <article class="section-box">
-                    <span><?= esc($item['label']) ?></span>
-                    <strong><?= esc($item['kategori']) ?></strong>
-                    <small>Z-Score: <?= $item['nilai'] !== null ? esc((string) $item['nilai']) : '-' ?></small>
-                </article>
-            <?php endforeach; ?>
+        <?php if ($isDownloadMode): ?>
+            <table class="pdf-measure-grid">
+                <tr>
+                    <?php foreach ($hasil['zscore'] as $item): ?>
+                        <td>
+                            <span><?= esc($item['label']) ?></span>
+                            <strong><?= esc($item['kategori']) ?></strong>
+                            <small>Z-Score: <?= $item['nilai'] !== null ? esc((string) $item['nilai']) : '-' ?></small>
+                        </td>
+                    <?php endforeach; ?>
+                </tr>
+            </table>
+        <?php else: ?>
+            <section class="measure-grid">
+                <?php foreach ($hasil['zscore'] as $item): ?>
+                    <article class="section-box">
+                        <span><?= esc($item['label']) ?></span>
+                        <strong><?= esc($item['kategori']) ?></strong>
+                        <small>Z-Score: <?= $item['nilai'] !== null ? esc((string) $item['nilai']) : '-' ?></small>
+                    </article>
+                <?php endforeach; ?>
+            </section>
+        <?php endif; ?>
+        <section class="zscore-source-note">
+            <strong>Sumber perhitungan Z-Score</strong>
+            <p>Hasil Z-Score pada laporan ini dihitung berdasarkan tabel standar antropometri anak yang mengacu pada Peraturan Menteri Kesehatan Republik Indonesia Nomor 2 Tahun 2020.</p>
         </section>
 
         <h3 class="section-title">Rekomendasi</h3>
@@ -118,15 +175,29 @@
             <?= esc($hasil['rekomendasi'] ?? '-') ?>
         </section>
 
-        <section class="signature">
-            <div class="note">
-                Catatan: Laporan ini adalah hasil skrining awal dari sistem dan bukan pengganti diagnosis dokter. Jika orang tua merasa khawatir atau anak menunjukkan keluhan, lakukan pemeriksaan langsung ke tenaga kesehatan.
-            </div>
-            <div class="signature-box">
-                <div><?= esc($tanggal_cetak ?? date('d/m/Y H:i')) ?></div>
-                <div class="signature-line">StuntCare</div>
-            </div>
-        </section>
+        <?php if ($isDownloadMode): ?>
+            <table class="pdf-signature">
+                <tr>
+                    <td class="note">
+                        Catatan: Laporan ini adalah hasil skrining awal dari sistem dan bukan pengganti diagnosis dokter. Jika orang tua merasa khawatir atau anak menunjukkan keluhan, lakukan pemeriksaan langsung ke tenaga kesehatan.
+                    </td>
+                    <td class="signature-box">
+                        <div><?= esc($tanggal_cetak ?? date('d/m/Y H:i')) ?></div>
+                        <div class="signature-line">SiPASTI</div>
+                    </td>
+                </tr>
+            </table>
+        <?php else: ?>
+            <section class="signature">
+                <div class="note">
+                    Catatan: Laporan ini adalah hasil skrining awal dari sistem dan bukan pengganti diagnosis dokter. Jika orang tua merasa khawatir atau anak menunjukkan keluhan, lakukan pemeriksaan langsung ke tenaga kesehatan.
+                </div>
+                <div class="signature-box">
+                    <div><?= esc($tanggal_cetak ?? date('d/m/Y H:i')) ?></div>
+                    <div class="signature-line">SiPASTI</div>
+                </div>
+            </section>
+        <?php endif; ?>
     </main>
 </body>
 </html>

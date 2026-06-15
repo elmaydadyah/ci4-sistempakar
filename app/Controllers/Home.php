@@ -130,7 +130,7 @@ class Home extends BaseController
                 'body' => [
                     'Stunting adalah kondisi ketika pertumbuhan anak terhambat sehingga tinggi badan tidak sesuai dengan standar usianya. Kondisi ini biasanya berkaitan dengan asupan gizi, kesehatan ibu dan anak, infeksi berulang, serta lingkungan tempat tinggal.',
                     'Pemantauan tinggi dan berat badan secara rutin penting dilakukan karena perubahan pertumbuhan anak sering terlihat dari data pengukuran. Jika ditemukan tanda pertumbuhan tidak sesuai, keluarga dapat segera berkonsultasi ke posyandu atau puskesmas.',
-                    'StuntCare membantu orang tua melakukan skrining awal. Hasil sistem bukan pengganti diagnosis dokter, tetapi dapat menjadi bahan awal untuk menentukan apakah anak perlu dipantau lebih lanjut.',
+                    'SiPASTI membantu orang tua melakukan skrining awal. Hasil sistem bukan pengganti diagnosis dokter, tetapi dapat menjadi bahan awal untuk menentukan apakah anak perlu dipantau lebih lanjut.',
                 ],
             ],
             'penyebab-stunting' => [
