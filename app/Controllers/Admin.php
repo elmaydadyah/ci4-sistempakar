@@ -147,6 +147,7 @@ class Admin extends BaseController
         $data['roleOptions'] = $roleAccess->roles();
         $data['permissionRows'] = $roleAccess->menus();
         $data['permissionActions'] = $roleAccess->actions();
+        $data['supportedPermissionActions'] = $roleAccess->supportedActions();
         $data['rolePermissionMatrix'] = $roleAccess->permissionMatrix();
 
         return view('admin/users/index_users', $data);

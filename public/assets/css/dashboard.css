@@ -1014,18 +1014,49 @@
 }
 
 .admin-access-check {
-    width: 15px;
-    height: 15px;
-    accent-color: #2563eb;
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid #8b9ab3;
+    border-radius: 4px;
+    background: #ffffff;
+    cursor: pointer;
+    vertical-align: middle;
+    transition: border-color .15s ease, background .15s ease, box-shadow .15s ease;
+}
+
+.admin-access-check:checked {
+    border-color: #2563eb;
+    background: #2563eb;
+}
+
+.admin-access-check:checked::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 5px;
+    height: 9px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
 }
 
 .admin-access-check:not(:checked) {
-    opacity: .28;
+    opacity: 1;
 }
 
 .admin-access-check:focus {
     outline: 3px solid rgba(37, 99, 235, .18);
     outline-offset: 2px;
+}
+
+.admin-access-unavailable {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
 }
 
 .admin-empty-row td {

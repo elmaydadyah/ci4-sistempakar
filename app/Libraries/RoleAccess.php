@@ -37,10 +37,25 @@ class RoleAccess
     {
         $rows = [];
         foreach ($this->menus as $key => $menu) {
-            $rows[] = ['key' => $key, 'menu' => $menu['menu'], 'category' => $menu['category']];
+            $rows[] = [
+                'key' => $key,
+                'menu' => $menu['menu'],
+                'category' => $menu['category'],
+                'supported_actions' => array_keys($menu['paths']),
+            ];
         }
 
         return $rows;
+    }
+
+    public function supportedActions(): array
+    {
+        $supported = [];
+        foreach ($this->menus as $menuKey => $menu) {
+            $supported[$menuKey] = array_fill_keys(array_keys($menu['paths']), true);
+        }
+
+        return $supported;
     }
 
     public function roles(): array
@@ -105,7 +120,7 @@ class RoleAccess
             $role = $this->normalizeRole((string) ($row['role_code'] ?? ''));
             $menu = (string) ($row['menu_key'] ?? '');
             $action = (string) ($row['action_key'] ?? '');
-            if (!isset($this->menus[$menu], $this->actions[$action])) {
+            if (!isset($this->menus[$menu], $this->actions[$action]) || !$this->isActionSupported($menu, $action)) {
                 continue;
             }
 
@@ -184,11 +199,12 @@ class RoleAccess
         $rows = [];
         foreach ($this->menus as $menuKey => $menu) {
             foreach (array_keys($this->actions) as $action) {
+                $supported = $this->isActionSupported($menuKey, $action);
                 $rows[] = [
                     'role_code' => $role,
                     'menu_key' => $menuKey,
                     'action_key' => $action,
-                    'allowed' => !empty($permissions[$menuKey][$action]) ? 1 : 0,
+                    'allowed' => $supported && !empty($permissions[$menuKey][$action]) ? 1 : 0,
                     'updated_at' => date('Y-m-d H:i:s'),
                 ];
             }
@@ -245,7 +261,22 @@ class RoleAccess
         }
         $matrix['admin3']['settings']['edit'] = true;
 
+        foreach (array_keys($matrix) as $role) {
+            foreach (array_keys($this->menus) as $menu) {
+                foreach (array_keys($this->actions) as $action) {
+                    if (!$this->isActionSupported($menu, $action)) {
+                        $matrix[$role][$menu][$action] = false;
+                    }
+                }
+            }
+        }
+
         return $matrix;
+    }
+
+    private function isActionSupported(string $menu, string $action): bool
+    {
+        return isset($this->menus[$menu]['paths'][$action]);
     }
 
     private function emptyRolePermissions(): array

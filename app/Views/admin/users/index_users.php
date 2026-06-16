@@ -75,6 +75,7 @@ $normalizeRole = static function ($role): string {
 };
 $renderPermissionTable = static function (string $role, array $rows, array $matrix): void {
     $actions = $GLOBALS['permissionActionsForView'] ?? ['lihat' => 'Lihat', 'tambah' => 'Tambah', 'edit' => 'Edit', 'hapus' => 'Hapus'];
+    $supportedActions = $GLOBALS['supportedPermissionActionsForView'] ?? [];
     ?>
     <div class="table-responsive admin-access-table-wrap">
         <table class="table admin-access-table" data-access-table>
@@ -98,15 +99,23 @@ $renderPermissionTable = static function (string $role, array $rows, array $matr
                         </td>
                         <td><?= esc($row['category']); ?></td>
                         <?php foreach (array_keys($actions) as $action): ?>
-                            <?php $checked = !empty($matrix[$role][$row['key']][$action]); ?>
+                            <?php
+                                $isSupported = !empty($supportedActions[$row['key']][$action]) || in_array($action, $row['supported_actions'] ?? [], true);
+                                $checked = $isSupported && !empty($matrix[$role][$row['key']][$action]);
+                            ?>
                             <td>
-                                <input type="checkbox"
-                                    class="admin-access-check"
-                                    name="permissions[<?= esc($row['key'], 'attr'); ?>][<?= esc($action, 'attr'); ?>]"
-                                    value="1"
-                                    data-menu="<?= esc($row['key'], 'attr'); ?>"
-                                    data-action="<?= esc($action, 'attr'); ?>"
-                                    <?= $checked ? 'checked' : ''; ?>>
+                                <?php if ($isSupported): ?>
+                                    <input type="checkbox"
+                                        class="admin-access-check"
+                                        name="permissions[<?= esc($row['key'], 'attr'); ?>][<?= esc($action, 'attr'); ?>]"
+                                        value="1"
+                                        data-menu="<?= esc($row['key'], 'attr'); ?>"
+                                        data-action="<?= esc($action, 'attr'); ?>"
+                                        title="<?= esc($actions[$action], 'attr'); ?>"
+                                        <?= $checked ? 'checked' : ''; ?>>
+                                <?php else: ?>
+                                    <span class="admin-access-unavailable" aria-label="Aksi ini tidak tersedia"></span>
+                                <?php endif; ?>
                             </td>
                         <?php endforeach; ?>
                     </tr>
@@ -117,6 +126,7 @@ $renderPermissionTable = static function (string $role, array $rows, array $matr
     <?php
 };
 $GLOBALS['permissionActionsForView'] = $permissionActions ?? ['lihat' => 'Lihat', 'tambah' => 'Tambah', 'edit' => 'Edit', 'hapus' => 'Hapus'];
+$GLOBALS['supportedPermissionActionsForView'] = $supportedPermissionActions ?? [];
 ?>
 <?= $this->include('layout/dashboard/header') ?>
 <?= $this->include('layout/dashboard/navbar') ?>
