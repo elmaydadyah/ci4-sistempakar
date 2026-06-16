@@ -53,7 +53,7 @@
                             $interpretationText = match ($kelas) {
                                 'H1' => 'Risiko stunting tinggi berarti hasil pengukuran dan tanda yang terbaca lebih banyak mengarah pada kemungkinan stunting, sehingga anak perlu segera diperiksa lebih lanjut oleh tenaga kesehatan.',
                                 'H2' => 'Risiko stunting sedang berarti terdapat beberapa tanda yang perlu diwaspadai, tetapi belum sekuat kategori tinggi. Anak perlu dipantau pertumbuhannya dan diperbaiki asupan gizinya.',
-                                default => 'Risiko stunting rendah berarti anak tidak terindikasi memiliki risiko stunting tinggi. Jika nilai keyakinan sistem berada di bawah 70%, hasil ini dibaca sebagai tidak terindikasi risiko stunting, namun pemantauan rutin tetap diperlukan.',
+                                default => 'Risiko stunting rendah berarti anak tidak terindikasi memiliki risiko stunting tinggi. Jika nilai probabilitas Bayes berada di bawah 70%, hasil ini dibaca sebagai tidak terindikasi risiko stunting, namun pemantauan rutin tetap diperlukan.',
                             };
                         ?>
                         <div class="parent-result-head">
@@ -69,7 +69,7 @@
                             <div class="parent-result-summary">
                                 <span class="parent-status-badge <?= esc($statusTone, 'attr') ?>"><?= esc($kelas) ?></span>
                                 <span class="parent-confidence">
-                                    Keyakinan <?= esc((string) $confidencePercent) ?>%
+                                    Probabilitas Bayes <?= esc((string) $confidencePercent) ?>%
                                 </span>
                             </div>
                         </div>
@@ -191,8 +191,8 @@
                         </label>
                         <label>
                             <span>NIK anak</span>
-                            <input type="text" id="nik-anak" name="nik" value="<?= esc($old['nik'] ?? '', 'attr') ?>" inputmode="numeric" pattern="[0-9]{16}" minlength="16" maxlength="16" placeholder="Masukkan 16 angka NIK anak" required>
-                            <small class="nik-hint">Isi 16 angka sesuai KK/KIA.</small>
+                            <input type="text" id="nik-anak" name="nik" value="<?= esc($old['nik'] ?? '', 'attr') ?>" inputmode="numeric" pattern="[0-9]{16}" minlength="16" maxlength="16" placeholder="Opsional, isi 16 angka jika sudah ada">
+                            <small class="nik-hint">Boleh dikosongkan jika NIK anak belum tersedia.</small>
                             <small class="nik-error" id="nik-anak-error">NIK Harus berisikan 16 angka</small>
                         </label>
                         <label>

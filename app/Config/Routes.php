@@ -56,3 +56,5 @@ $routes->get('/admin/deleteRuleBased/(:num)', 'Admin::deleteRuleBased/$1');
 $routes->get('/admin/deleteUser/(:num)', 'Admin::deleteUser/$1');
 $routes->post('/admin/createUser', 'Admin::createUser');
 $routes->post('/admin/updateUser/(:num)', 'Admin::updateUser/$1');
+$routes->post('/admin/createRole', 'Admin::createRole');
+$routes->post('/admin/updateRoleAccess', 'Admin::updateRoleAccess');

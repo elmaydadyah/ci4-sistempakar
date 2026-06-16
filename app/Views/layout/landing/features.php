@@ -4,7 +4,6 @@
                     <span class="section-eyebrow dark">Layanan SiPASTI</span>
                     <h2>Pantauan awal yang lebih mudah dipahami keluarga.</h2>
                 </div>
-                <a class="btn-primary-landing compact" href="<?= base_url('/konsultasi') ?>">Coba Konseling</a>
             </div>
 
             <div class="service-grid">

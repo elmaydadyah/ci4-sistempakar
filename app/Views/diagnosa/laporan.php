@@ -45,7 +45,7 @@
         $interpretationText = match ($kelas) {
             'H1' => 'Risiko stunting tinggi berarti hasil pengukuran dan tanda yang terbaca lebih banyak mengarah pada kemungkinan stunting, sehingga anak perlu segera diperiksa lebih lanjut oleh tenaga kesehatan.',
             'H2' => 'Risiko stunting sedang berarti terdapat beberapa tanda yang perlu diwaspadai, tetapi belum sekuat kategori tinggi. Anak perlu dipantau pertumbuhannya dan diperbaiki asupan gizinya.',
-            default => 'Risiko stunting rendah berarti anak tidak terindikasi memiliki risiko stunting tinggi. Jika nilai keyakinan sistem berada di bawah 70%, hasil ini dibaca sebagai tidak terindikasi risiko stunting, namun pemantauan rutin tetap diperlukan.',
+            default => 'Risiko stunting rendah berarti anak tidak terindikasi memiliki risiko stunting tinggi. Jika nilai probabilitas Bayes berada di bawah 70%, hasil ini dibaca sebagai tidak terindikasi risiko stunting, namun pemantauan rutin tetap diperlukan.',
         };
     ?>
 
@@ -135,7 +135,7 @@
             <h2><?= esc($friendlyLabel) ?></h2>
             <div class="summary-badges">
                 <span class="status-badge <?= esc($statusTone, 'attr') ?>"><?= esc($diagnosa['kelas'] ?? '-') ?> - <?= esc($diagnosa['label'] ?? '-') ?></span>
-                <span class="confidence">Keyakinan sistem <?= esc((string) ($diagnosa['posterior_persen'] ?? $hasil['persentase'] ?? 0)) ?>%</span>
+                <span class="confidence">Probabilitas Bayes <?= esc((string) ($diagnosa['posterior_persen'] ?? $hasil['persentase'] ?? 0)) ?>%</span>
             </div>
             <p><?= esc($friendlyText) ?></p>
             <p><?= esc($interpretationText) ?></p>

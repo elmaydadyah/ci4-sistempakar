@@ -2352,9 +2352,10 @@ h1 {
 .consult-heading p {
     max-width: 620px;
     margin: 18px 0 0;
-    color: var(--muted);
+    color: #4d5750;
     font-size: 16px;
     line-height: 1.8;
+    font-weight: 600;
 }
 
 .parent-steps {

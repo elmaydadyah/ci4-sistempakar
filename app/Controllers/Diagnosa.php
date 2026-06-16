@@ -371,9 +371,7 @@ class Diagnosa extends BaseController
             $errors[] = 'Nama balita wajib diisi.';
         }
 
-        if ($input['nik'] === '') {
-            $errors[] = 'NIK anak wajib diisi.';
-        } elseif (!preg_match('/^[0-9]{16}$/', $input['nik'])) {
+        if ($input['nik'] !== '' && !preg_match('/^[0-9]{16}$/', $input['nik'])) {
             $errors[] = 'NIK Harus berisikan 16 angka';
         }
 

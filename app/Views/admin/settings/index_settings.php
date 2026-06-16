@@ -18,7 +18,7 @@ if (!empty($user['foto']) && is_file(FCPATH . 'uploads/foto_users/' . $user['fot
                         <div class="admin-table-toolbar">
                             <div>
                                 <h4 class="card-title mb-1">Setting Profil</h4>
-                                <p class="text-muted mb-0">Ubah foto profil, nama, email, dan password admin.</p>
+                                <p class="text-muted mb-0">Ubah foto profil, nama, username, email, dan password admin.</p>
                             </div>
                         </div>
 
@@ -35,7 +35,7 @@ if (!empty($user['foto']) && is_file(FCPATH . 'uploads/foto_users/' . $user['fot
                                 <img src="<?= esc($fotoProfil, 'attr'); ?>" alt="<?= esc($user['nama'] ?? 'Admin', 'attr'); ?>">
                                 <div>
                                     <strong><?= esc($user['nama'] ?? 'Admin'); ?></strong>
-                                    <span><?= esc($user['email'] ?? '-'); ?></span>
+                                    <span><?= esc($user['username'] ?? '-'); ?></span>
                                 </div>
                             </div>
 
@@ -45,8 +45,12 @@ if (!empty($user['foto']) && is_file(FCPATH . 'uploads/foto_users/' . $user['fot
                                     <input type="text" class="form-control" id="settings-nama" name="nama" value="<?= esc($user['nama'] ?? '', 'attr'); ?>" required>
                                 </div>
                                 <div class="col-md-6 form-group">
+                                    <label for="settings-username">Username</label>
+                                    <input type="text" class="form-control" id="settings-username" name="username" value="<?= esc($user['username'] ?? '', 'attr'); ?>" minlength="3" maxlength="50" required>
+                                </div>
+                                <div class="col-md-6 form-group">
                                     <label for="settings-email">Email</label>
-                                    <input type="email" class="form-control" id="settings-email" name="email" value="<?= esc($user['email'] ?? '', 'attr'); ?>" required>
+                                    <input type="email" class="form-control" id="settings-email" name="email" value="<?= esc($user['email'] ?? '', 'attr'); ?>">
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="settings-password">Password Baru</label>

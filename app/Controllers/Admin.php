@@ -6,6 +6,7 @@ use App\Models\AnakStatusGiziModel;
 use App\Models\AdminModel;
 use App\Models\AnakModel;
 use App\Models\HasilDiagnosaModel;
+use App\Libraries\RoleAccess;
 
 class Admin extends BaseController
 {
@@ -141,7 +142,13 @@ class Admin extends BaseController
     public function indexUsers()
     {
         $model = new AdminModel();
+        $roleAccess = new RoleAccess();
         $data['tb_users'] = $model->getUsers();
+        $data['roleOptions'] = $roleAccess->roles();
+        $data['permissionRows'] = $roleAccess->menus();
+        $data['permissionActions'] = $roleAccess->actions();
+        $data['rolePermissionMatrix'] = $roleAccess->permissionMatrix();
+
         return view('admin/users/index_users', $data);
     }
 
@@ -180,14 +187,28 @@ class Admin extends BaseController
         }
 
         $nama = trim((string) $this->request->getPost('nama'));
+        $username = $this->normalizeUsername((string) $this->request->getPost('username'));
         $email = trim((string) $this->request->getPost('email'));
 
-        if ($nama === '' || $email === '') {
-            return redirect()->to('/adminsettings')->with('error', 'Nama dan email wajib diisi.');
+        if ($nama === '' || $username === '') {
+            return redirect()->to('/adminsettings')->with('error', 'Nama dan username wajib diisi.');
         }
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (!$this->isValidUsername($username)) {
+            return redirect()->to('/adminsettings')->with('error', 'Username minimal 3 karakter dan hanya boleh huruf, angka, titik, strip, atau underscore.');
+        }
+
+        if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return redirect()->to('/adminsettings')->with('error', 'Format email tidak valid.');
+        }
+
+        $usernameExists = $model
+            ->where('username', $username)
+            ->where('id_users !=', $userId)
+            ->first();
+
+        if ($usernameExists) {
+            return redirect()->to('/adminsettings')->with('error', 'Username sudah digunakan admin lain.');
         }
 
         $emailExists = $model
@@ -195,12 +216,13 @@ class Admin extends BaseController
             ->where('id_users !=', $userId)
             ->first();
 
-        if ($emailExists) {
+        if ($email !== '' && $emailExists) {
             return redirect()->to('/adminsettings')->with('error', 'Email sudah digunakan admin lain.');
         }
 
         $payload = [
             'nama' => $nama,
+            'username' => $username,
             'email' => $email,
         ];
 
@@ -233,6 +255,7 @@ class Admin extends BaseController
 
         $model->update($userId, $payload);
         session()->set('nama', $nama);
+        session()->set('username', $username);
         session()->set('email', $email);
 
         return redirect()->to('/adminsettings')->with('success', 'Profil admin berhasil diperbarui.');
@@ -861,18 +884,27 @@ class Admin extends BaseController
         $model = new AdminModel();
 
         $nama = trim((string) $this->request->getPost('nama'));
+        $username = $this->normalizeUsername((string) $this->request->getPost('username'));
         $email = trim((string) $this->request->getPost('email'));
         $password = trim((string) $this->request->getPost('password'));
 
-        if ($nama === '' || $email === '' || $password === '') {
-            return redirect()->to('/adminusers')->with('error', 'Nama, email, dan password wajib diisi.');
+        if ($nama === '' || $username === '' || $password === '') {
+            return redirect()->to('/adminusers')->with('error', 'Nama, username, dan password wajib diisi.');
         }
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (!$this->isValidUsername($username)) {
+            return redirect()->to('/adminusers')->with('error', 'Username minimal 3 karakter dan hanya boleh huruf, angka, titik, strip, atau underscore.');
+        }
+
+        if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return redirect()->to('/adminusers')->with('error', 'Format email tidak valid.');
         }
 
-        if (db_connect()->table('tb_users')->where('email', $email)->countAllResults() > 0) {
+        if (db_connect()->table('tb_users')->where('username', $username)->countAllResults() > 0) {
+            return redirect()->to('/adminusers')->with('error', 'Username sudah digunakan.');
+        }
+
+        if ($email !== '' && db_connect()->table('tb_users')->where('email', $email)->countAllResults() > 0) {
             return redirect()->to('/adminusers')->with('error', 'Email sudah digunakan.');
         }
 
@@ -880,6 +912,7 @@ class Admin extends BaseController
 
         $data = [
             'nama' => $nama,
+            'username' => $username,
             'email' => $email,
             'password' => $password,
             'role' => $role,
@@ -916,10 +949,41 @@ class Admin extends BaseController
     {
         $model = new AdminModel();
         $user = $model->getUserById($id);
+        $id = (int) $id;
+
+        if (!$user) {
+            return redirect()->to('/adminusers')->with('error', 'Data admin tidak ditemukan.');
+        }
+
+        $nama = trim((string) $this->request->getPost('nama'));
+        $username = $this->normalizeUsername((string) $this->request->getPost('username'));
+        $email = trim((string) $this->request->getPost('email'));
+
+        if ($nama === '' || $username === '') {
+            return redirect()->to('/adminusers')->with('error', 'Nama dan username wajib diisi.');
+        }
+
+        if (!$this->isValidUsername($username)) {
+            return redirect()->to('/adminusers')->with('error', 'Username minimal 3 karakter dan hanya boleh huruf, angka, titik, strip, atau underscore.');
+        }
+
+        if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return redirect()->to('/adminusers')->with('error', 'Format email tidak valid.');
+        }
+
+        $db = db_connect();
+        if ($db->table('tb_users')->where('username', $username)->where('id_users !=', $id)->countAllResults() > 0) {
+            return redirect()->to('/adminusers')->with('error', 'Username sudah digunakan.');
+        }
+
+        if ($email !== '' && $db->table('tb_users')->where('email', $email)->where('id_users !=', $id)->countAllResults() > 0) {
+            return redirect()->to('/adminusers')->with('error', 'Email sudah digunakan.');
+        }
 
         $data = [
-            'nama' => $this->request->getPost('nama'),
-            'email' => $this->request->getPost('email'),
+            'nama' => $nama,
+            'username' => $username,
+            'email' => $email,
             'role' => $this->normalizeAdminRole((string) $this->request->getPost('role')),
         ];
 
@@ -964,11 +1028,48 @@ class Admin extends BaseController
 
     private function normalizeAdminRole(string $role): string
     {
-        return match (strtolower(trim($role))) {
-            'admin2' => 'admin2',
-            'admin3', '1', 'user' => 'admin3',
-            default => 'admin1',
-        };
+        return (new RoleAccess())->normalizeRole($role);
+    }
+
+    private function normalizeUsername(string $username): string
+    {
+        $username = strtolower(trim($username));
+        $username = preg_replace('/\s+/', '.', $username) ?? '';
+        $username = preg_replace('/[^a-z0-9._-]/', '', $username) ?? '';
+
+        return trim($username, '._-');
+    }
+
+    private function isValidUsername(string $username): bool
+    {
+        return (bool) preg_match('/^[a-z0-9._-]{3,50}$/', $username);
+    }
+
+    public function createRole()
+    {
+        $roleAccess = new RoleAccess();
+        $code = (string) $this->request->getPost('role_code');
+        $name = (string) $this->request->getPost('role_name');
+
+        if (!$roleAccess->createRole($code, $name)) {
+            return redirect()->to('/adminusers')->with('error', 'Role gagal ditambahkan. Pastikan kode role unik dan nama role terisi.');
+        }
+
+        return redirect()->to('/adminusers')->with('success', 'Role baru berhasil ditambahkan.');
+    }
+
+    public function updateRoleAccess()
+    {
+        $roleAccess = new RoleAccess();
+        $role = (string) $this->request->getPost('role');
+        $permissions = $this->request->getPost('permissions');
+        $permissions = is_array($permissions) ? $permissions : [];
+
+        if (!$roleAccess->savePermissions($role, $permissions)) {
+            return redirect()->to('/adminusers')->with('error', 'Mapping hak akses gagal disimpan.');
+        }
+
+        return redirect()->to('/adminusers')->with('success', 'Mapping hak akses berhasil disimpan.');
     }
 
     private function parseStatusGiziRows(string $html, string $fileName): array

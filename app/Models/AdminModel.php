@@ -121,7 +121,7 @@ class AdminModel extends Model
     {
         $this->table = 'tb_users';
         $this->primaryKey = 'id_users';
-        $this->allowedFields = ['nama', 'email', 'password', 'role', 'foto', 'created_at'];
+        $this->allowedFields = ['nama', 'username', 'email', 'password', 'role', 'foto', 'created_at'];
         return $this->insert($data);
     }
 
@@ -145,7 +145,7 @@ class AdminModel extends Model
     {
         $this->table = 'tb_users';
         $this->primaryKey = 'id_users';
-        $this->allowedFields = ['nama', 'email', 'password', 'role', 'foto'];
+        $this->allowedFields = ['nama', 'username', 'email', 'password', 'role', 'foto'];
         return $this->update($id, $data);
     }
 }

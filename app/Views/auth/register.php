@@ -29,46 +29,34 @@
                             <div class="brand-logo">
                                 <img src="<?= base_url('assets/skydash/images/logo.svg') ?>" alt="logo">
                             </div>
-                            <h4>New here?</h4>
-                            <h6 class="font-weight-light">Signing up is easy. It only takes a few steps</h6>
-                            <form class="pt-3">
+                            <h4>Tambah Admin</h4>
+                            <h6 class="font-weight-light">Buat akun admin dengan username untuk login.</h6>
+                            <?php if (session()->getFlashdata('error')): ?>
+                                <div class="alert alert-danger"><?= esc(session()->getFlashdata('error')); ?></div>
+                            <?php endif; ?>
+                            <form class="pt-3" method="post" action="<?= base_url('register') ?>">
+                                <?= csrf_field() ?>
                                 <div class="form-group">
                                     <input type="text" class="form-control form-control-lg" id="exampleInputUsername1"
-                                        placeholder="Username">
+                                        name="nama" placeholder="Nama Admin" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control form-control-lg" id="exampleInputLoginUsername"
+                                        name="username" placeholder="Username" required>
                                 </div>
                                 <div class="form-group">
                                     <input type="email" class="form-control form-control-lg" id="exampleInputEmail1"
-                                        placeholder="Email">
-                                </div>
-                                <div class="form-group">
-                                    <select class="form-control form-control-lg" id="exampleFormControlSelect2">
-                                        <option>Country</option>
-                                        <option>United States of America</option>
-                                        <option>United Kingdom</option>
-                                        <option>India</option>
-                                        <option>Germany</option>
-                                        <option>Argentina</option>
-                                    </select>
+                                        name="email" placeholder="Email">
                                 </div>
                                 <div class="form-group">
                                     <input type="password" class="form-control form-control-lg"
-                                        id="exampleInputPassword1" placeholder="Password">
-                                </div>
-                                <div class="mb-4">
-                                    <div class="form-check">
-                                        <label class="form-check-label text-muted">
-                                            <input type="checkbox" class="form-check-input">
-                                            I agree to all Terms & Conditions
-                                        </label>
-                                    </div>
+                                        id="exampleInputPassword1" name="password" placeholder="Password" required>
                                 </div>
                                 <div class="mt-3">
-                                    <a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                                        href="<?= base_url('index.html') ?>">SIGN UP</a>
+                                    <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">Simpan Admin</button>
                                 </div>
                                 <div class="text-center mt-4 font-weight-light">
-                                    Already have an account? <a href="<?= base_url('login') ?>"
-                                        class="text-primary">Login</a>
+                                    Sudah punya akun? <a href="<?= base_url('login') ?>" class="text-primary">Login</a>
                                 </div>
                             </form>
                         </div>

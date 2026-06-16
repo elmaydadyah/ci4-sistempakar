@@ -223,6 +223,7 @@ $summaryCards = [
             <?php if (!empty($recentDiagnosisRows)): ?>
               <?php foreach ($recentDiagnosisRows as $row): ?>
                 <?php $initial = strtoupper(substr((string) ($row['nama'] ?? 'A'), 0, 1)); ?>
+                <?php $detailAnakUrl = !empty($row['id_anak']) ? base_url('adminanak?anak=' . $row['id_anak']) : base_url('adminanak'); ?>
                 <div class="admin-applicant-item" data-search="<?= esc(strtolower(trim(($row['nama'] ?? '') . ' ' . ($row['nama_kasus'] ?? ''))), 'attr'); ?>">
                   <div class="admin-avatar"><?= esc($initial); ?></div>
                   <div>
@@ -230,9 +231,7 @@ $summaryCards = [
                     <span><?= esc($row['nama_kasus'] ?? 'Belum ada indikasi'); ?></span>
                   </div>
                   <div class="admin-action-icons">
-                    <a href="<?= base_url('adminhasildiagnosa'); ?>" aria-label="Lihat diagnosa"><i class="ti-eye"></i></a>
-                    <a href="<?= base_url('adminhasildiagnosa'); ?>" aria-label="Analisis diagnosa"><i class="ti-bar-chart"></i></a>
-                    <a href="<?= base_url('adminhasildiagnosa'); ?>" aria-label="Tandai diagnosa"><i class="ti-check"></i></a>
+                    <a href="<?= esc($detailAnakUrl, 'attr'); ?>" aria-label="Lihat detail anak"><i class="ti-eye"></i></a>
                   </div>
                 </div>
               <?php endforeach; ?>

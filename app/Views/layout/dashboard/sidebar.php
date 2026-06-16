@@ -1,17 +1,22 @@
 <div class="container-fluid page-body-wrapper">
   <?php
+  $roleAccess = new \App\Libraries\RoleAccess();
   $currentPath = trim(uri_string(), '/');
-  $role = match (strtolower(trim((string) (session()->get('role') ?? 'admin1')))) {
-    'admin2' => 'admin2',
-    'admin3', '1', 'user' => 'admin3',
-    default => 'admin1',
-  };
-  $roleMenus = [
-    'admin1' => ['admingejala', 'adminhipotesis', 'adminusers', 'adminanak', 'adminstatusgizi', 'adminstandar', 'adminrulebased', 'adminprior', 'adminlikelihood', 'adminnilaiprobabilitas', 'adminhasildiagnosa'],
-    'admin2' => ['adminanak', 'adminstatusgizi', 'adminhasildiagnosa'],
-    'admin3' => ['adminanak', 'adminstatusgizi', 'adminhasildiagnosa'],
+  $role = $roleAccess->normalizeRole((string) (session()->get('role') ?? 'admin1'));
+  $menuMap = [
+    'admingejala' => 'gejala',
+    'adminhipotesis' => 'hipotesis',
+    'adminusers' => 'users',
+    'adminanak' => 'anak',
+    'adminstatusgizi' => 'statusgizi',
+    'adminstandar' => 'standar',
+    'adminrulebased' => 'rulebased',
+    'adminprior' => 'prior',
+    'adminlikelihood' => 'likelihood',
+    'adminnilaiprobabilitas' => 'nilaiprobabilitas',
+    'adminhasildiagnosa' => 'hasildiagnosa',
   ];
-  $canSee = static fn (string $menu): bool => in_array($menu, $roleMenus[$role] ?? [], true);
+  $canSee = static fn (string $menu): bool => $roleAccess->hasPermission($role, $menuMap[$menu] ?? $menu, 'lihat');
   $isDashboard = $currentPath === 'dashboard';
   $isDataUtama = in_array($currentPath, ['adminanak', 'adminstatusgizi', 'adminhasildiagnosa', 'adminusers'], true);
   $isPerhitungan = in_array($currentPath, ['admingejala', 'adminhipotesis', 'adminstandar', 'adminrulebased', 'adminprior', 'adminlikelihood', 'adminnilaiprobabilitas'], true);

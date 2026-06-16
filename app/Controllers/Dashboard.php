@@ -60,7 +60,7 @@ class Dashboard extends BaseController
             $diagnosisClassDailyChart = $this->getDiagnosisClassDailyChart($db);
             $diagnosisClassTotalChart = $this->getDiagnosisClassTotalChart($db);
             $recentDiagnosisRows = $db->table('tb_hasil_diagnosa')
-                ->select('nama, umur, nama_kasus, persentase, jumlah_gejala, created_at')
+                ->select('id_anak, nama, umur, nama_kasus, persentase, jumlah_gejala, created_at')
                 ->orderBy('id_hasil_diagnosa', 'DESC')
                 ->get(5)
                 ->getResultArray();

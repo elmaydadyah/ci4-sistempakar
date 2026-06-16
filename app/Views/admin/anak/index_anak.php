@@ -68,7 +68,7 @@ $canManageAnak = in_array($adminRole, ['admin1', 'admin2'], true);
                         </div>
                         <?php if (!empty($filter['anak'])): ?>
                             <div class="alert alert-info py-2 mb-3">
-                                Menampilkan detail data anak dari hasil diagnosa. <a href="<?= base_url('adminanak'); ?>">Lihat semua data anak</a>
+                                Menampilkan detail data anak dari hasil diagnosa. <a class="admin-inline-link" href="<?= base_url('adminanak'); ?>">Lihat semua data anak</a>
                             </div>
                         <?php endif; ?>
                         <div class="table-responsive">

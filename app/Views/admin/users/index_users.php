@@ -1,8 +1,70 @@
 <?php
-$roleOptions = [
+$roleOptions = $roleOptions ?? [
     'admin1' => 'Admin 1 - Full akses',
     'admin2' => 'Admin 2 - Data operasional',
     'admin3' => 'Admin 3 - Lihat data',
+];
+$permissionRows = $permissionRows ?? [
+    ['key' => 'dashboard', 'menu' => 'Dashboard', 'category' => '-'],
+    ['key' => 'anak', 'menu' => 'Data Anak', 'category' => 'Data Utama'],
+    ['key' => 'statusgizi', 'menu' => 'Data Terdahulu', 'category' => 'Data Utama'],
+    ['key' => 'hasildiagnosa', 'menu' => 'Hasil Diagnosa', 'category' => 'Data Utama'],
+    ['key' => 'users', 'menu' => 'Data Users', 'category' => 'Data Utama'],
+    ['key' => 'gejala', 'menu' => 'Data Gejala', 'category' => 'Basis Perhitungan'],
+    ['key' => 'hipotesis', 'menu' => 'Data Hipotesis', 'category' => 'Basis Perhitungan'],
+    ['key' => 'standar', 'menu' => 'Standar Antropometri', 'category' => 'Basis Perhitungan'],
+    ['key' => 'rulebased', 'menu' => 'Rule Based', 'category' => 'Basis Perhitungan'],
+    ['key' => 'prior', 'menu' => 'Prior Naive Bayes', 'category' => 'Basis Perhitungan'],
+    ['key' => 'likelihood', 'menu' => 'Probabilitas Antropometri', 'category' => 'Basis Perhitungan'],
+    ['key' => 'nilaiprobabilitas', 'menu' => 'Probabilitas Gejala', 'category' => 'Basis Perhitungan'],
+    ['key' => 'settings', 'menu' => 'Pengaturan Profil', 'category' => 'Akun'],
+];
+$rolePermissionMatrix = $rolePermissionMatrix ?? [
+    'admin1' => [
+        'dashboard' => ['lihat' => true, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'anak' => ['lihat' => true, 'tambah' => false, 'edit' => true, 'hapus' => true],
+        'statusgizi' => ['lihat' => true, 'tambah' => true, 'edit' => false, 'hapus' => false],
+        'hasildiagnosa' => ['lihat' => true, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'users' => ['lihat' => true, 'tambah' => true, 'edit' => true, 'hapus' => true],
+        'gejala' => ['lihat' => true, 'tambah' => true, 'edit' => true, 'hapus' => true],
+        'hipotesis' => ['lihat' => true, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'standar' => ['lihat' => true, 'tambah' => false, 'edit' => true, 'hapus' => false],
+        'rulebased' => ['lihat' => true, 'tambah' => true, 'edit' => true, 'hapus' => true],
+        'prior' => ['lihat' => true, 'tambah' => false, 'edit' => true, 'hapus' => false],
+        'likelihood' => ['lihat' => true, 'tambah' => false, 'edit' => true, 'hapus' => false],
+        'nilaiprobabilitas' => ['lihat' => true, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'settings' => ['lihat' => true, 'tambah' => false, 'edit' => true, 'hapus' => false],
+    ],
+    'admin2' => [
+        'dashboard' => ['lihat' => true, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'anak' => ['lihat' => true, 'tambah' => false, 'edit' => true, 'hapus' => true],
+        'statusgizi' => ['lihat' => true, 'tambah' => true, 'edit' => false, 'hapus' => false],
+        'hasildiagnosa' => ['lihat' => true, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'users' => ['lihat' => false, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'gejala' => ['lihat' => false, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'hipotesis' => ['lihat' => false, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'standar' => ['lihat' => false, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'rulebased' => ['lihat' => false, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'prior' => ['lihat' => false, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'likelihood' => ['lihat' => false, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'nilaiprobabilitas' => ['lihat' => false, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'settings' => ['lihat' => true, 'tambah' => false, 'edit' => true, 'hapus' => false],
+    ],
+    'admin3' => [
+        'dashboard' => ['lihat' => true, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'anak' => ['lihat' => true, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'statusgizi' => ['lihat' => true, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'hasildiagnosa' => ['lihat' => true, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'users' => ['lihat' => false, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'gejala' => ['lihat' => false, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'hipotesis' => ['lihat' => false, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'standar' => ['lihat' => false, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'rulebased' => ['lihat' => false, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'prior' => ['lihat' => false, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'likelihood' => ['lihat' => false, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'nilaiprobabilitas' => ['lihat' => false, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'settings' => ['lihat' => true, 'tambah' => false, 'edit' => true, 'hapus' => false],
+    ],
 ];
 $normalizeRole = static function ($role): string {
     return match (strtolower(trim((string) $role))) {
@@ -11,6 +73,50 @@ $normalizeRole = static function ($role): string {
         default => 'admin1',
     };
 };
+$renderPermissionTable = static function (string $role, array $rows, array $matrix): void {
+    $actions = $GLOBALS['permissionActionsForView'] ?? ['lihat' => 'Lihat', 'tambah' => 'Tambah', 'edit' => 'Edit', 'hapus' => 'Hapus'];
+    ?>
+    <div class="table-responsive admin-access-table-wrap">
+        <table class="table admin-access-table" data-access-table>
+            <thead>
+                <tr>
+                    <th>Menu</th>
+                    <th>Kategori</th>
+                    <?php foreach ($actions as $label): ?>
+                        <th><?= esc($label); ?></th>
+                    <?php endforeach; ?>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($rows as $row): ?>
+                    <tr>
+                        <td>
+                            <span class="admin-access-menu">
+                                <i class="ti-check-box"></i>
+                                <?= esc($row['menu']); ?>
+                            </span>
+                        </td>
+                        <td><?= esc($row['category']); ?></td>
+                        <?php foreach (array_keys($actions) as $action): ?>
+                            <?php $checked = !empty($matrix[$role][$row['key']][$action]); ?>
+                            <td>
+                                <input type="checkbox"
+                                    class="admin-access-check"
+                                    name="permissions[<?= esc($row['key'], 'attr'); ?>][<?= esc($action, 'attr'); ?>]"
+                                    value="1"
+                                    data-menu="<?= esc($row['key'], 'attr'); ?>"
+                                    data-action="<?= esc($action, 'attr'); ?>"
+                                    <?= $checked ? 'checked' : ''; ?>>
+                            </td>
+                        <?php endforeach; ?>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php
+};
+$GLOBALS['permissionActionsForView'] = $permissionActions ?? ['lihat' => 'Lihat', 'tambah' => 'Tambah', 'edit' => 'Edit', 'hapus' => 'Hapus'];
 ?>
 <?= $this->include('layout/dashboard/header') ?>
 <?= $this->include('layout/dashboard/navbar') ?>
@@ -43,6 +149,41 @@ $normalizeRole = static function ($role): string {
                                 <?= session()->getFlashdata('error'); ?>
                             </div>
                         <?php endif; ?>
+                        <div class="admin-access-card">
+                            <div class="admin-access-head">
+                                <div>
+                                    <h5>Hak Akses Admin</h5>
+                                    <p>Pilih role, centang akses menu dan aksi CRUD, lalu simpan mapping.</p>
+                                </div>
+                                <form class="admin-role-create-form" method="post" action="<?= base_url('/admin/createRole'); ?>">
+                                    <?= csrf_field() ?>
+                                    <label>
+                                        <span>Kode Role</span>
+                                        <input type="text" class="form-control form-control-sm" name="role_code" placeholder="contoh: admin4" required>
+                                    </label>
+                                    <label>
+                                        <span>Nama Role</span>
+                                        <input type="text" class="form-control form-control-sm" name="role_name" placeholder="contoh: Petugas Gizi" required>
+                                    </label>
+                                    <button type="submit" class="btn btn-primary btn-sm">Tambah Role</button>
+                                </form>
+                            </div>
+                            <form method="post" action="<?= base_url('/admin/updateRoleAccess'); ?>">
+                                <?= csrf_field() ?>
+                                <div class="admin-access-role-control">
+                                    <label>
+                                        <span>Mapping Role</span>
+                                        <select class="form-control form-control-sm" name="role" data-access-role>
+                                            <?php foreach ($roleOptions as $roleValue => $roleLabel): ?>
+                                                <option value="<?= esc($roleValue, 'attr'); ?>"><?= esc($roleLabel); ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </label>
+                                    <button type="submit" class="btn btn-primary btn-sm">Simpan Mapping</button>
+                                </div>
+                                <?php $renderPermissionTable(array_key_first($roleOptions) ?: 'admin1', $permissionRows, $rolePermissionMatrix); ?>
+                            </form>
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-hover admin-data-table">
                                 <thead>
@@ -50,6 +191,7 @@ $normalizeRole = static function ($role): string {
                                         <th>No.</th>
                                         <th>Id User</th>
                                         <th>Nama User</th>
+                                        <th>Username</th>
                                         <th>Email</th>
                                         <th>Role</th>
                                         <th>created At</th>
@@ -75,7 +217,10 @@ $normalizeRole = static function ($role): string {
                                                     <?= esc($user['nama']); ?>
                                                 </td>
                                                 <td>
-                                                    <?= esc($user['email']); ?>
+                                                    <?= esc($user['username'] ?? '-'); ?>
+                                                </td>
+                                                <td>
+                                                    <?= esc($user['email'] ?? '-'); ?>
                                                 </td>
                                                 <td>
                                                     <?= esc($roleLabel); ?>
@@ -89,7 +234,8 @@ $normalizeRole = static function ($role): string {
                                                         data-target="#editUserModal"
                                                         data-id="<?= $user['id_users']; ?>"
                                                         data-nama="<?= esc($user['nama']); ?>"
-                                                        data-email="<?= esc($user['email']); ?>"
+                                                        data-username="<?= esc($user['username'] ?? '', 'attr'); ?>"
+                                                        data-email="<?= esc($user['email'] ?? '', 'attr'); ?>"
                                                         data-role="<?= esc($roleValue); ?>">Edit</button>
                                                     <a href="<?= base_url('/admin/deleteUser/' . $user['id_users']); ?>"
                                                         class="btn btn-danger btn-sm"
@@ -100,7 +246,7 @@ $normalizeRole = static function ($role): string {
                                         <?php endforeach; ?>
                                     <?php else: ?>
                                         <tr class="admin-empty-row">
-                                            <td colspan="7">Data tidak tersedia.</td>
+                                            <td colspan="8">Data tidak tersedia.</td>
                                         </tr>
                                     <?php endif; ?>
                                 </tbody>
@@ -130,8 +276,13 @@ $normalizeRole = static function ($role): string {
                             <input type="text" class="form-control" id="create-nama" name="nama" required>
                         </div>
                         <div class="form-group">
+                            <label for="create-username">Username</label>
+                            <input type="text" class="form-control" id="create-username" name="username" minlength="3" maxlength="50" required>
+                            <small class="text-muted">Dipakai untuk login admin.</small>
+                        </div>
+                        <div class="form-group">
                             <label for="create-email">Email</label>
-                            <input type="email" class="form-control" id="create-email" name="email" required>
+                            <input type="email" class="form-control" id="create-email" name="email">
                         </div>
                         <div class="form-group">
                             <label for="create-password">Password</label>
@@ -178,8 +329,13 @@ $normalizeRole = static function ($role): string {
                             <input type="text" class="form-control" id="edit-nama" name="nama" required>
                         </div>
                         <div class="form-group">
+                            <label for="edit-username">Username</label>
+                            <input type="text" class="form-control" id="edit-username" name="username" minlength="3" maxlength="50" required>
+                            <small class="text-muted">Dipakai untuk login admin.</small>
+                        </div>
+                        <div class="form-group">
                             <label for="edit-email">Email</label>
-                            <input type="email" class="form-control" id="edit-email" name="email" required>
+                            <input type="email" class="form-control" id="edit-email" name="email">
                         </div>
                         <div class="form-group">
                             <label for="edit-role">Role</label>
@@ -210,12 +366,32 @@ $normalizeRole = static function ($role): string {
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            var accessMatrix = <?= json_encode($rolePermissionMatrix, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
+
+            function updateAccessTable(scope, role) {
+                var matrix = accessMatrix[role] || accessMatrix.admin3 || {};
+                scope.querySelectorAll('[data-access-table] .admin-access-check').forEach(function (checkbox) {
+                    var menu = checkbox.getAttribute('data-menu') || '';
+                    var action = checkbox.getAttribute('data-action') || '';
+                    checkbox.checked = Boolean(matrix[menu] && matrix[menu][action]);
+                });
+            }
+
+            document.querySelectorAll('[data-access-role]').forEach(function (select) {
+                var scope = select.closest('.modal-content') || select.closest('.admin-access-card') || document;
+                select.addEventListener('change', function () {
+                    updateAccessTable(scope, select.value);
+                });
+                updateAccessTable(scope, select.value);
+            });
+
             $('#editUserModal').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
                 var id = button.data('id');
 
                 $('#editUserForm').attr('action', '<?= base_url('/admin/updateUser'); ?>/' + id);
                 $('#edit-nama').val(button.data('nama'));
+                $('#edit-username').val(button.data('username'));
                 $('#edit-email').val(button.data('email'));
                 $('#edit-role').val(button.data('role'));
                 $('#edit-password').val('');

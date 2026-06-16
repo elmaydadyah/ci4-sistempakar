@@ -895,6 +895,139 @@
     white-space: normal;
 }
 
+.admin-access-card {
+    margin: 1rem 0 1.25rem;
+    padding: 1rem;
+    border: 1px solid #edf0f6;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.admin-access-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: .75rem;
+    flex-wrap: wrap;
+}
+
+.admin-access-head h5 {
+    margin: 0;
+    color: #072618;
+    font-size: 15px;
+    font-weight: 900;
+}
+
+.admin-access-head p {
+    margin: .25rem 0 0;
+    color: #7b8599;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.admin-access-head label {
+    display: grid;
+    gap: .25rem;
+    min-width: 220px;
+    margin: 0;
+}
+
+.admin-access-head label span,
+.admin-access-role-control label span {
+    color: #7b8599;
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.admin-role-create-form,
+.admin-access-role-control {
+    display: flex;
+    align-items: end;
+    justify-content: flex-end;
+    gap: .6rem;
+    flex-wrap: wrap;
+}
+
+.admin-role-create-form label,
+.admin-access-role-control label {
+    display: grid;
+    gap: .25rem;
+    min-width: 180px;
+    margin: 0;
+}
+
+.admin-access-role-control {
+    justify-content: space-between;
+    margin-bottom: .75rem;
+    padding: .85rem;
+    border: 1px solid #edf0f6;
+    border-radius: 8px;
+    background: #fbfcff;
+}
+
+.admin-access-table-wrap {
+    border: 1px solid #edf0f6;
+    border-radius: 8px;
+    overflow: auto;
+}
+
+.admin-access-table {
+    min-width: 780px;
+    margin-bottom: 0;
+}
+
+.admin-access-table th {
+    border-top: 0;
+    border-bottom: 1px solid #dfe4ee;
+    color: #002a52;
+    background: #ffffff;
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.admin-access-table td {
+    height: 58px;
+    border-top: 1px solid #edf0f6;
+    color: #002a52;
+    font-size: 13px;
+    font-weight: 700;
+    vertical-align: middle;
+}
+
+.admin-access-table th:nth-child(n+3),
+.admin-access-table td:nth-child(n+3) {
+    text-align: center;
+}
+
+.admin-access-menu {
+    display: inline-flex;
+    align-items: center;
+    gap: .55rem;
+}
+
+.admin-access-menu i {
+    color: #2563eb;
+    font-size: 13px;
+}
+
+.admin-access-check {
+    width: 15px;
+    height: 15px;
+    accent-color: #2563eb;
+}
+
+.admin-access-check:not(:checked) {
+    opacity: .28;
+}
+
+.admin-access-check:focus {
+    outline: 3px solid rgba(37, 99, 235, .18);
+    outline-offset: 2px;
+}
+
 .admin-empty-row td {
     height: 78px;
     color: #8b93a5;
@@ -1702,6 +1835,16 @@
     color: #072618;
     font-size: 12px;
     font-weight: 700;
+}
+
+.admin-inline-link {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.admin-inline-link:hover,
+.admin-inline-link:focus {
+    text-decoration-thickness: 2px;
 }
 
 .admin-applicant-list {

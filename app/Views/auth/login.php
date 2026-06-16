@@ -29,8 +29,8 @@
             <div class="login-form-panel">
                 <div class="login-form-wrap">
                     <p class="login-kicker">Welcome back</p>
-                    <h2>Masuk Akun</h2>
-                    <p class="login-subtitle">Gunakan email dan password yang sudah terdaftar.</p>
+                    <h2>Masuk Akun Sebagai Admin</h2>
+                    <p class="login-subtitle">Gunakan username dan password yang sudah terdaftar.</p>
 
                     <?php if (session()->getFlashdata('error')): ?>
                         <div class="alert alert-danger">
@@ -41,12 +41,12 @@
                     <form action="<?= base_url('login') ?>" method="post">
                         <?= csrf_field() ?>
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan email" required>
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Masukkan username" autocomplete="username" required>
                         </div>
                         <div class="form-group">
                             <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password" required>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password" autocomplete="current-password" required>
                         </div>
                         <div class="login-actions">
                             <button type="submit" class="btn-login">Login</button>

@@ -46,7 +46,7 @@ $profileNamaEsc = htmlspecialchars((string) $profileNama, ENT_QUOTES, 'UTF-8');
           <img src="<?= $profileFoto; ?>" alt="<?= $profileNamaEsc; ?>" />
           <span class="dashboard-welcome-copy">
             <strong>Welcome, <?= $profileNamaEsc; ?></strong>
-            <small>Kelola dashboard Puskesmas hari ini</small>
+            <small>Dashboard Admin</small>
           </span>
         </a>
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
