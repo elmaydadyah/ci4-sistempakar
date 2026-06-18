@@ -51,8 +51,10 @@ $canManageAnak = in_array($adminRole, ['admin1', 'admin2'], true);
                                 <label for="anakTanggalSelesai">Sampai</label>
                                 <input type="date" id="anakTanggalSelesai" name="tanggal_selesai" class="form-control form-control-sm" value="<?= esc($filter['tanggal_selesai'] ?? '', 'attr'); ?>">
                             </div>
-                            <button type="submit" class="btn btn-primary btn-sm">Terapkan</button>
-                            <a class="btn btn-light btn-sm" href="<?= base_url('adminanak'); ?>">Reset</a>
+                            <div class="mt-2 w-100 d-flex gap-2">
+                                <button type="submit" class="btn btn-primary btn-sm mr-2">Terapkan</button>
+                                <a class="btn btn-light btn-sm" href="<?= base_url('adminanak'); ?>">Reset</a>
+                            </div>
                         </form>
                     </div>
                 </div>

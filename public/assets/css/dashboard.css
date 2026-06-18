@@ -2189,7 +2189,7 @@
     }
 
     .content-wrapper {
-        padding: .9rem .75rem;
+        padding: 1.25rem 1.25rem !important;
     }
 
     .admin-dashboard {
@@ -2379,5 +2379,271 @@
 
     .admin-summary-card {
         align-items: flex-start;
+    }
+}
+
+/* Mobile dashboard polish: cegah overflow horizontal dan samakan gutter konten. */
+@media (max-width: 991px) {
+    html,
+    body,
+    .container-scroller,
+    .page-body-wrapper,
+    .main-panel {
+        max-width: 100%;
+        overflow-x: clip;
+    }
+
+    .navbar.dashboard-navbar {
+        max-width: 100vw;
+        overflow: hidden;
+    }
+
+    .navbar .navbar-brand-wrapper {
+        min-width: 58px;
+        padding-left: .65rem;
+        padding-right: .45rem;
+    }
+
+    .navbar .navbar-menu-wrapper {
+        flex: 1 1 auto;
+        min-width: 0;
+        padding-left: .25rem;
+        padding-right: .65rem;
+    }
+
+    .navbar .dashboard-navbar-profile {
+        flex: 0 1 auto;
+    }
+
+    .content-wrapper,
+    .content-wrapper.admin-dashboard {
+        width: 100%;
+        max-width: 100%;
+        padding: 1rem .875rem !important;
+        overflow-x: visible;
+    }
+
+    .content-wrapper > .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .content-wrapper > .row > [class*="col-"] {
+        padding-left: 0;
+        padding-right: 0;
+        min-width: 0;
+    }
+
+    .content-wrapper:not(.admin-dashboard) .card,
+    .content-wrapper:not(.admin-dashboard) .card-body,
+    .content-wrapper:not(.admin-dashboard) .dataTables_wrapper {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .content-wrapper:not(.admin-dashboard) .card {
+        overflow: hidden;
+    }
+
+    .content-wrapper:not(.admin-dashboard) .card .card-body {
+        overflow: visible;
+    }
+
+    .admin-table-toolbar,
+    .admin-table-toolbar > div,
+    .admin-table-toolbar-actions,
+    .admin-filter-control {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .admin-table-toolbar-actions {
+        align-items: stretch;
+    }
+
+    .admin-table-toolbar-actions .btn {
+        white-space: normal;
+    }
+
+    .content-wrapper:not(.admin-dashboard) .dataTables_wrapper > .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .content-wrapper:not(.admin-dashboard) .dataTables_wrapper > .row > [class*="col-"] {
+        padding-left: 0;
+        padding-right: 0;
+        min-width: 0;
+    }
+
+    .sidebar-offcanvas {
+        right: -260px !important;
+        width: 260px;
+    }
+
+    .sidebar-offcanvas.active {
+        right: 0 !important;
+    }
+
+    .admin-board,
+    .admin-main-column,
+    .admin-side-column,
+    .admin-panel,
+    .admin-welcome-panel,
+    .admin-summary-card,
+    .footer {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .admin-main-column {
+        overflow: visible;
+    }
+
+    .admin-panel,
+    .admin-welcome-panel {
+        overflow: hidden;
+    }
+
+    .admin-chart-panel,
+    .admin-panel:has(.table-responsive) {
+        overflow: visible;
+    }
+
+    .admin-section-heading {
+        min-width: 0;
+    }
+
+    .admin-section-heading > div,
+    .admin-section-heading h4,
+    .admin-section-heading p {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .admin-heading-actions {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        justify-items: start;
+    }
+
+    .admin-search-input {
+        width: 100%;
+        max-width: 260px;
+    }
+
+    .admin-chart-wrap {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .admin-chart-wrap canvas {
+        max-width: 100% !important;
+    }
+
+    .table-responsive {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table-responsive > .table,
+    .table-responsive > .dataTable,
+    .table-responsive .dataTable {
+        margin-bottom: 0;
+    }
+
+    .admin-data-table,
+    #statusGiziTable,
+    .admin-access-table {
+        width: max-content !important;
+        min-width: 760px;
+    }
+
+    .admin-progress-table {
+        min-width: 620px;
+    }
+
+    .footer {
+        padding-left: .875rem;
+        padding-right: .875rem;
+    }
+}
+
+@media (max-width: 575px) {
+    .content-wrapper,
+    .content-wrapper.admin-dashboard {
+        padding: .875rem .75rem !important;
+    }
+
+    .admin-board,
+    .admin-main-column,
+    .admin-side-column {
+        gap: .875rem;
+    }
+
+    .admin-panel,
+    .admin-welcome-panel {
+        padding: .875rem;
+    }
+
+    .admin-summary-card {
+        gap: .75rem;
+        padding: .875rem;
+    }
+
+    .admin-live-widget {
+        padding: .875rem;
+    }
+
+    .admin-calendar-grid {
+        gap: .45rem .15rem;
+    }
+
+    .admin-calendar-grid span,
+    .admin-calendar-grid button {
+        min-height: 26px;
+        font-size: 11px;
+    }
+
+    .admin-applicant-item {
+        grid-template-columns: 38px minmax(0, 1fr);
+        gap: .65rem;
+    }
+
+    .admin-avatar {
+        width: 38px;
+        height: 38px;
+    }
+
+    .footer {
+        padding-left: .75rem;
+        padding-right: .75rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .navbar .navbar-brand-wrapper {
+        min-width: 52px;
+        padding-left: .5rem;
+        padding-right: .25rem;
+    }
+
+    .navbar .navbar-menu-wrapper {
+        padding-right: .5rem;
+    }
+
+    .navbar .dashboard-navbar-icon {
+        flex-basis: 32px;
+        width: 32px;
+        height: 32px;
+    }
+
+    .admin-summary-card strong,
+    .admin-live-widget strong {
+        font-size: 24px;
     }
 }

@@ -26,17 +26,12 @@ $profileNamaEsc = htmlspecialchars((string) $profileNama, ENT_QUOTES, 'UTF-8');
         <small>Deteksi Dini Risiko Stunting</small>
       </span>
     </a>
-    <a class="navbar-brand brand-logo-mini" href="<?= base_url('dashboard') ?>"><img
-        src="<?= base_url('assets/images/logo/logo_puskesmas.png') ?>" alt="Logo Puskesmas" /></a>
   </div>
   <div class="navbar-menu-wrapper d-flex align-items-center">
     <div class="dashboard-navbar-left">
       <button class="navbar-toggler dashboard-navbar-icon dashboard-navbar-minimize align-self-center" type="button" data-toggle="minimize" aria-label="Tutup sidebar">
         <span class="icon-menu"></span>
       </button>
-      <a class="dashboard-navbar-icon" href="<?= base_url('adminhasildiagnosa') ?>" aria-label="Notifikasi konsultasi">
-        <i class="ti-bell"></i>
-      </a>
     </div>
 
     <ul class="navbar-nav dashboard-navbar-profile">
