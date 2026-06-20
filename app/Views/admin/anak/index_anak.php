@@ -78,7 +78,6 @@ $canManageAnak = in_array($adminRole, ['admin1', 'admin2'], true);
                                 <thead>
                                     <tr>
                                         <th>No.</th>
-                                        <th>ID</th>
                                         <th>Nama Anak</th>
                                         <th>NIK</th>
                                         <th>JK</th>
@@ -109,7 +108,6 @@ $canManageAnak = in_array($adminRole, ['admin1', 'admin2'], true);
                                             ?>
                                             <tr>
                                                 <td><?= $no++; ?></td>
-                                                <td><?= esc((string) ($anak['id_anak'] ?? '-')); ?></td>
                                                 <td>
                                                     <strong><?= esc($anak['nama_anak'] ?? '-'); ?></strong>
                                                     <div class="text-muted small"><?= esc($anak['tanggal_lahir'] ?? '-'); ?></div>
