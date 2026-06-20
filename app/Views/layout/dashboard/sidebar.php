@@ -76,7 +76,7 @@
         <i class="ti-settings"></i>
         <span>Setting</span>
       </a>
-      <a class="sidebar-others-link" href="<?= base_url('logout') ?>">
+      <a class="sidebar-others-link" href="<?= base_url('logout') ?>" data-confirm-title="Konfirmasi Logout" data-confirm-message="Apakah Anda yakin ingin keluar?">
         <i class="ti-shift-right"></i>
         <span>Log out</span>
       </a>

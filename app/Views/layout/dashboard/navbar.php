@@ -45,7 +45,7 @@ $profileNamaEsc = htmlspecialchars((string) $profileNama, ENT_QUOTES, 'UTF-8');
           </span>
         </a>
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-          <a class="dropdown-item" href="<?= base_url('logout') ?>">
+          <a class="dropdown-item" href="<?= base_url('logout') ?>" data-confirm-title="Konfirmasi Logout" data-confirm-message="Apakah Anda yakin ingin keluar?">
             <i class="ti-power-off text-primary"></i>
             Logout
           </a>

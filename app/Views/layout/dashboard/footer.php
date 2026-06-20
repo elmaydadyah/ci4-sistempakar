@@ -44,9 +44,17 @@
     ].join('');
     document.body.appendChild(confirmOverlay);
 
-    function getConfirmMessage(onclickValue) {
-      var match = String(onclickValue || '').match(/confirm\((['"])(.*?)\1\)/);
+    function getConfirmMessage(element) {
+      if (element.dataset.confirmMessage) {
+        return element.dataset.confirmMessage;
+      }
+
+      var match = String(element.getAttribute('onclick') || '').match(/confirm\((['"])(.*?)\1\)/);
       return match ? match[2] : 'Apakah Anda yakin ingin menghapus data ini?';
+    }
+
+    function getConfirmTitle(element) {
+      return element.dataset.confirmTitle || 'Konfirmasi Hapus';
     }
 
     function closeConfirm() {
@@ -55,7 +63,7 @@
     }
 
     document.addEventListener('click', function (event) {
-      var target = event.target.closest('[onclick*="confirm("]');
+      var target = event.target.closest('[onclick*="confirm("], [data-confirm-message]');
       if (!target || target.dataset.confirmApproved === '1') {
         return;
       }
@@ -65,7 +73,8 @@
       event.stopImmediatePropagation();
 
       pendingElement = target;
-      document.getElementById('adminConfirmMessage').textContent = getConfirmMessage(target.getAttribute('onclick'));
+      document.getElementById('adminConfirmTitle').textContent = getConfirmTitle(target);
+      document.getElementById('adminConfirmMessage').textContent = getConfirmMessage(target);
       confirmOverlay.classList.add('is-visible');
       confirmOverlay.querySelector('[data-confirm-ok]').focus();
     }, true);
