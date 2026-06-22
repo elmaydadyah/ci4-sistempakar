@@ -376,13 +376,38 @@ class Admin extends BaseController
             return redirect()->to('/adminanak')->with('error', 'Data anak tidak ditemukan.');
         }
 
+        $db = db_connect();
+        $anakId = (int) $id;
+        $result = false;
+
+        $db->transBegin();
+
         try {
-            $model->delete((int) $id);
+            if ($db->tableExists('tb_hasil_diagnosa')) {
+                $db->table('tb_hasil_diagnosa')
+                    ->where('id_anak', $anakId)
+                    ->delete();
+            }
+
+            if (!$model->delete($anakId)) {
+                throw new \RuntimeException('Gagal menghapus data anak.');
+            }
+
+            $result = $db->transStatus();
         } catch (\Throwable $e) {
-            return redirect()->to('/adminanak')->with('error', 'Data anak gagal dihapus karena masih dipakai data lain.');
+            $result = false;
         }
 
-        return redirect()->to('/adminanak')->with('success', 'Data anak berhasil dihapus.');
+        if ($result) {
+            $db->transCommit();
+        } else {
+            $db->transRollback();
+        }
+
+        return redirect()->to('/adminanak')->with(
+            $result ? 'success' : 'error',
+            $result ? 'Data anak dan hasil diagnosa terkait berhasil dihapus.' : 'Data anak gagal dihapus.'
+        );
     }
 
     public function indexKasusGejala()
@@ -428,11 +453,43 @@ class Admin extends BaseController
             return redirect()->to('/adminhasildiagnosa')->with('error', 'Data hasil diagnosa tidak ditemukan.');
         }
 
-        $result = $model->delete((int) $id);
+        $db = db_connect();
+        $anakId = (int) ($hasil['id_anak'] ?? 0);
+
+        $db->transBegin();
+        $result = false;
+
+        try {
+            $result = $model->delete((int) $id);
+
+            if (!$result) {
+                throw new \RuntimeException('Gagal menghapus hasil diagnosa.');
+            }
+
+            if ($anakId > 0 && $db->tableExists('tb_anak')) {
+                $masihDipakaiHasilLain = $db->table('tb_hasil_diagnosa')
+                    ->where('id_anak', $anakId)
+                    ->countAllResults() > 0;
+
+                if (!$masihDipakaiHasilLain && !(new AnakModel())->delete($anakId)) {
+                    throw new \RuntimeException('Gagal menghapus data anak terkait.');
+                }
+            }
+
+            $result = $db->transStatus();
+        } catch (\Throwable $e) {
+            $result = false;
+        }
+
+        if ($result) {
+            $db->transCommit();
+        } else {
+            $db->transRollback();
+        }
 
         return redirect()->to('/adminhasildiagnosa')->with(
             $result ? 'success' : 'error',
-            $result ? 'Data hasil diagnosa berhasil dihapus.' : 'Gagal menghapus data hasil diagnosa.'
+            $result ? 'Data hasil diagnosa dan data anak terkait berhasil dihapus.' : 'Gagal menghapus data hasil diagnosa.'
         );
     }
 

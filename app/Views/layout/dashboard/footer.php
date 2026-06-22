@@ -62,6 +62,23 @@
       pendingElement = null;
     }
 
+    function preserveTablePage(element) {
+      var selector = element.dataset.preserveTablePage;
+      if (!selector || !window.jQuery || !jQuery.fn.DataTable) {
+        return;
+      }
+
+      var table = document.querySelector(selector);
+      if (!table || !jQuery.fn.DataTable.isDataTable(table)) {
+        return;
+      }
+
+      var tableId = table.id || selector;
+      var key = 'adminTablePage:' + window.location.pathname + ':' + tableId;
+      var page = jQuery(table).DataTable().page();
+      sessionStorage.setItem(key, String(page));
+    }
+
     document.addEventListener('click', function (event) {
       var target = event.target.closest('[onclick*="confirm("], [data-confirm-message]');
       if (!target || target.dataset.confirmApproved === '1') {
@@ -94,6 +111,7 @@
 
       var approvedElement = pendingElement;
       approvedElement.dataset.confirmApproved = '1';
+      preserveTablePage(approvedElement);
       closeConfirm();
 
       if (approvedElement.tagName === 'A' && approvedElement.href) {
@@ -157,6 +175,17 @@
       });
 
       $table.closest('.dataTables_wrapper').find('div[id$=_filter] input').attr('placeholder', 'Cari');
+
+      var tableId = this.id || $table.attr('id');
+      if (tableId) {
+        var pageKey = 'adminTablePage:' + window.location.pathname + ':' + tableId;
+        var savedPage = Number(sessionStorage.getItem(pageKey));
+        sessionStorage.removeItem(pageKey);
+
+        if (!Number.isNaN(savedPage) && savedPage > 0 && savedPage < dataTable.page.info().pages) {
+          dataTable.page(savedPage).draw('page');
+        }
+      }
 
       var filterSelector = $table.data('filter-select');
       var filterColumn = Number($table.data('filter-column'));

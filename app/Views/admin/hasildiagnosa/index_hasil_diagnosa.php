@@ -121,7 +121,7 @@ $formatGejalaDetail = static function ($json): array {
                                                         <?php if ($canDeleteHasilDiagnosa): ?>
                                                             <a class="btn btn-danger btn-sm"
                                                                 href="<?= base_url('admin/deleteHasilDiagnosa/' . ($hasil['id_hasil_diagnosa'] ?? 0)); ?>"
-                                                                onclick="return confirm('Apakah Anda yakin ingin menghapus hasil diagnosa ini?');">Hapus</a>
+                                                                onclick="return confirm('Apakah Anda yakin ingin menghapus hasil diagnosa ini? Data anak terkait juga akan ikut terhapus.');">Hapus</a>
                                                         <?php endif; ?>
                                                     </div>
                                                 </td>

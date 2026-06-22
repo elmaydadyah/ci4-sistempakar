@@ -946,6 +946,10 @@ class Diagnosa extends BaseController
             }
 
             $kode = $mapping['kode'] ?? $key . ':' . strtolower(str_replace(' ', '_', $kategori));
+            if (!$this->bolehMasukGejalaZScore($kode, (string) ($item['label'] ?? ''), $kategori, $item['nilai'] ?? null)) {
+                continue;
+            }
+
             $master = $masterGejala[$kode] ?? [];
 
             $gejala[] = [
@@ -1000,6 +1004,10 @@ class Diagnosa extends BaseController
             $kode = (string) $matchedRule['kode_gejala'];
             $master = $masterGejala[$kode] ?? [];
             $kategori = (string) ($matchedRule['kategori_hasil'] ?? ($item['kategori'] ?? ''));
+            if (!$this->bolehMasukGejalaZScore($kode, $indicator, $kategori, $nilai)) {
+                continue;
+            }
+
             $namaGejala = (string) ($master['nama_gejala'] ?? $matchedRule['nama_rule'] ?? $indicator);
 
             $gejala[] = [
@@ -1014,6 +1022,26 @@ class Diagnosa extends BaseController
         }
 
         return $gejala;
+    }
+
+    private function bolehMasukGejalaZScore(string $kodeGejala, string $indikator, string $kategori, $nilai): bool
+    {
+        $kodeGejala = strtoupper($kodeGejala);
+        $indikator = strtoupper(trim($indikator));
+        $kategori = strtolower(trim($kategori));
+        $nilai = is_numeric($nilai) ? (float) $nilai : null;
+
+        if ($kodeGejala === 'G01' && $indikator === 'BB/U') {
+            return in_array($kategori, ['berat badan sangat kurang', 'berat badan kurang'], true)
+                || ($nilai !== null && $nilai < -2);
+        }
+
+        if (in_array($kodeGejala, ['G11', 'G011'], true) && $indikator === 'BB/TB') {
+            return in_array($kategori, ['gizi buruk', 'gizi kurang'], true)
+                || ($nilai !== null && $nilai < -2);
+        }
+
+        return true;
     }
 
     private function getMatchedRule(array $rules, string $indicator, float $value): ?array

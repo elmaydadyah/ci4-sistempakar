@@ -158,7 +158,8 @@ $canManageAnak = in_array($adminRole, ['admin1', 'admin2'], true);
                                                             </button>
                                                             <a href="<?= base_url('admin/deleteAnak/' . ($anak['id_anak'] ?? 0)); ?>"
                                                                 class="btn btn-danger btn-sm"
-                                                                onclick="return confirm('Apakah Anda yakin ingin menghapus data anak ini?');">Hapus</a>
+                                                                data-preserve-table-page="#adminAnakTable"
+                                                                onclick="return confirm('Apakah Anda yakin ingin menghapus data anak ini? Hasil diagnosa terkait juga akan ikut terhapus.');">Hapus</a>
                                                         </div>
                                                     </td>
                                                 <?php endif; ?>
