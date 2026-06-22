@@ -24,7 +24,7 @@ $rolePermissionMatrix = $rolePermissionMatrix ?? [
         'dashboard' => ['lihat' => true, 'tambah' => false, 'edit' => false, 'hapus' => false],
         'anak' => ['lihat' => true, 'tambah' => false, 'edit' => true, 'hapus' => true],
         'statusgizi' => ['lihat' => true, 'tambah' => true, 'edit' => false, 'hapus' => false],
-        'hasildiagnosa' => ['lihat' => true, 'tambah' => false, 'edit' => false, 'hapus' => false],
+        'hasildiagnosa' => ['lihat' => true, 'tambah' => false, 'edit' => false, 'hapus' => true],
         'users' => ['lihat' => true, 'tambah' => true, 'edit' => true, 'hapus' => true],
         'gejala' => ['lihat' => true, 'tambah' => true, 'edit' => true, 'hapus' => true],
         'hipotesis' => ['lihat' => true, 'tambah' => false, 'edit' => false, 'hapus' => false],

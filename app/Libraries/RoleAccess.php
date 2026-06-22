@@ -10,7 +10,7 @@ class RoleAccess
         'dashboard' => ['menu' => 'Dashboard', 'category' => '-', 'paths' => ['lihat' => ['dashboard']]],
         'anak' => ['menu' => 'Data Anak', 'category' => 'Data Utama', 'paths' => ['lihat' => ['adminanak'], 'edit' => ['admin/updateAnak'], 'hapus' => ['admin/deleteAnak']]],
         'statusgizi' => ['menu' => 'Data Terdahulu', 'category' => 'Data Utama', 'paths' => ['lihat' => ['adminstatusgizi'], 'tambah' => ['admin/uploadStatusGizi']]],
-        'hasildiagnosa' => ['menu' => 'Hasil Diagnosa', 'category' => 'Data Utama', 'paths' => ['lihat' => ['adminhasildiagnosa']]],
+        'hasildiagnosa' => ['menu' => 'Hasil Diagnosa', 'category' => 'Data Utama', 'paths' => ['lihat' => ['adminhasildiagnosa'], 'hapus' => ['admin/deleteHasilDiagnosa']]],
         'users' => ['menu' => 'Data Users', 'category' => 'Data Utama', 'paths' => ['lihat' => ['adminusers'], 'tambah' => ['admin/createUser', 'admin/createRole'], 'edit' => ['admin/updateUser', 'admin/updateRoleAccess'], 'hapus' => ['admin/deleteUser']]],
         'gejala' => ['menu' => 'Data Gejala', 'category' => 'Basis Perhitungan', 'paths' => ['lihat' => ['admingejala'], 'tambah' => ['admin/createGejala'], 'edit' => ['admin/updateGejala'], 'hapus' => ['admin/deleteGejala']]],
         'hipotesis' => ['menu' => 'Data Hipotesis', 'category' => 'Basis Perhitungan', 'paths' => ['lihat' => ['adminhipotesis']]],
@@ -239,6 +239,8 @@ class RoleAccess
             $matrix['admin1'][$menu]['edit'] = true;
             $matrix['admin1'][$menu]['hapus'] = true;
         }
+
+        $matrix['admin1']['hasildiagnosa']['hapus'] = true;
 
         foreach (['statusgizi'] as $menu) {
             $matrix['admin1'][$menu]['tambah'] = true;

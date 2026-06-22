@@ -1,5 +1,8 @@
 <?php
 $filter = is_array($filter ?? null) ? $filter : ['kelas_hasil' => ''];
+$roleAccess = new \App\Libraries\RoleAccess();
+$adminRole = $roleAccess->normalizeRole((string) (session()->get('role') ?? 'admin1'));
+$canDeleteHasilDiagnosa = $roleAccess->hasPermission($adminRole, 'hasildiagnosa', 'hapus');
 $formatGejalaDetail = static function ($json): array {
     $items = json_decode((string) ($json ?? '[]'), true);
     if (!is_array($items)) {
@@ -30,6 +33,13 @@ $formatGejalaDetail = static function ($json): array {
 
 <div class="main-panel">
     <div class="content-wrapper">
+        <?php if (session()->getFlashdata('success')): ?>
+            <div class="alert alert-success"><?= esc(session()->getFlashdata('success')); ?></div>
+        <?php endif; ?>
+        <?php if (session()->getFlashdata('error')): ?>
+            <div class="alert alert-danger"><?= esc(session()->getFlashdata('error')); ?></div>
+        <?php endif; ?>
+
         <div class="row">
             <div class="col-12 grid-margin stretch-card">
                 <div class="card">
@@ -102,11 +112,18 @@ $formatGejalaDetail = static function ($json): array {
                                                 </td>
                                                 <td><?= esc($hasil['created_at'] ?? '-'); ?></td>
                                                 <td>
-                                                    <?php if (!empty($hasil['id_anak'])): ?>
-                                                        <a class="btn btn-outline-primary btn-sm" href="<?= base_url('adminanak?anak=' . $hasil['id_anak']); ?>">Lihat Anak</a>
-                                                    <?php else: ?>
-                                                        <button type="button" class="btn btn-light btn-sm" disabled>Data Anak</button>
-                                                    <?php endif; ?>
+                                                    <div class="admin-table-actions">
+                                                        <?php if (!empty($hasil['id_anak'])): ?>
+                                                            <a class="btn btn-outline-primary btn-sm" href="<?= base_url('adminanak?anak=' . $hasil['id_anak']); ?>">Lihat Anak</a>
+                                                        <?php else: ?>
+                                                            <button type="button" class="btn btn-light btn-sm" disabled>Data Anak</button>
+                                                        <?php endif; ?>
+                                                        <?php if ($canDeleteHasilDiagnosa): ?>
+                                                            <a class="btn btn-danger btn-sm"
+                                                                href="<?= base_url('admin/deleteHasilDiagnosa/' . ($hasil['id_hasil_diagnosa'] ?? 0)); ?>"
+                                                                onclick="return confirm('Apakah Anda yakin ingin menghapus hasil diagnosa ini?');">Hapus</a>
+                                                        <?php endif; ?>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>

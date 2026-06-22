@@ -419,6 +419,23 @@ class Admin extends BaseController
         return view('admin/hasildiagnosa/index_hasil_diagnosa', $data);
     }
 
+    public function deleteHasilDiagnosa($id)
+    {
+        $model = new HasilDiagnosaModel();
+        $hasil = $model->find((int) $id);
+
+        if (!$hasil) {
+            return redirect()->to('/adminhasildiagnosa')->with('error', 'Data hasil diagnosa tidak ditemukan.');
+        }
+
+        $result = $model->delete((int) $id);
+
+        return redirect()->to('/adminhasildiagnosa')->with(
+            $result ? 'success' : 'error',
+            $result ? 'Data hasil diagnosa berhasil dihapus.' : 'Gagal menghapus data hasil diagnosa.'
+        );
+    }
+
     public function indexStandarAntropometri()
     {
         $db = db_connect();

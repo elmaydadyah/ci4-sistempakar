@@ -40,6 +40,7 @@ $routes->post('/admin/updateAnak/(:num)', 'Admin::updateAnak/$1');
 $routes->get('/admin/deleteAnak/(:num)', 'Admin::deleteAnak/$1');
 $routes->get('/adminkasusgejala', 'Admin::indexKasusGejala');
 $routes->get('/adminhasildiagnosa', 'Admin::indexHasilDiagnosa');
+$routes->get('/admin/deleteHasilDiagnosa/(:num)', 'Admin::deleteHasilDiagnosa/$1');
 $routes->get('/adminstatusgizi', 'Admin::indexStatusGizi');
 $routes->post('/admin/uploadStatusGizi', 'Admin::uploadStatusGizi');
 $routes->get('/adminstandar', 'Admin::indexStandarAntropometri');
