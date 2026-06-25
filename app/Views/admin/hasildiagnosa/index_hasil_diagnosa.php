@@ -47,11 +47,11 @@ $formatGejalaDetail = static function ($json): array {
                         <div class="admin-table-toolbar">
                             <div>
                                 <h4 class="card-title mb-1">Tabel Hasil Diagnosa</h4>
-                                <p class="text-muted mb-0">Riwayat hasil konsultasi Z-Score + Naive Bayes H1/H2/H3.</p>
+                                <p class="text-muted mb-0">Riwayat hasil konsultasi Z-Score + Theorema Bayes H1/H2/H3.</p>
                             </div>
                             <form class="admin-table-toolbar-actions" method="get" action="<?= base_url('adminhasildiagnosa'); ?>">
                                 <div class="admin-filter-control">
-                                    <label for="hasilKelasFilter">Kelas NB</label>
+                                    <label for="hasilKelasFilter">Kelas Bayes</label>
                                     <select id="hasilKelasFilter" name="kelas_hasil" class="form-control form-control-sm">
                                         <option value="">Semua Kelas</option>
                                         <?php foreach (($kelas_hasil_options ?? []) as $kodeKelas => $labelKelas): ?>
@@ -73,7 +73,7 @@ $formatGejalaDetail = static function ($json): array {
                                         <th>NIK</th>
                                         <th>Umur</th>
                                         <th>Z-Score</th>
-                                        <th>Kelas NB</th>
+                                        <th>Kelas Bayes</th>
                                         <th>Posterior</th>
                                         <th>Gejala Terbaca</th>
                                         <th>Tanggal</th>
@@ -121,7 +121,7 @@ $formatGejalaDetail = static function ($json): array {
                                                         <?php if ($canDeleteHasilDiagnosa): ?>
                                                             <a class="btn btn-danger btn-sm"
                                                                 href="<?= base_url('admin/deleteHasilDiagnosa/' . ($hasil['id_hasil_diagnosa'] ?? 0)); ?>"
-                                                                onclick="return confirm('Apakah Anda yakin ingin menghapus hasil diagnosa ini? Data anak terkait juga akan ikut terhapus.');">Hapus</a>
+                                                                onclick="return confirm('Apakah Anda yakin ingin menghapus hasil diagnosa ini? Data anak terkait tidak akan ikut terhapus.');">Hapus</a>
                                                         <?php endif; ?>
                                                     </div>
                                                 </td>

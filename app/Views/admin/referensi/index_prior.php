@@ -74,7 +74,7 @@
                 <input type="hidden" name="redirect_to" value="<?= esc((string) current_url(true), 'attr'); ?>">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editPriorModalLabel">Edit Prior Naive Bayes</h5>
+                        <h5 class="modal-title" id="editPriorModalLabel">Edit Prior Theorema Bayes</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

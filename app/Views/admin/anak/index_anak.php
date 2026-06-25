@@ -6,6 +6,17 @@ $adminRole = match (strtolower(trim((string) (session()->get('role') ?? 'admin1'
     default => 'admin1',
 };
 $canManageAnak = in_array($adminRole, ['admin1', 'admin2'], true);
+$formatTanggalPemeriksaan = static function ($value): string {
+    if (empty($value)) {
+        return '-';
+    }
+
+    try {
+        return (new DateTime((string) $value))->format('d/m/Y H:i');
+    } catch (Throwable $e) {
+        return (string) $value;
+    }
+};
 ?>
 <?= $this->include('layout/dashboard/header') ?>
 <?= $this->include('layout/dashboard/navbar') ?>
@@ -127,7 +138,7 @@ $canManageAnak = in_array($adminRole, ['admin1', 'admin2'], true);
                                                 <td><?= esc($anak['kelurahan'] ?? '-'); ?></td>
                                                 <td><?= esc($anak['kecamatan'] ?? '-'); ?></td>
                                                 <td><div class="admin-table-text"><?= esc($anak['alamat'] ?? '-'); ?></div></td>
-                                                <td><?= esc($anak['created_at'] ?? '-'); ?></td>
+                                                <td><?= esc($formatTanggalPemeriksaan($anak['created_at'] ?? null)); ?></td>
                                                 <?php if ($canManageAnak): ?>
                                                     <td>
                                                         <div class="admin-table-actions">

@@ -97,38 +97,83 @@
                             <p>Hasil Z-Score pada konsultasi ini dihitung berdasarkan tabel standar antropometri anak yang mengacu pada Peraturan Menteri Kesehatan Republik Indonesia Nomor 2 Tahun 2020.</p>
                         </div>
 
-                        <?php $gejalaTerbaca = is_array($hasil['gejala_terbaca'] ?? null) ? $hasil['gejala_terbaca'] : ($hasil['gejala'] ?? []); ?>
+                        <?php
+                            $gejalaTerbaca = is_array($hasil['gejala_terbaca'] ?? null) ? $hasil['gejala_terbaca'] : ($hasil['gejala'] ?? []);
+                            $kodePenyebabKehamilan = ['G15', 'G16', 'G17', 'G18', 'G19'];
+                            $gejalaAnak = is_array($hasil['gejala_anak'] ?? null)
+                                ? $hasil['gejala_anak']
+                                : array_values(array_filter($gejalaTerbaca, static fn ($item) => !in_array((string) ($item['kode'] ?? ''), $kodePenyebabKehamilan, true)));
+                            $penyebabTerbaca = is_array($hasil['penyebab_terbaca'] ?? null)
+                                ? $hasil['penyebab_terbaca']
+                                : array_values(array_filter($gejalaTerbaca, static fn ($item) => in_array((string) ($item['kode'] ?? ''), $kodePenyebabKehamilan, true)));
+                        ?>
                         <div class="parent-symptom-detail" aria-label="Detail gejala yang dipilih">
                             <div class="parent-symptom-detail-head">
                                 <div>
-                                    <b>Detail tanda/gejala terbaca</b>
-                                    <p>Gejala berikut berasal dari hasil ukur dan jawaban yang dipilih saat konsultasi.</p>
+                                    <b>Detail tanda/gejala dan penyebab terbaca</b>
+                                    <p>Data berikut dipisahkan antara kondisi anak dan riwayat ibu saat hamil.</p>
                                 </div>
-                                <span><?= esc((string) count($gejalaTerbaca)) ?> gejala</span>
+                                <span><?= esc((string) count($gejalaTerbaca)) ?> data</span>
                             </div>
-                            <?php if (!empty($gejalaTerbaca)): ?>
-                                <div class="parent-symptom-list">
-                                    <?php foreach ($gejalaTerbaca as $gejalaItem): ?>
-                                        <article>
-                                            <span><?= esc($gejalaItem['kode'] ?? '-') ?></span>
-                                            <div>
-                                                <strong><?= esc($gejalaItem['nama'] ?? $gejalaItem['indikator'] ?? '-') ?></strong>
-                                                <small>
-                                                    <?= esc($gejalaItem['indikator'] ?? 'Gejala') ?>
-                                                    <?php if (!empty($gejalaItem['kategori'])): ?>
-                                                        - <?= esc($gejalaItem['kategori']) ?>
-                                                    <?php endif; ?>
-                                                    <?php if (array_key_exists('zscore', $gejalaItem) && $gejalaItem['zscore'] !== null && $gejalaItem['zscore'] !== ''): ?>
-                                                        (Z-Score <?= esc((string) $gejalaItem['zscore']) ?>)
-                                                    <?php endif; ?>
-                                                </small>
-                                            </div>
-                                        </article>
-                                    <?php endforeach; ?>
+
+                            <div class="parent-symptom-columns">
+                                <div class="parent-symptom-column">
+                                    <div class="parent-symptom-column-head">
+                                        <b>Gejala terbaca</b>
+                                        <span><?= esc((string) count($gejalaAnak)) ?> gejala</span>
+                                    </div>
+                                    <?php if (!empty($gejalaAnak)): ?>
+                                        <div class="parent-symptom-list">
+                                            <?php foreach ($gejalaAnak as $gejalaItem): ?>
+                                                <article>
+                                                    <span><?= esc($gejalaItem['kode'] ?? '-') ?></span>
+                                                    <div>
+                                                        <strong><?= esc($gejalaItem['nama'] ?? $gejalaItem['indikator'] ?? '-') ?></strong>
+                                                        <small>
+                                                            <?= esc($gejalaItem['indikator'] ?? 'Gejala') ?>
+                                                            <?php if (!empty($gejalaItem['kategori'])): ?>
+                                                                - <?= esc($gejalaItem['kategori']) ?>
+                                                            <?php endif; ?>
+                                                            <?php if (array_key_exists('zscore', $gejalaItem) && $gejalaItem['zscore'] !== null && $gejalaItem['zscore'] !== ''): ?>
+                                                                (Z-Score <?= esc((string) $gejalaItem['zscore']) ?>)
+                                                            <?php endif; ?>
+                                                        </small>
+                                                    </div>
+                                                </article>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    <?php else: ?>
+                                        <p class="parent-symptom-empty">Belum ada gejala kondisi anak yang masuk perhitungan.</p>
+                                    <?php endif; ?>
                                 </div>
-                            <?php else: ?>
-                                <p class="parent-symptom-empty">Belum ada gejala yang masuk perhitungan.</p>
-                            <?php endif; ?>
+
+                                <div class="parent-symptom-column">
+                                    <div class="parent-symptom-column-head">
+                                        <b>Penyebab terbaca</b>
+                                        <span><?= esc((string) count($penyebabTerbaca)) ?> penyebab</span>
+                                    </div>
+                                    <?php if (!empty($penyebabTerbaca)): ?>
+                                        <div class="parent-symptom-list">
+                                            <?php foreach ($penyebabTerbaca as $gejalaItem): ?>
+                                                <article>
+                                                    <span><?= esc($gejalaItem['kode'] ?? '-') ?></span>
+                                                    <div>
+                                                        <strong><?= esc($gejalaItem['nama'] ?? $gejalaItem['indikator'] ?? '-') ?></strong>
+                                                        <small>
+                                                            Riwayat ibu saat hamil
+                                                            <?php if (!empty($gejalaItem['kategori'])): ?>
+                                                                - <?= esc($gejalaItem['kategori']) ?>
+                                                            <?php endif; ?>
+                                                        </small>
+                                                    </div>
+                                                </article>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    <?php else: ?>
+                                        <p class="parent-symptom-empty">Tidak ada penyebab dari riwayat ibu hamil yang terbaca.</p>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
                         </div>
 
                         <?php if (!empty($hasil['id_hasil_diagnosa'])): ?>

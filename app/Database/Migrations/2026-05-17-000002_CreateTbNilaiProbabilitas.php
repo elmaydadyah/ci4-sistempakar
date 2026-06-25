@@ -81,7 +81,7 @@ class CreateTbNilaiProbabilitas extends Migration
             'G17' => ['H1' => 0.8, 'H2' => 0.7, 'H3' => 0.4],
             'G18' => ['H1' => 0.9, 'H2' => 0.8, 'H3' => 0.3],
             'G19' => ['H1' => 0.6, 'H2' => 0.5, 'H3' => 0.4],
-            'G20' => ['H1' => 0.6, 'H2' => 0.5, 'H3' => 0.4],
+            'G20' => ['H1' => 0.6, 'H2' => 0.4, 'H3' => 0.4],
         ];
 
         $gejalaRows = $this->db->table('tb_gejala')

@@ -466,16 +466,6 @@ class Admin extends BaseController
                 throw new \RuntimeException('Gagal menghapus hasil diagnosa.');
             }
 
-            if ($anakId > 0 && $db->tableExists('tb_anak')) {
-                $masihDipakaiHasilLain = $db->table('tb_hasil_diagnosa')
-                    ->where('id_anak', $anakId)
-                    ->countAllResults() > 0;
-
-                if (!$masihDipakaiHasilLain && !(new AnakModel())->delete($anakId)) {
-                    throw new \RuntimeException('Gagal menghapus data anak terkait.');
-                }
-            }
-
             $result = $db->transStatus();
         } catch (\Throwable $e) {
             $result = false;
@@ -744,22 +734,24 @@ class Admin extends BaseController
         ], null];
     }
 
-    public function indexNaiveBayesPrior()
+    public function indexTeoremaBayesPrior()
     {
         $db = db_connect();
+        $priorTable = $this->getTeoremaBayesTable($db, 'prior');
         $data = [
-            'tb_prior' => $db->tableExists('tb_naive_bayes_prior')
-                ? $db->table('tb_naive_bayes_prior')->orderBy('kelas', 'ASC')->get()->getResultArray()
+            'tb_prior' => $priorTable !== null
+                ? $db->table($priorTable)->orderBy('kelas', 'ASC')->get()->getResultArray()
                 : [],
         ];
 
         return view('admin/referensi/index_prior', $data);
     }
 
-    public function updateNaiveBayesPrior($id)
+    public function updateTeoremaBayesPrior($id)
     {
         $db = db_connect();
-        if (!$db->tableExists('tb_naive_bayes_prior')) {
+        $priorTable = $this->getTeoremaBayesTable($db, 'prior');
+        if ($priorTable === null) {
             return redirect()->to($this->getSafeAdminRedirect('/adminprior'))->with('error', 'Tabel prior belum tersedia.');
         }
 
@@ -768,7 +760,7 @@ class Admin extends BaseController
             return redirect()->to($this->getSafeAdminRedirect('/adminprior'))->with('error', 'Probabilitas harus lebih dari 0 dan maksimal 1.');
         }
 
-        $db->table('tb_naive_bayes_prior')
+        $db->table($priorTable)
             ->where('id_prior', (int) $id)
             ->update([
                 'label' => trim((string) $this->request->getPost('label')),
@@ -777,15 +769,16 @@ class Admin extends BaseController
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
-        return redirect()->to($this->getSafeAdminRedirect('/adminprior'))->with('success', 'Prior Naive Bayes berhasil diupdate.');
+        return redirect()->to($this->getSafeAdminRedirect('/adminprior'))->with('success', 'Prior Theorema Bayes berhasil diupdate.');
     }
 
-    public function indexNaiveBayesLikelihood()
+    public function indexTeoremaBayesLikelihood()
     {
         $db = db_connect();
+        $likelihoodTable = $this->getTeoremaBayesTable($db, 'likelihood');
         $data = [
-            'tb_likelihood' => $db->tableExists('tb_naive_bayes_likelihood')
-                ? $db->table('tb_naive_bayes_likelihood')
+            'tb_likelihood' => $likelihoodTable !== null
+                ? $db->table($likelihoodTable)
                     ->orderBy('indikator', 'ASC')
                     ->orderBy('kategori', 'ASC')
                     ->orderBy('kelas', 'ASC')
@@ -797,10 +790,11 @@ class Admin extends BaseController
         return view('admin/referensi/index_likelihood', $data);
     }
 
-    public function updateNaiveBayesLikelihood($id)
+    public function updateTeoremaBayesLikelihood($id)
     {
         $db = db_connect();
-        if (!$db->tableExists('tb_naive_bayes_likelihood')) {
+        $likelihoodTable = $this->getTeoremaBayesTable($db, 'likelihood');
+        if ($likelihoodTable === null) {
             return redirect()->to($this->getSafeAdminRedirect('/adminlikelihood'))->with('error', 'Tabel probabilitas antropometri belum tersedia.');
         }
 
@@ -809,7 +803,7 @@ class Admin extends BaseController
             return redirect()->to($this->getSafeAdminRedirect('/adminlikelihood'))->with('error', 'Probabilitas harus lebih dari 0 dan maksimal 1.');
         }
 
-        $db->table('tb_naive_bayes_likelihood')
+        $db->table($likelihoodTable)
             ->where('id_likelihood', (int) $id)
             ->update([
                 'probabilitas' => $probabilitas,
@@ -817,6 +811,23 @@ class Admin extends BaseController
             ]);
 
         return redirect()->to($this->getSafeAdminRedirect('/adminlikelihood'))->with('success', 'Probabilitas antropometri berhasil diupdate.');
+    }
+
+    private function getTeoremaBayesTable($db, string $type): ?string
+    {
+        $tables = match ($type) {
+            'prior' => ['tb_teorema_bayes_prior', 'tb_naive_bayes_prior'],
+            'likelihood' => ['tb_teorema_bayes_likelihood', 'tb_naive_bayes_likelihood'],
+            default => [],
+        };
+
+        foreach ($tables as $table) {
+            if ($db->tableExists($table)) {
+                return $table;
+            }
+        }
+
+        return null;
     }
 
     public function indexNilaiProbabilitas()

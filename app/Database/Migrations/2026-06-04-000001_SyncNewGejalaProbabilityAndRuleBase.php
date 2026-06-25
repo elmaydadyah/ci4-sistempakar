@@ -159,7 +159,7 @@ class SyncNewGejalaProbabilityAndRuleBase extends Migration
             'G09' => 'Anak tidak mendapat pengukuran Tinggi badan dan berat badan rutin (8x Setahun) di Posyandu/Klinik bidan dan dicatat di buku KMS',
             'G10' => 'Nafsu makan berkurang',
             'G11' => 'Kekurangan Gizi',
-            'G12' => 'Kepala lebih besar dibanding badan',
+            'G12' => 'Berat badan anak cenderung tetap/menurun',
             'G13' => 'Anak tidak mendapatkan imunisasi dasar lengkap (HB 0, BCG, Polio, DPT, dan Campak)',
             'G14' => 'Anak tidak rutin mendapatkan obat kecacingan (2x Setahun)',
             'G15' => 'Ibu memiliki HB < 11 selama masa kehamilan',
@@ -194,8 +194,8 @@ class SyncNewGejalaProbabilityAndRuleBase extends Migration
             'G17' => ['H1' => 0.5, 'H2' => 0.6, 'H3' => 0.3],
             'G18' => ['H1' => 0.8, 'H2' => 0.6, 'H3' => 0.2],
             'G19' => ['H1' => 0.8, 'H2' => 0.6, 'H3' => 0.2],
-            'G20' => ['H1' => 0.6, 'H2' => 0.7, 'H3' => 0.3],
-            'G21' => ['H1' => 0.6, 'H2' => 0.7, 'H3' => 0.3],
+            'G20' => ['H1' => 0.6, 'H2' => 0.4, 'H3' => 0.3],
+            'G21' => ['H1' => 0.6, 'H2' => 0.4, 'H3' => 0.3],
         ];
     }
 

@@ -17,7 +17,7 @@
                                 <thead>
                                     <tr>
                                         <th>No.</th>
-                                        <th>Hasil NB</th>
+                                        <th>Hasil Bayes</th>
                                         <th>Gejala</th>
                                         <th>Nilai Relasi</th>
                                     </tr>

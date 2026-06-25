@@ -3085,6 +3085,44 @@ h1 {
     font-weight: 900;
 }
 
+.parent-symptom-columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+}
+
+.parent-symptom-column {
+    min-width: 0;
+}
+
+.parent-symptom-column-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    min-height: 30px;
+}
+
+.parent-symptom-column-head b {
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.parent-symptom-column-head span {
+    display: inline-flex;
+    min-height: 26px;
+    align-items: center;
+    padding: 0 9px;
+    border-radius: 999px;
+    color: #31513d;
+    background: #f0f5e9;
+    font-size: 11px;
+    font-weight: 900;
+    white-space: nowrap;
+}
+
 .parent-symptom-list {
     display: grid;
     gap: 10px;
@@ -3878,6 +3916,10 @@ h1 {
     }
 
     .parent-measure-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .parent-symptom-columns {
         grid-template-columns: 1fr;
     }
 

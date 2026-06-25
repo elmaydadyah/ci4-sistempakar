@@ -16,7 +16,7 @@ class RoleAccess
         'hipotesis' => ['menu' => 'Data Hipotesis', 'category' => 'Basis Perhitungan', 'paths' => ['lihat' => ['adminhipotesis']]],
         'standar' => ['menu' => 'Standar Antropometri', 'category' => 'Basis Perhitungan', 'paths' => ['lihat' => ['adminstandar'], 'edit' => ['admin/updateStandar']]],
         'rulebased' => ['menu' => 'Rule Based', 'category' => 'Basis Perhitungan', 'paths' => ['lihat' => ['adminrulebased'], 'tambah' => ['admin/createRuleBased'], 'edit' => ['admin/updateRuleBased'], 'hapus' => ['admin/deleteRuleBased']]],
-        'prior' => ['menu' => 'Prior Naive Bayes', 'category' => 'Basis Perhitungan', 'paths' => ['lihat' => ['adminprior'], 'edit' => ['admin/updatePrior']]],
+        'prior' => ['menu' => 'Prior Theorema Bayes', 'category' => 'Basis Perhitungan', 'paths' => ['lihat' => ['adminprior'], 'edit' => ['admin/updatePrior']]],
         'likelihood' => ['menu' => 'Probabilitas Antropometri', 'category' => 'Basis Perhitungan', 'paths' => ['lihat' => ['adminlikelihood'], 'edit' => ['admin/updateLikelihood']]],
         'nilaiprobabilitas' => ['menu' => 'Probabilitas Gejala', 'category' => 'Basis Perhitungan', 'paths' => ['lihat' => ['adminnilaiprobabilitas']]],
         'settings' => ['menu' => 'Pengaturan Profil', 'category' => 'Akun', 'paths' => ['lihat' => ['adminsettings'], 'edit' => ['adminsettings']]],

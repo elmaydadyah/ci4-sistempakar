@@ -20,8 +20,8 @@ class Dashboard extends BaseController
             'status_gizi' => $this->countTable($db, 'tb_anak_status_gizi'),
             'hasil_diagnosa' => $this->countTable($db, 'tb_hasil_diagnosa'),
             'standar_antropometri' => $this->countTable($db, 'tb_standar_antropometri'),
-            'prior_nb' => $this->countTable($db, 'tb_naive_bayes_prior'),
-            'likelihood_nb' => $this->countTable($db, 'tb_naive_bayes_likelihood'),
+            'prior_nb' => $this->countFirstExistingTable($db, ['tb_teorema_bayes_prior', 'tb_naive_bayes_prior']),
+            'likelihood_nb' => $this->countFirstExistingTable($db, ['tb_teorema_bayes_likelihood', 'tb_naive_bayes_likelihood']),
         ];
 
         $nutritionStatus = [
@@ -84,6 +84,17 @@ class Dashboard extends BaseController
         }
 
         return $db->table($table)->countAllResults();
+    }
+
+    private function countFirstExistingTable($db, array $tables): int
+    {
+        foreach ($tables as $table) {
+            if ($db->tableExists($table)) {
+                return $db->table($table)->countAllResults();
+            }
+        }
+
+        return 0;
     }
 
     private function getEmptyDailyChart(): array

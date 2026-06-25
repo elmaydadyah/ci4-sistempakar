@@ -14,7 +14,7 @@ $permissionRows = $permissionRows ?? [
     ['key' => 'hipotesis', 'menu' => 'Data Hipotesis', 'category' => 'Basis Perhitungan'],
     ['key' => 'standar', 'menu' => 'Standar Antropometri', 'category' => 'Basis Perhitungan'],
     ['key' => 'rulebased', 'menu' => 'Rule Based', 'category' => 'Basis Perhitungan'],
-    ['key' => 'prior', 'menu' => 'Prior Naive Bayes', 'category' => 'Basis Perhitungan'],
+    ['key' => 'prior', 'menu' => 'Prior Theorema Bayes', 'category' => 'Basis Perhitungan'],
     ['key' => 'likelihood', 'menu' => 'Probabilitas Antropometri', 'category' => 'Basis Perhitungan'],
     ['key' => 'nilaiprobabilitas', 'menu' => 'Probabilitas Gejala', 'category' => 'Basis Perhitungan'],
     ['key' => 'settings', 'menu' => 'Pengaturan Profil', 'category' => 'Akun'],

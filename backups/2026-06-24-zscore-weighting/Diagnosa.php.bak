@@ -194,8 +194,6 @@ class Diagnosa extends BaseController
 
         $gejala = json_decode((string) ($row['gejala_zscore'] ?? '[]'), true);
         $gejala = is_array($gejala) ? $gejala : [];
-        $gejalaAnak = $this->filterGejalaAnak($gejala);
-        $penyebabTerbaca = $this->filterPenyebabKehamilan($gejala);
         $prior = json_decode((string) ($row['probabilitas_prior'] ?? '[]'), true);
         $likelihood = json_decode((string) ($row['probabilitas_likelihood'] ?? '[]'), true);
 
@@ -232,8 +230,6 @@ class Diagnosa extends BaseController
             'gejala' => $gejala,
             'gejala_tambahan' => [],
             'gejala_terbaca' => $gejala,
-            'gejala_anak' => $gejalaAnak,
-            'penyebab_terbaca' => $penyebabTerbaca,
             'jumlah_gejala' => (int) ($row['jumlah_gejala'] ?? count($gejala)),
             'diagnosa' => $diagnosa,
             'alternatif' => $alternatif,
@@ -474,11 +470,7 @@ class Diagnosa extends BaseController
         $gejala = $this->konversiZScoreMenjadiGejala($db, $zscore);
         $gejalaTambahan = $this->gejalaTambahanDariJawaban($db, $input['jawaban_gejala'] ?? [], (int) $input['umur']);
         $gejalaTerbaca = array_merge($gejala, $gejalaTambahan);
-        $gejalaAnak = $this->filterGejalaAnak($gejalaTerbaca);
-        $penyebabTerbaca = $this->filterPenyebabKehamilan($gejalaTerbaca);
-        $bayesZScore = $this->hitungTeoremaBayes($db, $this->zscoreMenjadiEvidence($zscore));
-        $bayesGejala = $this->hitungTeoremaBayes($db, $gejalaTambahan);
-        $bayes = $this->gabungkanBayesBerbobot($bayesZScore, $bayesGejala, 0.30, 0.70);
+        $bayes = $this->hitungNaiveBayes($db, $gejalaTerbaca);
         $diagnosa = $bayes['hasil'];
         $posterior = $diagnosa['posterior'] ?? 0.0;
 
@@ -491,8 +483,6 @@ class Diagnosa extends BaseController
             'gejala' => $gejala,
             'gejala_tambahan' => $gejalaTambahan,
             'gejala_terbaca' => $gejalaTerbaca,
-            'gejala_anak' => $gejalaAnak,
-            'penyebab_terbaca' => $penyebabTerbaca,
             'jumlah_gejala' => count($gejalaTerbaca),
             'diagnosa' => $diagnosa,
             'alternatif' => $bayes['alternatif'],
@@ -502,25 +492,6 @@ class Diagnosa extends BaseController
             'persentase' => round($posterior * 100, 2),
             'rekomendasi' => $this->getRekomendasi($diagnosa['kelas'] ?? 'H1'),
         ];
-    }
-
-    private function filterGejalaAnak(array $gejala): array
-    {
-        return array_values(array_filter($gejala, fn ($item) => !$this->isPenyebabKehamilan($item)));
-    }
-
-    private function filterPenyebabKehamilan(array $gejala): array
-    {
-        return array_values(array_filter($gejala, fn ($item) => $this->isPenyebabKehamilan($item)));
-    }
-
-    private function isPenyebabKehamilan($gejala): bool
-    {
-        if (!is_array($gejala)) {
-            return false;
-        }
-
-        return in_array((string) ($gejala['kode'] ?? ''), ['G15', 'G16', 'G17', 'G18', 'G19'], true);
     }
 
     private function getGejalaPertanyaan(?int $umurBulan = null): array
@@ -578,7 +549,7 @@ class Diagnosa extends BaseController
             'G09' => 'Apakah anak mendapat pengukuran tinggi dan berat badan rutin sebanyak 8x dalam setahun di posyandu/klinik bidan dan dicatat di buku KMS?',
             'G10' => 'Apakah nafsu makan anak berkurang?',
             'G11' => 'Apakah anak terlihat mengalami kekurangan gizi?',
-            'G12' => 'Apakah berat badan anak cenderung tetap atau menurun?',
+            'G12' => 'Apakah kepala anak terlihat lebih besar dibandingkan badannya?',
             'G13' => 'Apakah anak mendapatkan imunisasi dasar lengkap seperti HB 0, BCG, Polio, DPT, dan Campak?',
             'G14' => 'Apakah anak rutin mendapatkan obat kecacingan 2 kali setahun?',
             'G15' => 'Apakah ibu memiliki HB kurang dari 11 selama masa kehamilan?',
@@ -634,10 +605,9 @@ class Diagnosa extends BaseController
     private function umurMinGejala(string $kodeGejala): int
     {
         return match ($kodeGejala) {
-            'G05' => 12,
-            'G06', 'G14' => 13,
-            'G07', 'G09' => 25,
-            'G08' => 7,
+            'G05', 'G08' => 10,
+            'G06' => 4,
+            'G09', 'G14' => 13,
             default => 0,
         };
     }
@@ -1140,123 +1110,10 @@ class Diagnosa extends BaseController
         return $lookup;
     }
 
-    private function zscoreMenjadiEvidence(array $zscore): array
+    private function hitungNaiveBayes($db, array $gejala): array
     {
-        $evidence = [];
-
-        foreach ($zscore as $item) {
-            if (($item['nilai'] ?? null) === null) {
-                continue;
-            }
-
-            $label = (string) ($item['label'] ?? 'Z-Score');
-            $kategori = (string) ($item['kategori'] ?? 'Tidak tersedia');
-
-            if ($kategori === '' || strtolower($kategori) === 'tidak tersedia') {
-                continue;
-            }
-
-            $evidence[] = [
-                'kode' => '',
-                'indikator' => $label,
-                'nama' => $label . ' - ' . $kategori,
-                'kategori' => $kategori,
-                'zscore' => $item['nilai'],
-            ];
-        }
-
-        return $evidence;
-    }
-
-    private function gabungkanBayesBerbobot(array $bayesZScore, array $bayesGejala, float $bobotZScore, float $bobotGejala): array
-    {
-        $alternatifZScore = $this->alternatifByKelas($bayesZScore['alternatif'] ?? []);
-        $alternatifGejala = $this->alternatifByKelas($bayesGejala['alternatif'] ?? []);
-        $classes = array_values(array_unique(array_merge(array_keys($this->kelas), array_keys($alternatifZScore), array_keys($alternatifGejala))));
-        $totalBobot = $bobotZScore + $bobotGejala;
-
-        if ($totalBobot <= 0) {
-            $bobotZScore = 0.30;
-            $bobotGejala = 0.70;
-            $totalBobot = 1.0;
-        }
-
-        $bobotZScore /= $totalBobot;
-        $bobotGejala /= $totalBobot;
-
-        $scores = [];
-        foreach ($classes as $class) {
-            $zscorePosterior = (float) ($alternatifZScore[$class]['posterior'] ?? 0.0);
-            $gejalaPosterior = (float) ($alternatifGejala[$class]['posterior'] ?? 0.0);
-            $posterior = ($zscorePosterior * $bobotZScore) + ($gejalaPosterior * $bobotGejala);
-
-            $scores[] = [
-                'kelas' => $class,
-                'label' => $this->kelas[$class] ?? ($alternatifZScore[$class]['label'] ?? ($alternatifGejala[$class]['label'] ?? $class)),
-                'skor' => $posterior,
-                'prior' => $posterior,
-                'posterior' => $posterior,
-                'posterior_persen' => round($posterior * 100, 2),
-                'posterior_zscore' => $zscorePosterior,
-                'posterior_zscore_persen' => round($zscorePosterior * 100, 2),
-                'posterior_gejala' => $gejalaPosterior,
-                'posterior_gejala_persen' => round($gejalaPosterior * 100, 2),
-                'bobot_zscore' => $bobotZScore,
-                'bobot_gejala' => $bobotGejala,
-                'jumlah_data_latih' => max(
-                    (int) ($alternatifZScore[$class]['jumlah_data_latih'] ?? 0),
-                    (int) ($alternatifGejala[$class]['jumlah_data_latih'] ?? 0)
-                ),
-            ];
-        }
-
-        usort($scores, static fn ($a, $b) => $b['posterior'] <=> $a['posterior']);
-
-        return [
-            'hasil' => $scores[0] ?? [
-                'kelas' => 'H1',
-                'label' => $this->kelas['H1'],
-                'posterior' => 0.0,
-                'posterior_persen' => 0.0,
-            ],
-            'alternatif' => $scores,
-            'prior' => [
-                'zscore' => $bayesZScore['prior'] ?? [],
-                'gejala' => $bayesGejala['prior'] ?? [],
-                'bobot' => ['zscore' => $bobotZScore, 'gejala' => $bobotGejala],
-            ],
-            'likelihood' => [
-                'zscore' => $bayesZScore['likelihood'] ?? [],
-                'gejala' => $bayesGejala['likelihood'] ?? [],
-            ],
-            'jumlah_data_latih' => max((int) ($bayesZScore['jumlah_data_latih'] ?? 0), (int) ($bayesGejala['jumlah_data_latih'] ?? 0)),
-        ];
-    }
-
-    private function alternatifByKelas(array $alternatif): array
-    {
-        $lookup = [];
-
-        foreach ($alternatif as $item) {
-            if (!is_array($item)) {
-                continue;
-            }
-
-            $class = (string) ($item['kelas'] ?? '');
-            if ($class === '') {
-                continue;
-            }
-
-            $lookup[$class] = $item;
-        }
-
-        return $lookup;
-    }
-
-    private function hitungTeoremaBayes($db, array $gejala): array
-    {
-        if ($this->getTeoremaBayesTable($db, 'prior') !== null && $this->getTeoremaBayesTable($db, 'likelihood') !== null) {
-            $configured = $this->hitungTeoremaBayesFromEditableTables($db, $gejala);
+        if ($db->tableExists('tb_naive_bayes_prior') && $db->tableExists('tb_naive_bayes_likelihood')) {
+            $configured = $this->hitungNaiveBayesFromEditableTables($db, $gejala);
 
             if ($configured !== null) {
                 return $configured;
@@ -1266,16 +1123,9 @@ class Diagnosa extends BaseController
         return $this->fallbackBayes($gejala);
     }
 
-    private function hitungTeoremaBayesFromEditableTables($db, array $gejala): ?array
+    private function hitungNaiveBayesFromEditableTables($db, array $gejala): ?array
     {
-        $priorTable = $this->getTeoremaBayesTable($db, 'prior');
-        $likelihoodTable = $this->getTeoremaBayesTable($db, 'likelihood');
-
-        if ($priorTable === null || $likelihoodTable === null) {
-            return null;
-        }
-
-        $priorRows = $db->table($priorTable)
+        $priorRows = $db->table('tb_naive_bayes_prior')
             ->select('kelas, label, probabilitas, rekomendasi')
             ->get()
             ->getResultArray();
@@ -1284,7 +1134,7 @@ class Diagnosa extends BaseController
             return null;
         }
 
-        $likelihoodRows = $db->table($likelihoodTable)
+        $likelihoodRows = $db->table('tb_naive_bayes_likelihood')
             ->select('indikator, kategori, kelas, probabilitas')
             ->get()
             ->getResultArray();
@@ -1469,7 +1319,7 @@ class Diagnosa extends BaseController
         return $training;
     }
 
-    private function hitungTeoremaBayesFromTraining(array $training, array $gejala): array
+    private function hitungNaiveBayesFromTraining(array $training, array $gejala): array
     {
         $classCounts = array_fill_keys(array_keys($this->kelas), 0);
         $featureCounts = [];
@@ -1686,9 +1536,8 @@ class Diagnosa extends BaseController
     private function getRekomendasi(string $class): string
     {
         $db = db_connect();
-        $priorTable = $this->getTeoremaBayesTable($db, 'prior');
-        if ($priorTable !== null && $db->fieldExists('rekomendasi', $priorTable)) {
-            $row = $db->table($priorTable)
+        if ($db->tableExists('tb_naive_bayes_prior') && $db->fieldExists('rekomendasi', 'tb_naive_bayes_prior')) {
+            $row = $db->table('tb_naive_bayes_prior')
                 ->select('rekomendasi')
                 ->where('kelas', $class)
                 ->get()
@@ -1704,23 +1553,6 @@ class Diagnosa extends BaseController
             'H2' => 'Jika anak berada pada kategori risiko stunting sedang, maka disarankan untuk meningkatkan kualitas pola makan, menjaga keseimbangan nutrisi, dan melakukan konsultasi ke posyandu atau tenaga kesehatan untuk pemantauan lanjutan.',
             default => 'Jika anak berada pada kategori risiko stunting rendah, tetap jaga pola makan bergizi seimbang dan lakukan pemantauan pertumbuhan secara berkala di posyandu.',
         };
-    }
-
-    private function getTeoremaBayesTable($db, string $type): ?string
-    {
-        $tables = match ($type) {
-            'prior' => ['tb_teorema_bayes_prior', 'tb_naive_bayes_prior'],
-            'likelihood' => ['tb_teorema_bayes_likelihood', 'tb_naive_bayes_likelihood'],
-            default => [],
-        };
-
-        foreach ($tables as $table) {
-            if ($db->tableExists($table)) {
-                return $table;
-            }
-        }
-
-        return null;
     }
 
     private function parseUsiaBulan(?string $usia): ?float
