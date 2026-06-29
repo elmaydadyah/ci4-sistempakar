@@ -49,6 +49,7 @@
                                 'H2' => 'warning',
                                 default => 'success',
                             };
+                            $confidencePercent = $diagnosa['posterior_persen'] ?? $hasil['persentase'] ?? 0;
                             $risikoObesitas = (bool) ($hasil['risiko_obesitas'] ?? false);
                             if (!$risikoObesitas) {
                                 foreach (($hasil['zscore'] ?? []) as $zscoreItem) {
@@ -80,6 +81,7 @@
                                     <span><?= esc($hasil['nama']) ?></span>
                                     <span><?= esc((string) $hasil['umur']) ?> bulan</span>
                                     <span><?= esc((string) $hasil['jumlah_gejala']) ?> kondisi diperhatikan</span>
+                                    <span>Persentase <?= esc(number_format((float) $confidencePercent, 2, '.', '')) ?>%</span>
                                 </div>
                             </div>
                         </div>

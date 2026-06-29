@@ -12,7 +12,7 @@
                 <span class="about-kicker">Tentang Stunting</span>
                 <h2>Apa Itu <strong>Stunting?</strong></h2>
                 <p>
-                    Stunting adalah kondisi gagal tumbuh pada balita akibat kekurangan gizi kronis dalam waktu lama,
+                    Stunting adalahhh kondisi gagal tumbuh pada balita akibat kekurangan gizi kronis dalam waktu lama,
                     terutama pada 1.000 hari pertama kehidupan. Kondisi ini dapat memengaruhi pertumbuhan fisik,
                     perkembangan otak, dan kesehatan anak di masa depan.
                 </p>
