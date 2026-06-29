@@ -49,12 +49,28 @@
                                 'H2' => 'warning',
                                 default => 'success',
                             };
-                            $confidencePercent = $diagnosa['posterior_persen'] ?? $hasil['persentase'] ?? 0;
+                            $risikoObesitas = (bool) ($hasil['risiko_obesitas'] ?? false);
+                            if (!$risikoObesitas) {
+                                foreach (($hasil['zscore'] ?? []) as $zscoreItem) {
+                                    $labelZscore = (string) ($zscoreItem['label'] ?? '');
+                                    $kategoriZscore = (string) ($zscoreItem['kategori'] ?? '');
+
+                                    if (($labelZscore === 'BB/U' && $kategoriZscore === 'Risiko berat badan lebih')
+                                        || ($labelZscore === 'BB/TB' && in_array($kategoriZscore, ['Berisiko gizi lebih', 'Gizi lebih'], true))) {
+                                        $risikoObesitas = true;
+                                        break;
+                                    }
+                                }
+                            }
                             $interpretationText = match ($kelas) {
-                                'H1' => 'Risiko stunting tinggi berarti hasil pengukuran dan tanda yang terbaca lebih banyak mengarah pada kemungkinan stunting, sehingga anak perlu segera diperiksa lebih lanjut oleh tenaga kesehatan.',
-                                'H2' => 'Risiko stunting sedang berarti terdapat beberapa tanda yang perlu diwaspadai, tetapi belum sekuat kategori tinggi. Anak perlu dipantau pertumbuhannya dan diperbaiki asupan gizinya.',
-                                default => 'Risiko stunting rendah berarti anak tidak terindikasi memiliki risiko stunting tinggi. Jika nilai probabilitas Bayes berada di bawah 70%, hasil ini dibaca sebagai tidak terindikasi risiko stunting, namun pemantauan rutin tetap diperlukan.',
+                                'H1' => 'Risiko stunting tinggi berarti hasil pengukuran tubuh dan jawaban pada konsultasi menunjukkan anak perlu segera diperiksa lebih lanjut oleh tenaga kesehatan.',
+                                'H2' => 'Risiko stunting sedang berarti ada beberapa kondisi yang perlu diperhatikan. Pantau pertumbuhan anak secara rutin dan perbaiki asupan gizinya.',
+                                default => 'Risiko stunting rendah berarti hasil saat ini belum menunjukkan kekhawatiran yang kuat. Tetap pantau pertumbuhan anak secara rutin.',
                             };
+                            $obesityWarningText = '';
+                            if ($risikoObesitas) {
+                                $obesityWarningText = 'Namun, anak Anda memiliki risiko obesitas. Segera lakukan pemeriksaan ke puskesmas atau posyandu terdekat.';
+                            }
                         ?>
                         <div class="parent-result-head">
                             <div>
@@ -63,20 +79,17 @@
                                 <div class="result-meta parent-identity-meta">
                                     <span><?= esc($hasil['nama']) ?></span>
                                     <span><?= esc((string) $hasil['umur']) ?> bulan</span>
-                                    <span><?= esc((string) $hasil['jumlah_gejala']) ?> tanda terbaca</span>
+                                    <span><?= esc((string) $hasil['jumlah_gejala']) ?> kondisi diperhatikan</span>
                                 </div>
-                            </div>
-                            <div class="parent-result-summary">
-                                <span class="parent-status-badge <?= esc($statusTone, 'attr') ?>"><?= esc($kelas) ?></span>
-                                <span class="parent-confidence">
-                                    Probabilitas Bayes <?= esc((string) $confidencePercent) ?>%
-                                </span>
                             </div>
                         </div>
 
                         <div class="parent-result-message-box <?= esc($statusTone, 'attr') ?>">
                             <p class="parent-result-message"><?= esc($friendlyText) ?></p>
                             <p class="parent-result-message parent-result-interpretation"><?= esc($interpretationText) ?></p>
+                            <?php if ($obesityWarningText !== ''): ?>
+                                <p class="parent-result-message parent-result-interpretation"><?= esc($obesityWarningText) ?></p>
+                            <?php endif; ?>
                         </div>
 
                         <div class="solution-box parent-advice">

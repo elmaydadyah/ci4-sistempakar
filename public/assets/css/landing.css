@@ -2976,6 +2976,8 @@ h1 {
     font-size: 15px !important;
     line-height: 1.8 !important;
     font-weight: 500;
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 
 .parent-result-message + .parent-result-message {
@@ -2984,12 +2986,6 @@ h1 {
 
 .parent-result-interpretation {
     max-width: none;
-}
-
-@media (min-width: 1200px) {
-    .parent-result-interpretation {
-        white-space: nowrap;
-    }
 }
 
 .parent-measure-grid {

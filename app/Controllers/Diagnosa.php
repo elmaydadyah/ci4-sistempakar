@@ -182,22 +182,44 @@ class Diagnosa extends BaseController
 
             return $item;
         }, $alternatif);
-        $diagnosa = $alternatif[0] ?? [
-            'kelas' => $row['kelas_hasil'] ?? 'H1',
-            'label' => $this->kelas[$row['kelas_hasil'] ?? 'H1'] ?? 'Risiko Stunting Tinggi',
+        $storedClass = (string) ($row['kelas_hasil'] ?? '');
+        $alternatifByKelas = $this->alternatifByKelas($alternatif);
+        $diagnosa = ($storedClass !== '' && isset($alternatifByKelas[$storedClass])) ? $alternatifByKelas[$storedClass] : ($alternatif[0] ?? [
+            'kelas' => $storedClass !== '' ? $storedClass : 'H1',
+            'label' => $this->kelas[$storedClass] ?? 'Risiko Stunting Tinggi',
             'posterior_persen' => (float) ($row['persentase'] ?? 0),
             'posterior' => ((float) ($row['persentase'] ?? 0)) / 100,
-        ];
+        ]);
         if (!empty($diagnosa['kelas']) && isset($this->kelas[$diagnosa['kelas']])) {
             $diagnosa['label'] = $this->kelas[$diagnosa['kelas']];
         }
 
         $gejala = json_decode((string) ($row['gejala_zscore'] ?? '[]'), true);
-        $gejala = is_array($gejala) ? $gejala : [];
+        $gejala = is_array($gejala) ? $this->filterGejalaPendukung($gejala) : [];
         $gejalaAnak = $this->filterGejalaAnak($gejala);
         $penyebabTerbaca = $this->filterPenyebabKehamilan($gejala);
         $prior = json_decode((string) ($row['probabilitas_prior'] ?? '[]'), true);
         $likelihood = json_decode((string) ($row['probabilitas_likelihood'] ?? '[]'), true);
+        $zscore = [
+            'bb_u' => [
+                'label' => 'BB/U',
+                'nilai' => $row['zs_bb_u'] ?? null,
+                'kategori' => (string) ($row['kategori_bb_u'] ?? '-'),
+                'sumber' => 'Data hasil tersimpan',
+            ],
+            'tb_u' => [
+                'label' => 'TB/U',
+                'nilai' => $row['zs_tb_u'] ?? null,
+                'kategori' => (string) ($row['kategori_tb_u'] ?? '-'),
+                'sumber' => 'Data hasil tersimpan',
+            ],
+            'bb_tb' => [
+                'label' => 'BB/TB',
+                'nilai' => $row['zs_bb_tb'] ?? null,
+                'kategori' => (string) ($row['kategori_bb_tb'] ?? '-'),
+                'sumber' => 'Data hasil tersimpan',
+            ],
+        ];
 
         return [
             'id_hasil_diagnosa' => (int) ($row['id_hasil_diagnosa'] ?? 0),
@@ -209,38 +231,20 @@ class Diagnosa extends BaseController
                 'berat_badan' => $row['berat_badan'] ?? null,
                 'tinggi_badan' => $row['tinggi_badan'] ?? null,
             ],
-            'zscore' => [
-                'bb_u' => [
-                    'label' => 'BB/U',
-                    'nilai' => $row['zs_bb_u'] ?? null,
-                    'kategori' => (string) ($row['kategori_bb_u'] ?? '-'),
-                    'sumber' => 'Data hasil tersimpan',
-                ],
-                'tb_u' => [
-                    'label' => 'TB/U',
-                    'nilai' => $row['zs_tb_u'] ?? null,
-                    'kategori' => (string) ($row['kategori_tb_u'] ?? '-'),
-                    'sumber' => 'Data hasil tersimpan',
-                ],
-                'bb_tb' => [
-                    'label' => 'BB/TB',
-                    'nilai' => $row['zs_bb_tb'] ?? null,
-                    'kategori' => (string) ($row['kategori_bb_tb'] ?? '-'),
-                    'sumber' => 'Data hasil tersimpan',
-                ],
-            ],
+            'zscore' => $zscore,
             'gejala' => $gejala,
-            'gejala_tambahan' => [],
+            'gejala_tambahan' => $gejala,
             'gejala_terbaca' => $gejala,
             'gejala_anak' => $gejalaAnak,
             'penyebab_terbaca' => $penyebabTerbaca,
-            'jumlah_gejala' => (int) ($row['jumlah_gejala'] ?? count($gejala)),
+            'risiko_obesitas' => $this->hasRisikoObesitas($zscore),
+            'jumlah_gejala' => count($gejala),
             'diagnosa' => $diagnosa,
             'alternatif' => $alternatif,
             'prior' => is_array($prior) ? $prior : [],
             'likelihood' => is_array($likelihood) ? $likelihood : [],
             'jumlah_data_latih' => 0,
-            'persentase' => (float) ($row['persentase'] ?? ($diagnosa['posterior_persen'] ?? 0)),
+            'persentase' => (float) ($diagnosa['posterior_persen'] ?? ($row['persentase'] ?? 0)),
             'rekomendasi' => $this->getRekomendasi((string) ($diagnosa['kelas'] ?? 'H1')),
             'stored_row' => $row,
         ];
@@ -471,7 +475,7 @@ class Diagnosa extends BaseController
         ];
 
         $zscore = $this->hitungZScore($db, $pengukuran);
-        $gejala = $this->konversiZScoreMenjadiGejala($db, $zscore);
+        $gejala = [];
         $gejalaTambahan = $this->gejalaTambahanDariJawaban($db, $input['jawaban_gejala'] ?? [], (int) $input['umur']);
         $gejalaTerbaca = array_merge($gejala, $gejalaTambahan);
         $gejalaAnak = $this->filterGejalaAnak($gejalaTerbaca);
@@ -493,6 +497,7 @@ class Diagnosa extends BaseController
             'gejala_terbaca' => $gejalaTerbaca,
             'gejala_anak' => $gejalaAnak,
             'penyebab_terbaca' => $penyebabTerbaca,
+            'risiko_obesitas' => $this->hasRisikoObesitas($zscore),
             'jumlah_gejala' => count($gejalaTerbaca),
             'diagnosa' => $diagnosa,
             'alternatif' => $bayes['alternatif'],
@@ -514,6 +519,17 @@ class Diagnosa extends BaseController
         return array_values(array_filter($gejala, fn ($item) => $this->isPenyebabKehamilan($item)));
     }
 
+    private function filterGejalaPendukung(array $gejala): array
+    {
+        return array_values(array_filter($gejala, function ($item) {
+            if (!is_array($item)) {
+                return false;
+            }
+
+            return !in_array(strtoupper((string) ($item['kode'] ?? '')), ['G01', 'G02', 'G11', 'G011'], true);
+        }));
+    }
+
     private function isPenyebabKehamilan($gejala): bool
     {
         if (!is_array($gejala)) {
@@ -521,6 +537,28 @@ class Diagnosa extends BaseController
         }
 
         return in_array((string) ($gejala['kode'] ?? ''), ['G15', 'G16', 'G17', 'G18', 'G19'], true);
+    }
+
+    private function hasRisikoObesitas(array $zscore): bool
+    {
+        foreach ($zscore as $item) {
+            if (!is_array($item)) {
+                continue;
+            }
+
+            $label = (string) ($item['label'] ?? '');
+            $kategori = (string) ($item['kategori'] ?? '');
+
+            if ($label === 'BB/U' && $kategori === 'Risiko berat badan lebih') {
+                return true;
+            }
+
+            if ($label === 'BB/TB' && in_array($kategori, ['Berisiko gizi lebih', 'Gizi lebih'], true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function getGejalaPertanyaan(?int $umurBulan = null): array

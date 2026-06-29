@@ -114,7 +114,18 @@ $formatGejalaDetail = static function ($json): array {
                                                 <td>
                                                     <div class="admin-table-actions">
                                                         <?php if (!empty($hasil['id_anak'])): ?>
-                                                            <a class="btn btn-outline-primary btn-sm" href="<?= base_url('adminanak?anak=' . $hasil['id_anak']); ?>">Lihat Anak</a>
+                                                            <button type="button"
+                                                                class="btn btn-outline-primary btn-sm btn-lihat-anak"
+                                                                data-toggle="modal"
+                                                                data-target="#detailAnakModal"
+                                                                data-url="<?= esc(base_url('adminanak?anak=' . $hasil['id_anak']), 'attr'); ?>"
+                                                                data-nama="<?= esc($hasil['nama'] ?? '-', 'attr'); ?>"
+                                                                data-umur="<?= esc((string) ($hasil['umur'] ?? '-'), 'attr'); ?>"
+                                                                data-jk="<?= esc(($hasil['jenis_kelamin'] ?? '') === 'L' ? 'Laki-laki' : (($hasil['jenis_kelamin'] ?? '') === 'P' ? 'Perempuan' : '-'), 'attr'); ?>"
+                                                                data-bb="<?= esc((string) ($hasil['berat_badan'] ?? '-'), 'attr'); ?>"
+                                                                data-tb="<?= esc((string) ($hasil['tinggi_badan'] ?? '-'), 'attr'); ?>">
+                                                                Lihat Anak
+                                                            </button>
                                                         <?php else: ?>
                                                             <button type="button" class="btn btn-light btn-sm" disabled>Data Anak</button>
                                                         <?php endif; ?>
@@ -178,8 +189,68 @@ $formatGejalaDetail = static function ($json): array {
         </div>
     </div>
 
+    <div class="modal fade" id="detailAnakModal" tabindex="-1" role="dialog" aria-labelledby="detailAnakModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailAnakModalLabel">Data Anak</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered mb-0">
+                            <tbody>
+                                <tr>
+                                    <th style="width: 160px;">Nama</th>
+                                    <td id="detailAnakNama">-</td>
+                                </tr>
+                                <tr>
+                                    <th>Umur</th>
+                                    <td id="detailAnakUmur">-</td>
+                                </tr>
+                                <tr>
+                                    <th>Jenis Kelamin</th>
+                                    <td id="detailAnakJk">-</td>
+                                </tr>
+                                <tr>
+                                    <th>Berat Badan</th>
+                                    <td id="detailAnakBb">-</td>
+                                </tr>
+                                <tr>
+                                    <th>Tinggi Badan</th>
+                                    <td id="detailAnakTb">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Tutup</button>
+                    <a class="btn btn-primary" id="detailAnakLink" href="<?= base_url('adminanak'); ?>">Lihat Detail Anak</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            $('#detailAnakModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var modal = $(this);
+                var umur = button.attr('data-umur') || '-';
+                var beratBadan = button.attr('data-bb') || '-';
+                var tinggiBadan = button.attr('data-tb') || '-';
+
+                modal.find('#detailAnakNama').text(button.attr('data-nama') || '-');
+                modal.find('#detailAnakUmur').text(umur !== '-' ? umur + ' bulan' : '-');
+                modal.find('#detailAnakJk').text(button.attr('data-jk') || '-');
+                modal.find('#detailAnakBb').text(beratBadan !== '-' ? beratBadan + ' kg' : '-');
+                modal.find('#detailAnakTb').text(tinggiBadan !== '-' ? tinggiBadan + ' cm' : '-');
+                modal.find('#detailAnakLink').attr('href', button.attr('data-url') || '<?= base_url('adminanak'); ?>');
+            });
+
             $('#detailGejalaModal').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
                 var nama = button.attr('data-nama') || '-';

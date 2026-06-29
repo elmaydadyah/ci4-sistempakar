@@ -203,6 +203,8 @@ body {
     color: #4e566b;
     font-size: 13px;
     line-height: 1.65;
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 
 .section-title {
